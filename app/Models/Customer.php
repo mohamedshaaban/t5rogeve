@@ -10,6 +10,9 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
 
 /**
  * Class Customer
@@ -57,9 +60,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @package App\Models
  */
-class Customer extends Model
+class Customer extends Authenticatable
 {
-	use SoftDeletes;
+    use HasApiTokens, Notifiable;
+
+    use SoftDeletes;
 	protected $table = 'customers';
 
 	protected $casts = [

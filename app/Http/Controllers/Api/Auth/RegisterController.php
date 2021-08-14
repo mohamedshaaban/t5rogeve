@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use  Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-
+use Auth;
 class RegisterController extends Controller
 {
     public static function customerRegister(Request $request)
@@ -216,7 +216,6 @@ else
         }
         else
         {
-
             $userdata = array(
                 'phone' 					=> $request->phone,
                 'password' 					=> $request->password,
@@ -225,10 +224,19 @@ else
 
 
             $remember = ($request->has('remember_me')) ? true : 0;
-            if (Auth::attempt($userdata)) {
+             if (Auth::guard('customers')->attempt($userdata)) {
+                 $user = Auth::guard('customers')->user();
+                 $response	=	array(
+                     'status' 	=> 0,
+                     'message'	=> 'Logged in',
+                     'user'    => $user,
+                     'token'=>  $user->createToken('token')->accessToken
 
+             );
             }
 
             }
+        return  ($response);
+
     }
 }

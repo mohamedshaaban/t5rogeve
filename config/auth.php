@@ -17,7 +17,10 @@ return [
         'guard'     => 'web',
         'passwords' => 'users',
     ],
-
+    'customers' => [
+        'guard' => 'customers',
+        'passwords' => 'customers',
+    ],
     /*
     |--------------------------------------------------------------------------
     | Authentication Guards
@@ -40,7 +43,10 @@ return [
             'driver'   => 'session',
             'provider' => 'users',
         ],
-
+        'customers' => [
+            'driver' => 'session',
+            'provider' => 'customers',
+        ],
         'api' => [
             'driver'   => 'token',
             'provider' => 'users',
@@ -68,6 +74,10 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model'  => App\User::class,
+        ],
+        'customers' => [
+            'driver' => 'eloquent',
+            'model'  => \App\Models\Customer::class,
         ],
 
         // 'users' => [
@@ -101,6 +111,11 @@ return [
             'email'    => 'auth.emails.password',
             'table'    => 'password_resets',
             'expire'   => 60,
+        ],
+        'customers' => [
+            'provider' => 'customers',
+            'table' => 'password_resets',
+            'expire' => 60,
         ],
     ],
 
