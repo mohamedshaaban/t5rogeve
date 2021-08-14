@@ -231,7 +231,8 @@ else
             );
               if (Auth::guard('customers')->attempt($userdata)) {
 
-                 $user = Auth::guard('customers')->user();
+                 $user = Auth::guard('customers_api')->user();
+
                  if(!$user->is_verified)
                  {
                      $response	=	array(
@@ -263,7 +264,7 @@ else
         $response	=	array(
             'status' 	=> 0,
             'message'	=> 'تفاصيل الحساب',
-            'user'    => new CustomerResources(Auth::guard('customers')->user()),
+            'user'    => new CustomerResources(Auth::guard('customers_api')->user()),
         );
         return $response;
      }

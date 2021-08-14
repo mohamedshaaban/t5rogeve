@@ -21,6 +21,10 @@ return [
         'guard' => 'customers',
         'passwords' => 'customers',
     ],
+    'customers_api' => [
+        'guard' => 'customers_api',
+        'passwords' => 'customers',
+    ],
     /*
     |--------------------------------------------------------------------------
     | Authentication Guards
@@ -44,6 +48,10 @@ return [
             'provider' => 'users',
         ],
         'customers' => [
+            'driver' => 'session',
+            'provider' => 'customers',
+        ],
+        'customers_api' => [
             'driver' => 'passport',
             'provider' => 'customers',
         ],

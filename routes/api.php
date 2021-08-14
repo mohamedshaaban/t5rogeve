@@ -22,7 +22,7 @@ Route::post('customer-register', 'Auth\RegisterController@customerRegister');
 Route::post('customer-verifiy', 'Auth\RegisterController@customerVerifiy');
 Route::post('customer-login', 'Auth\RegisterController@customerLogin');
 Route::get('sliders', 'Sliders\SlidersController@index');
-Route::group(['middleware' => 'auth:customers'], function() {
+Route::group(['middleware' => 'auth:customers_api'], function() {
     Route::get('customer-profile', 'Auth\RegisterController@customerProfile');
 
 });
