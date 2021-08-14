@@ -231,14 +231,28 @@ else
 
             $remember = ($request->has('remember_me')) ? true : 0;
              if (Auth::guard('customers')->attempt($userdata)) {
-                 $user = Auth::guard('customers')->user();
-                 $response	=	array(
-                     'status' 	=> 0,
-                     'message'	=> 'Logged in',
-                     'user'    => $user,
-                     'token'=>  $user->createToken('token')->accessToken
 
-             );
+                 $user = Auth::guard('customers')->user();
+                 if(!$user->is_verified)
+                 {
+                     $response	=	array(
+                         'status' 	=> 0,
+                         'message'	=> "We have sent a OTP on your phone no. Please verify your phone no.",
+
+
+                     );
+                 }
+                 else
+                 {
+                     $response	=	array(
+                         'status' 	=> 0,
+                         'message'	=> 'Logged in',
+                         'user'    => $user,
+                         'token'=>  $user->createToken('token')->accessToken
+                     );
+                 }
+
+
             }
 
             }
