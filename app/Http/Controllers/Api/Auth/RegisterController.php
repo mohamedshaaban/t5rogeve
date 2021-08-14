@@ -216,6 +216,12 @@ else
         }
         else
         {
+            $response	=	array(
+                'status' 	=> 0,
+                'message'	=> 'خطا في رقم الهاتف او كلمة المرور',
+
+
+            );
             $userdata = array(
                 'phone' 					=> $request->phone,
                 'password' 					=> $request->password,
