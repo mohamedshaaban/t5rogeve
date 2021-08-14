@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
     "content-hash": "e27354d8c727d6894a33a6bb164e75f7",
@@ -8032,16 +8032,16 @@
         },
         {
             "name": "itsgoingd/clockwork",
-            "version": "v5.0.8",
+            "version": "v5.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/itsgoingd/clockwork.git",
-                "reference": "01686ebbf75d8e121dfb1b60e52f334858793830"
+                "reference": "b963dee47429a49c9669981cfa9a8362ce209278"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/itsgoingd/clockwork/zipball/01686ebbf75d8e121dfb1b60e52f334858793830",
-                "reference": "01686ebbf75d8e121dfb1b60e52f334858793830",
+                "url": "https://api.github.com/repos/itsgoingd/clockwork/zipball/b963dee47429a49c9669981cfa9a8362ce209278",
+                "reference": "b963dee47429a49c9669981cfa9a8362ce209278",
                 "shasum": ""
             },
             "require": {
@@ -8089,9 +8089,15 @@
             ],
             "support": {
                 "issues": "https://github.com/itsgoingd/clockwork/issues",
-                "source": "https://github.com/itsgoingd/clockwork/tree/v5.0.8"
+                "source": "https://github.com/itsgoingd/clockwork/tree/v5.1.0"
             },
-            "time": "2021-04-27T22:00:25+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/itsgoingd",
+                    "type": "github"
+                }
+            ],
+            "time": "2021-08-07T23:04:17+00:00"
         },
         {
             "name": "laracasts/generators",
@@ -10097,5 +10103,6 @@
     "platform-dev": [],
     "platform-overrides": {
         "php": "7.4.0"
-    }
+    },
+    "plugin-api-version": "2.1.0"
 }
