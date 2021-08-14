@@ -97,6 +97,7 @@ class Customer extends Authenticatable
 		'slug',
 		'password',
 		'user_role_id',
+		'date_of_birth',
 		'civil_id',
 		'faulty',
 		'image',

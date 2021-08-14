@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CustomerResources;
 use App\Models\Customer;
 use App\Models\DeviceInfo;
 use Backpack\NewsCRUD\app\Models\Article;
@@ -67,6 +68,7 @@ class RegisterController extends Controller
             $customer->phone				=  $request->phone;
             $customer->civil_id			=  $request->civil_id;
             $customer->faulty			=  $request->faulty;
+            $customer->date_of_birth			=  $request->date_of_birth;
             $customer->otp = $otp;
             $customer->is_verified      = 0;
             $customer->save();
@@ -110,7 +112,7 @@ class RegisterController extends Controller
              $response	=	array(
                 'status' 	=> 0,
                 'message'	=> 'تم انشاء الحساب',
-                'detail'    => $customer
+                'detail'    => new CustomerResources($customer)
             );
         }
 
@@ -244,7 +246,7 @@ else
                      $response	=	array(
                          'status' 	=> 1,
                          'message'	=> 'تم تسجيل الدخول',
-                         'user'    => $user,
+                         'user'    => new CustomerResources($user),
                          'token'=>  $user->createToken('token')->accessToken
                      );
                  }
@@ -261,7 +263,7 @@ else
         $response	=	array(
             'status' 	=> 0,
             'message'	=> 'تفاصيل الحساب',
-            'user'    => Auth::guard('customers')->user(),
+            'user'    => new CustomerResources(Auth::guard('customers')->user()),
         );
         return $response;
      }
