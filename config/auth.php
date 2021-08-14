@@ -44,13 +44,14 @@ return [
             'provider' => 'users',
         ],
         'customers' => [
-            'driver' => 'session',
+            'driver' => 'passport',
             'provider' => 'customers',
         ],
         'api' => [
-            'driver'   => 'token',
+            'driver' => 'passport',
             'provider' => 'users',
         ],
+
     ],
 
     /*
@@ -77,7 +78,7 @@ return [
         ],
         'customers' => [
             'driver' => 'eloquent',
-            'model'  => \App\Models\Customer::class,
+            'model' => \App\Models\Customer::class,
         ],
 
         // 'users' => [

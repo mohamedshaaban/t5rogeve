@@ -109,7 +109,7 @@ class RegisterController extends Controller
 
              $response	=	array(
                 'status' 	=> 0,
-                'message'	=> 'Account Created',
+                'message'	=> 'تم انشاء الحساب',
                 'detail'    => $customer
             );
         }
@@ -152,7 +152,7 @@ else
     if(!empty($userInfo)){
         if($userInfo->is_verified == 1){
             $success = 0;
-            $errors	= 'This account is already verified.';
+            $errors	= 'تم تفعيل الحساب من قبل';
 
         }else{
 
@@ -227,10 +227,7 @@ else
                 'password' 					=> $request->password,
                 //	'user_role_id' 				=> 2,
             );
-
-
-            $remember = ($request->has('remember_me')) ? true : 0;
-             if (Auth::guard('customers')->attempt($userdata)) {
+              if (Auth::guard('customers')->attempt($userdata)) {
 
                  $user = Auth::guard('customers')->user();
                  if(!$user->is_verified)
@@ -245,8 +242,8 @@ else
                  else
                  {
                      $response	=	array(
-                         'status' 	=> 0,
-                         'message'	=> 'Logged in',
+                         'status' 	=> 1,
+                         'message'	=> 'تم تسجيل الدخول',
                          'user'    => $user,
                          'token'=>  $user->createToken('token')->accessToken
                      );
@@ -259,4 +256,13 @@ else
         return  ($response);
 
     }
+    public static function customerProfile(Request $request)
+    {
+        $response	=	array(
+            'status' 	=> 0,
+            'message'	=> 'تفاصيل الحساب',
+            'user'    => Auth::guard('customers')->user(),
+        );
+        return $response;
+     }
 }
