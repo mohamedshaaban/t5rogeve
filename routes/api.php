@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,11 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/user', function (Request $request) {
+Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
-})->middleware('auth:api');
+});
+
+Route::post('customer-register', 'Auth\RegisterController@customerRegister');
+Route::post('customer-verifiy', 'Auth\RegisterController@customerVerifiy');
+Route::post('customer-login', 'Auth\RegisterController@customerLogin');
+Route::get('sliders', 'Sliders\SlidersController@index');
