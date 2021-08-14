@@ -231,7 +231,7 @@ else
             );
               if (Auth::guard('customers')->attempt($userdata)) {
 
-                 $user = Auth::guard('customers_api')->user();
+                 $user = Auth::guard('customers')->user();
 
                  if(!$user->is_verified)
                  {
