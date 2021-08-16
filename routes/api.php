@@ -24,5 +24,10 @@ Route::post('customer-login', 'Auth\RegisterController@customerLogin');
 Route::get('sliders', 'Sliders\SlidersController@index');
 Route::group(['middleware' => 'auth:customers_api'], function() {
     Route::get('customer-profile', 'Auth\RegisterController@customerProfile');
+    Route::post('bookingList','HomeController@bookingList');
+    Route::post('get-transaction-by-userid','HomeController@GetTransactionByUserId');
+    Route::post('sponsorplatinumList','HomeController@sponsorplatinumList');
+    Route::post('NotificationsList','HomeController@NotificationsList');
+
 
 });

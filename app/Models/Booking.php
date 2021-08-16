@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -30,7 +31,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Booking extends Model
 {
-	protected $table = 'bookings';
+	protected $table = 'booking';
 
 	protected $casts = [
 		'user_id' => 'int',
@@ -55,4 +56,27 @@ class Booking extends Model
 		'status',
 		'slug'
 	];
+    public function ceremony() {
+
+        return $this->belongsTo(Ceremony::class,'event_id');
+    }
+
+
+    public function ceremonyWithDescription() {
+        $lang = session('lang');
+
+        return $this->belongsTo(Ceremony::class,'event_id')->Join('ceremony_description', function($join) {
+            $join->on('ceremony.id', '=', 'ceremony_description.parent_id');
+        })->where("language_id",$lang)->select('ceremony.id','ceremony_description.name','ceremony_description.description','total_seats','remaining_seats','price','ceremony_price','free_seats','image','status','faculty','minimum_downpayment_amount','ceremony_description.created_at','ceremony_description.updated_at','date','ceremony_description.address','ceremony_description.latitude','ceremony_description.longitude','ceremony_for');
+
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class,'user_id');
+    }
+
+    public function payments(){
+        return $this->hasMany(Payment::class, 'booking_id');
+    }
+
 }
