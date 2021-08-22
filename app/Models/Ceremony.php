@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -48,7 +49,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Ceremony extends Model
 {
-	protected $table = 'ceremony';
+    use CrudTrait;
+
+    protected $table = 'ceremony';
 
 	protected $casts = [
 		'total_seats' => 'int',

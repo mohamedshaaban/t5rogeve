@@ -31,9 +31,7 @@
       <li class="nav-item"><a class="nav-link" href="{{ backpack_url('log') }}"><i class="nav-icon la la-terminal"></i> <span>Logs</span></a></li>
     </ul>
 </li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('events') }}"><i class="nav-icon la la-cog"></i> <span>Events</span></a></li>
 
 <li class="nav-title">  Configuration</li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('setting') }}"><i class="nav-icon la la-cog"></i> <span>Settings</span></a></li>
-
- <li class="nav-item"><a class="nav-link" href="{{ backpack_url('garage') }}"><i class="nav-icon la la-shopping-cart"></i> <span>Garage</span></a></li>
-<li class="nav-item"><a class="nav-link" href="{{ backpack_url('areas') }}"><i class="nav-icon la la-pastafarianism"></i> <span>areas</span></a></li>
