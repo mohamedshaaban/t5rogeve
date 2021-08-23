@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\Auth;
 
 use App\Models\Customer;
+use App\Models\DeviceInfo;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -283,6 +284,73 @@ class AuthController extends Controller
 
     }
 
+    public function updateDeviceToken(Request $request)
+    {
+        $formData	= $request->all();
+        $detail = (object) null;
+
+        $response	= array();
+        $messages = array(
+            'device_token' 		    => "Please Enter Device Token",
+        );
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'device_token' 			=> 'required',
+            ), $messages
+        );
+        if ($validator->fails())
+        {
+            $allErrors =  '';
+            foreach ($validator->errors()->all() as $message){
+                $allErrors[] =  $message;
+                break;
+            }
+
+            $response	=	array(
+                'status' 	=> 0,
+                'message'	=> $allErrors,
+                'detail'    => $detail
+            );
+        }
+        else {
+            $user_id = Auth::guard('customers_api')->user();
+            $user_id = $user_id->id;
+            $device_token = $formData['device_token'];
+            $device_info = array(
+                'device_token' => $request->device_token,
+            );
+
+            $results = DeviceInfo::where('user_id', $user_id)->update($device_info);
+
+
+            if ($results) {
+                $response = array(
+                    'status' => 1,
+                    'message' => "Device Token Updated Successfully",
+                    'detail' => $detail,
+
+                );
+            } else {
+                $data = DeviceInfo::create(['user_id'=> $user_id,
+                    'device_token' => $request->device_token
+                ]);
+
+                $response = array(
+                    'status' => 0,
+                    'message' => "Device Token Created Successfully",
+                    'detail' => $detail
+                );
+            }
+
+        }
+
+
+        return ($response);
+    }
+
+
     public function checkPhone(Request $request)
     {
 
@@ -331,7 +399,7 @@ class AuthController extends Controller
         } else {
 
             $user_id = Auth::guard('customers_api')->user();
-
+            $user_id=$user_id->id;
             $phone = $formData['phone'];
 
             $otp = mt_rand(1000, 9999);
