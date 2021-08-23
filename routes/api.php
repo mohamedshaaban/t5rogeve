@@ -18,9 +18,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('customer-register', 'Auth\RegisterController@customerRegister');
-Route::post('customer-verifiy', 'Auth\RegisterController@customerVerifiy');
-Route::post('customer-login', 'Auth\RegisterController@customerLogin');
+Route::post('userRegister', 'Auth\RegisterController@customerRegister');
+Route::post('verifyOtp', 'Auth\RegisterController@customerVerifiy');
+Route::post('userLogin', 'Auth\RegisterController@customerLogin');
 Route::get('sliders', 'Sliders\SlidersController@index');
 
 Route::post('forgetPasswordOtpVerify','Auth\AuthController@forgetPasswordOtpVerify');

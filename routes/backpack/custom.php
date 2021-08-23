@@ -22,6 +22,7 @@ Route::group([
     Route::crud('icon', 'IconCrudController');
     Route::crud('product', 'ProductCrudController');
     Route::crud('dummy', 'DummyCrudController');
+    Route::crud('faculty', 'FacultyCrudController');
     Route::crud('events', 'EventsCrudController');
 
     // ------------------
