@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\EventsRequest as StoreRequest;
 // VALIDATION: change the requests to match your own file names if you need form validation
+use App\Models\Cars;
+use App\Models\Faculty;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -60,5 +62,17 @@ class FacultyCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+    public static function fetch(\Illuminate\Http\Request  $request)
+    {
+        $areas = Faculty::where('full_name','like','%'.$request->q.'%')->get(['id','full_name']);
+        $data = [] ;
+        foreach ($areas as $area)
+        {
+            $data[] = ['id'=>$area->id , 'full_name'=>$area->full_name];
+        }
+
+        return $data;
+
     }
 }

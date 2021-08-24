@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\EventsRequest as StoreRequest;
 // VALIDATION: change the requests to match your own file names if you need form validation
+use App\Models\Faculty;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -37,99 +38,230 @@ class EventsCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name'  => 'name',
-            'label' => 'Name',
+            'label' => 'Event Name',
             'type'  => 'text',
             'tab'   => 'Texts',
         ]);
 
-        CRUD::addField([   // Textarea
-            'name'  => 'description',
-            'label' => 'Description',
-            'type'  => 'textarea',
-            'tab'   => 'Texts',
-        ]);
-        CRUD::addField([   // Textarea
+        CRUD::addField([ // Text
             'name'  => 'code',
-            'label' => 'Code',
+            'label' => 'Event Code',
             'type'  => 'text',
             'tab'   => 'Texts',
         ]);
 
-        CRUD::addField([   // Wysiwyg
-            'name'  => 'details',
-            'label' => 'Details',
-            'type'  => 'wysiwyg',
+        CRUD::addField([ // Text
+            'name'  => 'description',
+            'label' => 'Event Description',
+            'type'  => 'text',
+            'tab'   => 'Texts',
+        ]);
+        CRUD::addField([ // Text
+            'name'  => 'address',
+            'label' => 'Event address',
+            'type'  => 'text',
             'tab'   => 'Texts',
         ]);
 
-        CRUD::addField([ // Table
-            'name'            => 'features',
-            'label'           => 'Features',
-            'type'            => 'table',
-            'entity_singular' => 'feature', // used on the "Add X" button
-            'columns'         => [
-                'name' => 'Feature',
-                'desc' => 'Value',
+
+         CRUD::addField([ // Text
+            'name'  => 'latitude',
+            'label' => 'Event latitude',
+            'type'  => 'text',
+            'tab'   => 'Texts',
+        ]);
+
+
+         CRUD::addField([ // Text
+            'name'  => 'longitude',
+            'label' => 'Event longitude',
+            'type'  => 'text',
+            'tab'   => 'Texts',
+        ]);
+
+
+        CRUD::addField([ // Text
+            'name'  => 'ceremony_for',
+            'label' => 'Event for',
+            'type'  => 'radio',
+            'tab'   => 'Texts',
+            'options'     => [
+                // the key will be stored in the db, the value will be shown as label;
+                0 => "Female",
+                1 => "Male",
+                2 => "Both"
             ],
-            'max' => 25, // maximum rows allowed in the table
-            'min' => 0, // minimum rows allowed in the table
+        ]);
+
+        CRUD::addField([ // Text
+            'name'  => 'date',
+            'label' => 'Event date',
+            'type'  => 'date',
+            'tab'   => 'Texts',
+        ]);
+
+        CRUD::addField([ // Text
+            'name'  => 'hideDate',
+            'label' => 'hide Date',
+            'type'  => 'checkbox',
+            'tab'   => 'Texts',
+            'options'     => [
+                // the key will be stored in the db, the value will be shown as label;
+                "hide" => "hide"
+            ],
+        ]);
+
+        CRUD::addField([ // Text
+            'name'  => 'total_seats',
+            'label' => 'Event total seats',
+            'type'  => 'number',
+            'tab'   => 'Texts',
+        ]);
+
+        CRUD::addField([ // Text
+            'name'  => 'number_of_students',
+            'label' => ' Maximum number of Students ',
+            'type'  => 'number',
+            'tab'   => 'Texts',
+        ]);
+
+        CRUD::addField([ // Text
+            'name'  => 'minimum_downpayment_amount',
+            'label' => ' Minimum DownPayment Amount ',
+            'type'  => 'number',
+            'tab'   => 'Texts',
+        ]);
+
+        CRUD::addField([ // Text
+            'name'  => 'downpayment_amount2',
+            'label' => ' Payment Amount 2 ',
+            'type'  => 'text',
+            'tab'   => 'Texts',
+        ]);
+
+        CRUD::addField([ // Text
+            'name'  => 'price',
+            'label' => 'Seat Price',
+            'type'  => 'number',
+            'tab'   => 'Texts',
+        ]);
+
+        CRUD::addField([ // Text
+            'name'  => 'event_price',
+            'label' => 'Event Price',
+            'type'  => 'number',
+            'tab'   => 'Texts',
+        ]);
+
+        CRUD::addField([ // Text
+            'name'  => 'free_seats',
+            'label' => 'Event Price',
+            'type'  => 'number',
+            'tab'   => 'Texts',
+        ]);
+
+
+        CRUD::addField([ // Text
+            'name'  => 'free_seats',
+            'label' => 'Free Seats',
+            'type'  => 'number',
+            'tab'   => 'Texts',
+        ]);
+
+
+
+        CRUD::addField([ // Text
+            'name'  => 'hashtag',
+            'label' => 'hashtag',
+            'type'  => 'text',
+            'tab'   => 'Texts',
+        ]);
+
+
+        CRUD::addField([  // Select2
+            'label'     => 'Faculty',
+            'type'      => 'select2',
+            'name'      => 'faculty', // the db column for the foreign key
+            'entity'    => 'faculty', // the method that defines the relationship in your Model
+            'attribute' => 'full_name', // foreign key attribute that is shown to use
             'tab' => 'Texts',
         ]);
 
-        CRUD::addField([ // Table
-            'name'            => 'extra_features',
-            'label'           => 'Extra Features',
-            'type'            => 'table',
-            'entity_singular' => 'extra feature', // used on the "Add X" button
-            'columns'         => [
-                'name' => 'Feature',
-                'desc' => 'Value',
-            ],
-            'fake' => true,
-            'max'  => 25, // maximum rows allowed in the table
-            'min'  => 0, // minimum rows allowed in the table
-            'tab'  => 'Texts',
-        ]);
-
-
-        CRUD::addField([   // Number
-            'name'  => 'price',
-            'label' => 'Price',
-            'type'  => 'number',
-            // optionals
-            // 'attributes' => ["step" => "any"], // allow decimals
-            'prefix' => '$',
-            'suffix' => '.00',
-            // 'wrapperAttributes' => [
-            //    'class' => 'form-group col-md-6'
-            //  ], // extra HTML attributes for the field wrapper - mostly for resizing fields
-            'tab' => 'Basic Info',
-        ]);
-
-        CRUD::addFields([
-            [ // Text
-                'name'  => 'meta_title',
-                'label' => 'Meta Title',
-                'type'  => 'text',
-                'fake'  => true,
-                'tab'   => 'Metas',
-            ],
-            [ // Text
-                'name'  => 'meta_description',
-                'label' => 'Meta Description',
-                'type'  => 'text',
-                'fake'  => true,
-                'tab'   => 'Metas',
-            ],
-            [ // Text
-                'name'  => 'meta_keywords',
-                'label' => 'Meta Keywords',
-                'type'  => 'text',
-                'fake'  => true,
-                'tab'   => 'Metas',
+        CRUD::addField([ // Text
+            'name'  => 'hideSeats',
+            'label' => ' Hide Seats ',
+            'type'  => 'radio',
+            'tab'   => 'Texts',
+            'options'     => [
+                // the key will be stored in the db, the value will be shown as label;
+                0 => "No",
+                1 => "Yes"
             ],
         ]);
 
+        CRUD::addField([ // Text
+            'name'  => 'hide_UsersSeatsN',
+            'label' => ' Hide Users & Seats Number ',
+            'type'  => 'radio',
+            'tab'   => 'Texts',
+            'options'     => [
+                // the key will be stored in the db, the value will be shown as label;
+                0 => "No",
+                1 => "Yes"
+            ],
+        ]);
+
+        CRUD::addField([ // Text
+            'name'  => 'NameExDate',
+            'label' => ' Name amendment expiration date ',
+            'type'  => 'date',
+            'tab'   => 'Texts',
+
+        ]);
+        CRUD::addField([ // Text
+            'name'  => 'RobeExDate',
+            'label' => ' The expiry date of resize the robe ',
+            'type'  => 'date',
+            'tab'   => 'Texts',
+
+        ]);
+
+        $this->crud->addField([
+            'label' => "Event Logo",
+            'name' => "image",
+            'type' => 'image',
+            'tab'   => 'Texts',
+            'crop' => true, // set to true to allow cropping, false to disable
+            'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
+        ]);
+
+        $this->crud->addField([
+            'label' => "Event Image",
+            'name' => "imagemain",
+            'type' => 'image',
+            'tab'   => 'Texts',
+            'crop' => true, // set to true to allow cropping, false to disable
+            'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
+        ]);
+
+        $this->crud->addField([
+            'label' => "Terms Image",
+            'name' => "imageterm",
+            'type' => 'image',
+            'tab'   => 'Texts',
+            'crop' => true, // set to true to allow cropping, false to disable
+            'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
+        ]);
+
+        $this->crud->addField([
+            'label' => "Description Image",
+            'name' => "imagedes",
+            'type' => 'image',
+            'tab'   => 'Texts',
+            'crop' => true, // set to true to allow cropping, false to disable
+            'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
+
+        ]);
         $this->crud->setOperationSetting('contentClass', 'col-md-12');
     }
 

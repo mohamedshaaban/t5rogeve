@@ -26,6 +26,7 @@ Route::group([
     Route::crud('SponsorPlatinums', 'SponsorPlatinumsCrudController');
     Route::crud('events', 'EventsCrudController');
     Route::crud('customers', 'CustomersCrudController');
+    Route::post('fetch/faculty', 'FacultyCrudController@fetch');
 
     // ------------------
     // AJAX Chart Widgets

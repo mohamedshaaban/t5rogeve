@@ -31,6 +31,7 @@
       <li class="nav-item"><a class="nav-link" href="{{ backpack_url('log') }}"><i class="nav-icon la la-terminal"></i> <span>Logs</span></a></li>
     </ul>
 </li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('faculty') }}"><i class="nav-icon la la-cog"></i> <span>Faculty</span></a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('events') }}"><i class="nav-icon la la-cog"></i> <span>Events</span></a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('SponsorPlatinums') }}"><i class="nav-icon la la-cog"></i> <span>Sponsor Platinums</span></a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('customers') }}"><i class="nav-icon la la-cog"></i> <span>Students</span></a></li>
