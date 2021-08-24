@@ -111,7 +111,7 @@ class HomeController extends Controller
             $transaction_detail= DB::table('payment_log as pl')
                 ->join('customers as u', 'pl.user_id', '=', 'u.id')
                 ->Leftjoin('ceremony as c', 'c.id', '=', 'pl.event_id')
-                ->where('pl.user_id',Auth::Id())
+                ->where('pl.user_id',Auth::guard('customers_api')->user()->id)
                 ->select('pl.*','u.full_name','c.name as event_name')
                 ->get();
 
