@@ -23,7 +23,9 @@ Route::group([
     Route::crud('product', 'ProductCrudController');
     Route::crud('dummy', 'DummyCrudController');
     Route::crud('faculty', 'FacultyCrudController');
+    Route::crud('SponsorPlatinums', 'SponsorPlatinumsCrudController');
     Route::crud('events', 'EventsCrudController');
+    Route::crud('customers', 'CustomersCrudController');
 
     // ------------------
     // AJAX Chart Widgets
