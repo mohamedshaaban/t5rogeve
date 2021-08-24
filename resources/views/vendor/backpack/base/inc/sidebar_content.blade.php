@@ -33,6 +33,7 @@
 </li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('events') }}"><i class="nav-icon la la-cog"></i> <span>Events</span></a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('SponsorPlatinums') }}"><i class="nav-icon la la-cog"></i> <span>Sponsor Platinums</span></a></li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('customers') }}"><i class="nav-icon la la-cog"></i> <span>Customers</span></a></li>
 
 <li class="nav-title">  Configuration</li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('setting') }}"><i class="nav-icon la la-cog"></i> <span>Settings</span></a></li>
