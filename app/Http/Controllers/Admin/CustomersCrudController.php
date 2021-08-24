@@ -27,10 +27,13 @@ class CustomersCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        CRUD::addColumns(['title']); // add multiple columns, at the end of the stack
+         $this->crud->addColumn([ // Text
+            'name'  => 'all_name',
+            'label' => 'Full Name',
+         ]);
         $this->crud->addColumn([ // Text
-            'name'  => 'first_name',
-            'label' => 'first name',
+            'name'  => 'phone',
+            'label' => 'Phone',
          ]);
     }
 

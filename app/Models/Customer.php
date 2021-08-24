@@ -89,6 +89,7 @@ class Customer extends Authenticatable
 		'remember_token'
 	];
 
+	protected $appends = ['all_name'];
 	protected $fillable = [
 		'email',
 		'username',
@@ -131,4 +132,9 @@ class Customer extends Authenticatable
 	{
 		return $this->hasMany(KnetTransactions2::class, 'user_id');
 	}
+    public function getAllNameAttribute()
+    {
+            return $this->full_name.' ' .$this->father_name.' '.$this->grandfather_name.' '.$this->family_name;
+
+    }
 }
