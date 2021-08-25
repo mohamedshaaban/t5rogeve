@@ -184,9 +184,9 @@ class HomeController extends Controller
         }
 */
 
-        $result=SponsorPlatinum::where('status',1)->get();
+        $result=Sponsorplatinum::where('status',1)->get();
         //	$result=SponsorPlatinum::all;
-        $result= SponsorPlatinum::orderBy($sort_by, $sort_type)->get();
+        $result= Sponsorplatinum::orderBy($sort_by, $sort_type)->get();
 
         $response=array('status'=>1,'data'=>$result);
         return ($response);
