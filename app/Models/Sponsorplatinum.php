@@ -84,7 +84,7 @@ class Sponsorplatinum extends Model
     public function getImageAttribute($value)
     {
         if ($value != null && $value != '') {
-            return asset('uploads/folder_1/folder_2' . $value);
+            return asset('uploads/folder_1/folder_2/' . $value);
         }
         return $value;
     }
