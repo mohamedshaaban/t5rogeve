@@ -44,5 +44,8 @@ Route::group(['middleware' => 'auth:customers_api'], function() {
     Route::post('updateDeviceToken','Auth\AuthController@updateDeviceToken');
     Route::post('ceremonyList','CeremonyController@ceremonyList');
 
+    Route::post('userLogout','Auth\AuthController@userLogout');
+//    Route::post('userCheck','Auth\AuthController@userDataCheck');
+
 
 });

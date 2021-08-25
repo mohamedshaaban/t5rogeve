@@ -441,4 +441,30 @@ class AuthController extends Controller
         }/// end 111
     }
 
+    public function userLogout(Request $request)
+    {
+
+
+        $user = Auth::guard('customers_api')->user();
+        $user_id = $user->id;
+                $results = User::find($user_id)->update(['is_login' => 0, 'is_temp_login' => 0]);
+                if($results)
+                {
+                    $response	=	array(
+                        'status' 	=> 1,
+                        'detail'	=> '',
+                        'message'   => "Logout successfully"
+                    );
+                }
+                else
+                {
+                    $response	=	array(
+                        'status' 	=> 0,
+                        'detail'	=> '',
+                        'message'	=> 'Unsuccessfull'
+                    );
+                }
+        return  $response;
+    }
+
 }
