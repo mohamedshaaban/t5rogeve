@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\Notification;
-use App\Models\SponsorPlatinum;
+use App\Models\Sponsorplatinum;
 use Backpack\NewsCRUD\app\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
