@@ -280,4 +280,7 @@ class Ceremony extends Model
         }
     }
 
+    public function booking(){
+        return $this->hasMany(Booking::class, 'id','booking_id');
+    }
 }

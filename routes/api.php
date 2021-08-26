@@ -48,4 +48,34 @@ Route::group(['middleware' => 'auth:customers_api'], function() {
 //    Route::post('userCheck','Auth\AuthController@userDataCheck');
 
 
+    Route::post('/ceremonyListcheck','CeremonyController@ceremonyListcheck');
+    Route::post('/ceremonydetail','CeremonyController@ceremonydetail');
+    Route::post('/eventList','CeremonyController@eventList');
+
+
+    /*Route::post('/bookCeremonySeats','CeremonyController@bookCeremonySeats');
+    Route::post('/updateRequestStatus','CeremonyController@updateRequestStatus');
+
+    Route::post('/check-seat-availability','CeremonyController@checkSeatAvailability');
+    Route::post('/increase-seat','CeremonyController@increaseSeat');
+*/
+
+    Route::post('/eventBooking','EventsController@booking');
+    Route::post('/updateBooking','EventsController@updatebooking');
+    Route::post('/freeeventBooking','EventsController@bookingfreeevent');
+    Route::post('/eventBookingEdit','EventsController@bookingEdit');
+    Route::post('/eventBookingDelete/{id}','EventsController@bookingDelete');
+
+
+
+
+    Route::post('/eventBookingCsvfile','CeremonyBookingController@booking_csvfile');
+    Route::post('/eventBookingAllcsvfile','CeremonyBookingController@booking_allcsvfile');
+    Route::post('/bookingList','CeremonyBookingController@bookingList');
+    Route::post('/onebookingList','CeremonyBookingController@onebookingList');
+    Route::post('/changerobesize','CeremonyBookingController@changerobesize');
+    Route::post('/addBookingPayment','CeremonyBookingController@addBookingPayment');
+
+
+
 });

@@ -35,7 +35,7 @@ class Booking extends Model
 
 	protected $casts = [
 		'user_id' => 'int',
-		'ceremony_id' => 'int',
+		'event_id' => 'int',
 		'price' => 'float',
 		'promocode_id' => 'int',
 		'discount' => 'float',
@@ -47,7 +47,7 @@ class Booking extends Model
 	protected $fillable = [
 		'user_id',
 		'booking_no',
-		'ceremony_id',
+		'event_id',
 		'price',
 		'promocode_id',
 		'discount',
@@ -72,7 +72,7 @@ class Booking extends Model
     }
 
     public function user() {
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(Customer::class,'user_id');
     }
 
     public function payments(){
