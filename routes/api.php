@@ -37,7 +37,7 @@ Route::post('/TermsCondition','OtherController@TermsCondition');
 
 Route::group(['middleware' => 'auth:customers_api'], function() {
 
-    Route::get('customer-profile', 'Auth\RegisterController@customerProfile');
+    Route::get('userProfile', 'Auth\RegisterController@customerProfile');
     Route::post('bookingList','HomeController@bookingList');
     Route::post('get-transaction-by-userid','HomeController@GetTransactionByUserId');
     Route::post('sponsorplatinumList','HomeController@sponsorplatinumList');
@@ -112,6 +112,12 @@ Route::group(['middleware' => 'auth:customers_api'], function() {
 
     Route::post('/payknetremining', 'PaymentController@payknetremining')->name('payknetremining');
     Route::post('/payknetremining2', 'PaymentController@payknetremining')->name('payknetremining');
+
+    Route::post('/whoweareList','OtherController@whoweareList');
+
+
+    //
+    Route::post('/WayUseList','OtherController@WayUseList');
 
 
 

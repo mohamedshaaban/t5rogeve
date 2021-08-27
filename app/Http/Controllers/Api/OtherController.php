@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Models\ContactU;
 use App\Models\SiteAddressesDe;
 use App\Models\TermsCondition;
+use App\Models\WaysUse;
 use App\User;
 use App\Models\Faculty;
 use App\Models\FacultyDescription;
@@ -112,54 +113,12 @@ class OtherController extends Controller
 			$sort_by     	= $request->sort_by ? $request->sort_by : 'created_at';
 	    	$sort_type     	= $request->sort_type ? $request->sort_type : 'desc';
 	    	
-			$messages=array(
-						'user_id.required'			=> 'Please Enter UserID',
-						'session_token.required'	=> 'Please Enter Session ID',
-
-			);
-
-			$validator=validator::make(
-						$request->all(),
-						array(
-							'user_id'		=> 'required',
-							'session_token'	=> 'required',
-						),$messages
-					);
-
-			if($validator->fails())
-			{
-
-				$allErrors ='';
-				foreach ($validator->errors()->all() as $message) {
-					$allErrors=$message;
-					break;
-				}
-
-				$response=array('status'=>0,'message'=>$allErrors);
-				return Response::json($response);
-				die();
-			}
-			else
-			{
-				
-				$user_id = $formData['user_id'];
-				$session_token =  $formData['session_token'];
-
-				$checkUserSession = $this->verifyUserSession($user_id, $session_token);
-				if(is_array($checkUserSession)){
-					return  Response::json($checkUserSession);
-					die();
-				}
-
-				
-				$result=WhoWeAre::get();
-			//	$result=SponsorPlatinum::all;
-				$result= WhoWeAre::orderBy($sort_by, $sort_type)->get();
+			 $result= WhoWeAre::orderBy($sort_by, $sort_type)->get();
 
 				$response=array('status'=>1,'data'=>$result);
 				return Response::json($response);
 				
-			}
+
 	}
 	
 	
@@ -193,56 +152,16 @@ class OtherController extends Controller
 			$formData=$request->all();
 			$sort_by     	= $request->sort_by ? $request->sort_by : 'created_at';
 	    	$sort_type     	= $request->sort_type ? $request->sort_type : 'desc';
-	    	
-			$messages=array(
-						'user_id.required'			=> 'Please Enter UserID',
-						'session_token.required'	=> 'Please Enter Session ID',
-
-			);
-
-			$validator=validator::make(
-						$request->all(),
-						array(
-							'user_id'		=> 'required',
-							'session_token'	=> 'required',
-						),$messages
-					);
-
-			if($validator->fails())
-			{
-
-				$allErrors ='';
-				foreach ($validator->errors()->all() as $message) {
-					$allErrors=$message;
-					break;
-				}
-
-				$response=array('status'=>0,'message'=>$allErrors);
-				return Response::json($response);
-				die();
-			}
-			else
-			{
-				
-				$user_id = $formData['user_id'];
-				$session_token =  $formData['session_token'];
-
-				$checkUserSession = $this->verifyUserSession($user_id, $session_token);
-				if(is_array($checkUserSession)){
-					return  Response::json($checkUserSession);
-					die();
-				}
 
 			
-			
-                $result= WayUse::orderBy($sort_by, $sort_type)->get();
+                $result= WaysUse::orderBy($sort_by, $sort_type)->get();
 
 				//$result=Notifications::all();
 				
 				$response=array('status'=>1,'data'=>$result);
 				return Response::json($response);
 				
-			}
+
 	}
 
 	public function contactus(Request $request)	
