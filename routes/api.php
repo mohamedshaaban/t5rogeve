@@ -107,5 +107,13 @@ Route::group(['middleware' => 'auth:customers_api'], function() {
     Route::post('/enrollmentamtpaymentgateway', 'PaymentController@EnrollmentAmtpaymentGateway');
     Route::post('/paymentlog', 'PaymentController@paymentlog');
 
+    Route::post('/payknet', 'PaymentController@payknet')->name('payknet');
+    Route::post('/knetpay', 'PaymentController@knetpay')->name('knetpay');
+
+    Route::post('/payknetremining', 'PaymentController@payknetremining')->name('payknetremining');
+    Route::post('/payknetremining2', 'PaymentController@payknetremining')->name('payknetremining');
+
+
+
 
 });
