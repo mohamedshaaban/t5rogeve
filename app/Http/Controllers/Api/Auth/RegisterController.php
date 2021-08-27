@@ -110,7 +110,7 @@ class RegisterController extends Controller
              curl_close ($Curl_Session);
 
              $response	=	array(
-                'status' 	=> 0,
+                'status' 	=> 1,
                 'message'	=> 'تم انشاء الحساب',
                 'detail'    => new CustomerResources($customer)
             );
