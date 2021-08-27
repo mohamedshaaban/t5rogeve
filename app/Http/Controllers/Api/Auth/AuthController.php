@@ -13,6 +13,137 @@ use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
+    public function userUpdateProfile(Request $request)
+    {
+        $formData	= $request->all();
+        $detail = (object) null;
+
+        $response	= array();
+        $messages = array(
+            'full_name.required' 	=> "Please Enter Name",
+            'father_name.required' 	=> "Please Enter Father Name",
+            'grandfather_name.required' 	=> "Please Enter GrandFather Name",
+            'gender.required' 		=> "Please Enter Gender",
+            'faulty.required' 		=> "Please Enter Faulty",
+        );
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'full_name' 		=> 'required',
+                'father_name'       => 'required',
+                'grandfather_name'  => 'required',
+                'gender' 			=> 'required',
+
+                'faulty'			=> 'required',
+
+            ), $messages
+        );
+
+        /// 111
+        if ($validator->fails())
+        {
+            $allErrors =  '';
+            foreach ($validator->errors()->all() as $message){
+                $allErrors =  $message;
+                break;
+            }
+
+            $response	=	array(
+                'status' 	=> 0,
+                'message'	=> $allErrors,
+                'detail'    => $detail
+            );
+
+        }else{
+
+            $user_id = Auth::guard('customers_api')->user();
+            $user_id = $user_id->id;
+
+                $full_name = $formData['full_name'];
+                $father_name = $formData['father_name'];
+                $grandfather_name = $formData['grandfather_name'];
+                $family_name = $formData['family_name'];
+                $gender = $formData['gender'];
+                 $civil_id = $formData['civil_id'];
+                $faulty = $formData['faulty'];
+                 $imageArr = array();
+
+
+                 if($request->hasFile('image')){
+
+                    $results = User::where('id',$user_id)->update([
+                        'full_name' => $full_name,
+                        'civil_id' => $civil_id,
+                        'faulty' => $faulty,
+                        'gender' => $gender,
+                        // 'image' => $filename ,
+                        'father_name' => $father_name,
+                        'family_name' => $family_name,
+                        'grandfather_name' => $grandfather_name
+
+                    ]);
+
+                    $data = Customer::where('id',$user_id)->select('id','full_name','grandfather_name','father_name','gender','family_name','civil_id','faulty','phone','image')
+                        ->first();
+
+                    $image       = $request->file('image');
+                    $extension 	=	 $image ->getClientOriginalExtension();
+                    $fileName	=	time().'-image.'.$extension;
+
+                    if($image->move(USER_PROFILE_IMAGE_ROOT_PATH, $fileName)){
+                        $affected = Customer::where('id',$user_id)
+                            ->update([
+                                'image'	 =>  	$fileName,
+                            ]);
+                    }
+
+                    if($results){
+                        $response	=	array(
+                            'status' 	=> 1,
+                            'message'	=> "Profile Updated Successfully",
+                            'detail'   => $data,
+
+                        );
+                    }else{
+                        $response	=	array(
+                            'status' 	=> 0,
+                            'message'	=> 'Unsuccessful',
+                            'detail'	=> $detail
+                        );
+                    }
+
+                    return Response::json($response); die;
+
+
+                }else{
+                    $results = Customer::where('id',$user_id)->update(['full_name' => $full_name,'civil_id' => $civil_id, 'faulty' => $faulty,'gender' => $gender,'father_name' => $father_name,'family_name' => $family_name,'grandfather_name' => $grandfather_name]);
+
+                    $data = Customer::where('id',$user_id)->select('id','full_name','grandfather_name','father_name','gender','family_name','civil_id','faulty','phone','image')
+                        ->first();
+
+                    if($results){
+                        $response	=	array(
+                            'status' 	=> 1,
+                            'message'	=> "Profile Updated Successfully",
+                            'detail'   => $data,
+
+                        );
+                    }else{
+                        $response	=	array(
+                            'status' 	=> 0,
+                            'message'	=> 'Unsuccessful',
+                            'detail'	=> $detail
+                        );
+                    }
+
+                    return Response::json($response); die;
+                }
+
+        }/// end 111
+
+
+    }
 
     public function userUpdatePhone(Request $request)
     {

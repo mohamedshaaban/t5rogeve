@@ -43,6 +43,8 @@ Route::group(['middleware' => 'auth:customers_api'], function() {
     Route::post('sponsorplatinumList','HomeController@sponsorplatinumList');
     Route::post('NotificationsList','HomeController@NotificationsList');
     Route::post('userUpdatePhone','Auth\AuthController@userUpdatePhone');
+    Route::post('/userUpdateProfile','Auth\AuthController@userUpdateProfile');
+
     Route::post('usercheckPhone','Auth\AuthController@checkPhone');
     Route::post('updateDeviceToken','Auth\AuthController@updateDeviceToken');
     Route::post('ceremonyList','CeremonyController@ceremonyList');
