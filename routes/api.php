@@ -37,7 +37,7 @@ Route::post('/TermsCondition','OtherController@TermsCondition');
 
 Route::group(['middleware' => 'auth:customers_api'], function() {
 
-    Route::get('userProfile', 'Auth\RegisterController@customerProfile');
+    Route::post('userProfile', 'Auth\RegisterController@customerProfile');
     Route::post('bookingList','HomeController@bookingList');
     Route::post('get-transaction-by-userid','HomeController@GetTransactionByUserId');
     Route::post('sponsorplatinumList','HomeController@sponsorplatinumList');
