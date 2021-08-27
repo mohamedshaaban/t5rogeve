@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\EventsRequest as StoreRequest;
 // VALIDATION: change the requests to match your own file names if you need form validation
+use App\Models\Ceremony;
+use App\Models\Customer;
 use App\Models\Faculty;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -269,4 +271,34 @@ class EventsCrudController extends CrudController
     {
         $this->setupCreateOperation();
     }
+    public static function fetch(\Illuminate\Http\Request  $request)
+    {
+        $events = Ceremony::where('name','like','%'.$request->q.'%')->get(['id','name']);
+        $data = [] ;
+        foreach ($events as $event)
+        {
+            $data[] = ['id'=>$event->id , 'name'=>$event->name];
+        }
+
+        return $data;
+
+    }
+    public static function fetchuser(\Illuminate\Http\Request  $request)
+    {
+        $users = Customer::where('phone','like','%'.$request->q.'%')
+            ->orWhere('full_name','like','%'.$request->q.'%')
+            ->orWhere('grandfather_name','like','%'.$request->q.'%')
+            ->orWhere('father_name','like','%'.$request->q.'%')
+            ->orWhere('family_name','like','%'.$request->q.'%')
+            ->get();
+        $data = [] ;
+        foreach ($users as $user)
+        {
+            $data[] = ['id'=>$user->id , 'all_name'=>$user->full_name.' '.$user->grandfather_name.' '.$user->father_name.' - '.$user->phone];
+        }
+
+        return $data;
+
+    }
+
 }

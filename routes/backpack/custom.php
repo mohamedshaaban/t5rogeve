@@ -23,10 +23,13 @@ Route::group([
     Route::crud('product', 'ProductCrudController');
     Route::crud('dummy', 'DummyCrudController');
     Route::crud('faculty', 'FacultyCrudController');
+    Route::crud('booking', 'BookingCrudController');
     Route::crud('SponsorPlatinums', 'SponsorPlatinumsCrudController');
     Route::crud('events', 'EventsCrudController');
     Route::crud('customers', 'CustomersCrudController');
     Route::post('fetch/faculty', 'FacultyCrudController@fetch');
+    Route::post('fetch/ceremony', 'EventsCrudController@fetch');
+    Route::post('fetch/bookinguser', 'EventsCrudController@fetchuser');
 
     // ------------------
     // AJAX Chart Widgets

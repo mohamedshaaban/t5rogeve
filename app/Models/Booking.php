@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use App\User;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -31,6 +32,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Booking extends Model
 {
+    use CrudTrait;
 	protected $table = 'booking';
 
 	protected $casts = [
@@ -54,7 +56,17 @@ class Booking extends Model
 		'final_price',
 		'seats',
 		'status',
-		'slug'
+		'slug',
+        'payment_type',
+        'no_of_seats',
+        'event_price',
+        'freeseats',
+        'amount',
+        'ceremony_price',
+        'downpayment_amount2',
+        'robe_size',
+        'total_amount',
+        'remaining_amount'
 	];
     public function ceremony() {
 

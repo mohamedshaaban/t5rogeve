@@ -137,4 +137,5 @@ class Customer extends Authenticatable
             return $this->full_name.' ' .$this->father_name.' '.$this->grandfather_name.' '.$this->family_name;
 
     }
+
 }

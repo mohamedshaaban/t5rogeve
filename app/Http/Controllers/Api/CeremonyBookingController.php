@@ -158,7 +158,6 @@ class CeremonyBookingController extends Controller
         $search = $request->name;
         $sort_by = $request->sort_by ? $request->sort_by : 'booking.id';
         $sort_type = $request->sort_type ? $request->sort_type : 'desc';
-
         $formData = $request->all();
         $detail = (object)null;
 
