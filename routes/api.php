@@ -30,6 +30,9 @@ Route::post('userResetPassword','Auth\AuthController@userResetPassword');
 
 Route::post('userUpdatePassword','Auth\AuthController@userUpdatePassword');
 Route::post('userUpdateProfile','Auth\AuthController@userUpdateProfile');
+Route::post('/facultyList','OtherController@facultyList');
+Route::post('/addcontactus','OtherController@Addcontactus');
+Route::post('/TermsCondition','OtherController@TermsCondition');
 
 
 Route::group(['middleware' => 'auth:customers_api'], function() {
@@ -84,8 +87,25 @@ Route::group(['middleware' => 'auth:customers_api'], function() {
 
 
     ///
-    Route::post('/facultyList','API\OtherController@facultyList');
+//
+//    Route::post('/contactRequest','OtherController@contactRequest');
+    Route::post('/contactus','OtherController@contactus');
 
+    //
+    Route::post('/faq','OtherController@faq');
+    //
+    Route::post('/NotificationsList','OtherController@NotificationsList');
+    //
+    Route::post('/canceleventsub','OtherController@canceleventsub');
+
+    //
+    Route::post('/GetSiteAddress','OtherController@GetSiteAddress');
+
+    // payment
+//    Route::post('/get-transaction-by-userid','Admin\API\PaymentController@GetTransactionByUserId');
+    Route::post('/eventenrollamt','Admin\API\PaymentController@EventEnrollAmt');
+    Route::post('/enrollmentamtpaymentgateway', 'Admin\API\PaymentController@EnrollmentAmtpaymentGateway');
+    Route::post('/paymentlog', 'Admin\API\PaymentController@paymentlog');
 
 
 });
