@@ -163,29 +163,18 @@ class AuthController extends Controller
 
         } else {
 
-            $userInfo = DB::table('users')->where('phone', $request->phone)->first();
+            $userInfo = Customer::where('phone', $request->phone)->first();
             if (!empty($userInfo)) {
 
                 if ($userInfo->otp == $request->otp) {
 
-                    DB::table('users')
-                        ->where('id', $userInfo->id)
+                    Customer::where('id', $userInfo->id)
                         ->update(['is_verified' => 1]);
 
 
-                    $detail = User::where('id', $userInfo->id)->select('id', 'email', 'full_name', 'civil_id', 'faulty')
+                    $detail = Customer::where('id', $userInfo->id)->select('id', 'email', 'full_name', 'civil_id', 'faulty')
                         ->first();
 
-                    $sessions_data = DB::table('sessions')->where('user_id', $detail->id)->first();
-                    if (empty($sessions_data)) {
-                        DB::table('sessions')->insert(['user_id' => $detail->id, 'session_token' => bcrypt(mt_rand(100000, 999999))]);
-                    } else {
-                        DB::table('sessions')->where('user_id', $detail->id)->update(['session_token' => bcrypt(mt_rand(100000, 999999))]);
-
-                    }
-                    $sessions_data = DB::table('sessions')->where('user_id', $detail->id)->first();
-
-                    $detail->session_token = $sessions_data->session_token;
 
                     $success = 1;
                     $errors = 'Please Reset Password';
@@ -208,8 +197,8 @@ class AuthController extends Controller
 
         }
 
-        return Response::json($response);
-        die;
+        return ($response);
+
     }
 
     public function userForgetPassword(Request $request)
