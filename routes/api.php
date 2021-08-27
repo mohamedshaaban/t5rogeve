@@ -53,12 +53,12 @@ Route::group(['middleware' => 'auth:customers_api'], function() {
     Route::post('/eventList','CeremonyController@eventList');
 
 
-    /*Route::post('/bookCeremonySeats','CeremonyController@bookCeremonySeats');
-    Route::post('/updateRequestStatus','CeremonyController@updateRequestStatus');
+    Route::post('/bookCeremonySeats','CeremonyController@bookCeremonySeats');
+//    Route::post('/updateRequestStatus','CeremonyController@updateRequestStatus');
 
     Route::post('/check-seat-availability','CeremonyController@checkSeatAvailability');
     Route::post('/increase-seat','CeremonyController@increaseSeat');
-*/
+
 
     Route::post('/eventBooking','EventsController@booking');
     Route::post('/updateBooking','EventsController@updatebooking');
@@ -75,6 +75,16 @@ Route::group(['middleware' => 'auth:customers_api'], function() {
     Route::post('/onebookingList','CeremonyBookingController@onebookingList');
     Route::post('/changerobesize','CeremonyBookingController@changerobesize');
     Route::post('/addBookingPayment','CeremonyBookingController@addBookingPayment');
+
+    //
+    Route::post('/PollList','PollController@PollList');
+    Route::post('/PollOptionsList','PollController@PollOptionsList');
+    Route::post('/sendPollAnswer','PollController@sendPollAnswer');
+    Route::post('/checkUserPoll','PollController@checkUserPoll');
+
+
+    ///
+    Route::post('/facultyList','API\OtherController@facultyList');
 
 
 

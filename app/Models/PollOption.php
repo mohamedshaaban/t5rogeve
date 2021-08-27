@@ -32,4 +32,8 @@ class PollOption extends Model
 		'poll_id',
 		'answer'
 	];
+    public function poll()
+    {
+        return $this->belongsTo(\App\Models\Poll::class, 'poll_id');
+    }
 }
