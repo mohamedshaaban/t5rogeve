@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\Booking;
+use App\Models\Customer;
+use App\Models\PaymentLog;
 use App\User;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
@@ -126,8 +129,7 @@ class PaymentController extends Controller
 				$date       = date("Y-m-d H:i:s");
 				
 
-				$payment_details=DB::table('payment_log')->select('*')->where('paymentid',$payment_id)->first();
-					
+				$payment_details=PaymentLog::where('paymentid',$payment_id)->first();
 				if(empty($payment_details) || $payment_details->result!='CAPTURED')
 				{
 					$response	=	array(
@@ -137,7 +139,7 @@ class PaymentController extends Controller
 				}
 				else
 				{
-								$obj 					=  new Booking;
+								$obj 					=  new Booking();
 								$obj->user_id			=  $user_id;					
 								$obj->event_id 		    =  $event_id;
 								$obj->enroll_amt 		=  $enroll_amt;
@@ -170,21 +172,17 @@ class PaymentController extends Controller
 			$formData=$request->all();	
 			$response=array();
 			$messages=array(
-						'user_id.required'			=> 'Please Enter UserID',
 						'event_id.required'			=> 'Please Enter Event ID',
 						'enroll_amt.required'		=> 'Please Enter Price',
-						'session_token.required'	=> 'Please Enter Session Token'
-							
+
 			);
 
 			$validator=validator::make(
 						$request->all(),
 						array(
-							'user_id'		=> 'required',
 							'enroll_amt'   => 'required',
 							'event_id'		=> 'required',
-							'session_token'	=> 'required'
-										
+
 						),$messages
 					);
 
@@ -199,21 +197,15 @@ class PaymentController extends Controller
 
 				$response=array('status'=>0,'message'=>$allErrors);
 				return Response::json($response);
-				die();
 			}
 			else
 			{
-				$user_id = $formData['user_id'];
-				$session_token =  $formData['session_token'];
 				$price =  $formData['enroll_amt'];
 				$eventid =  $formData['event_id'];
-
-				$checkUserSession = $this->verifyUserSession($user_id, $session_token);
-				if(is_array($checkUserSession)){
-					return  Response::json($checkUserSession);die;
-				}
-				
-				$user_details=DB::table('users')->select('*')->where('id',$user_id)->first();
+                $user = Auth::guard('customers_api')->user();
+                $session_token = mt_rand();
+                $user_id = $user->id;
+				$user_details=Customer::where('id',$user_id)->first();
 				$user_email=$user_details->email;
 				//payment method start
 				$TranAmount=$price;
@@ -231,17 +223,12 @@ class PaymentController extends Controller
 				$udf3="udf3=".$eventid;
 				$ResponseUrl=url('/paymentGatewayipn');
 
-				// here need to booking_id  
-				
-				//Log::info($ResponseUrl);
-				//$ResponseUrl="http://localhost/knetpaymentgateway/PHP/GetHandlerResponse.php";
+
 				$ReqResponseUrl="responseURL=".$ResponseUrl;
 
 				$ErrorUrl=url('/result');
-				//$ErrorUrl="http://localhost/knetpaymentgateway/PHP/result.php";
-				$ReqErrorUrl="errorURL=".$ErrorUrl;
-				
 
+				$ReqErrorUrl="errorURL=".$ErrorUrl;
 				$param=$ReqTranportalId."&".$ReqTranportalPassword."&".$ReqAction."&".$ReqLangid."&".$ReqCurrency."&".$ReqAmount."&".$ReqResponseUrl."&".$ReqErrorUrl."&".$ReqTrackId."&".$user_id."&".$session_token."&".$udf1."&".$udf2."&".$udf3;
 
 				$termResourceKey="7Y1B91E78XMK5MT9";
@@ -313,8 +300,6 @@ class PaymentController extends Controller
 			$formData=$request->all();	
 			$response=array();
 			$messages=array(
-						'user_id.required'			=> 'Please Enter UserID',
-						'session_token.required'	=> 'Please Enter Session ID',
 						'event_id.required'			=> 'Please Enter Event ID',
 						'tran_id.required'			=> 'Please Enter TranID',
 						'marchant_id.required'		=> 'Please Enter marchantId',
@@ -331,8 +316,7 @@ class PaymentController extends Controller
 			$validator=validator::make(
 						$request->all(),
 						array(
-							'user_id'		=> 'required',
-							'session_token'	=> 'required',
+
 							'event_id'		=> 'required',
 							'tran_id'		=> 'required',
 							'marchant_id'	=> 'required',
@@ -358,12 +342,10 @@ class PaymentController extends Controller
 
 				$response=array('status'=>0,'message'=>$allErrors);
 				return Response::json($response);
-				die();
-			}
+ 			}
 			else
 			{
-				$user_id = $formData['user_id'];
-				$session_token =  $formData['session_token'];
+
 				$event_id =  $formData['event_id'];
 				$tran_id =  $formData['tran_id'];
 				$marchant_id =  $formData['marchant_id'];
@@ -375,13 +357,6 @@ class PaymentController extends Controller
 				$phone =  $formData['phone'];
 				$status =  $formData['status'];
 
-
-				$checkUserSession = $this->verifyUserSession($user_id, $session_token);
-				if(is_array($checkUserSession)){
-					return  Response::json($checkUserSession);die;
-				}
-				
-
 				if($status=="fail")
 				{
 					$status="NOT+CAPTURED";	
@@ -390,8 +365,9 @@ class PaymentController extends Controller
 				{
 					$status="CAPTURED";
 				}
-
-				$paymenlog=new Invoice;
+                $user = Auth::guard('customers_api')->user();
+                $user_id = $user->id;
+				$paymenlog=new Invoice();
 
 				$paymenlog->user_id=$user_id;
 				$paymenlog->event_id=$event_id;
@@ -543,5 +519,24 @@ $payment->actionUrl(); // redirect user to pay with url generated
 				}
 
 	}
-    
+    function encryptAES($str,$key) {
+        $str = $this->pkcs5_pad($str);
+        $encrypted = openssl_encrypt($str, 'AES-128-CBC', $key, OPENSSL_ZERO_PADDING, $key);
+        $encrypted = base64_decode($encrypted);
+        $encrypted=unpack('C*', ($encrypted));
+        $encrypted=$this->byteArray2Hex($encrypted);
+        $encrypted = urlencode($encrypted);
+        return $encrypted;
+    }
+
+    function pkcs5_pad ($text) {
+        $blocksize = 16;
+        $pad = $blocksize - (strlen($text) % $blocksize);
+        return $text . str_repeat(chr($pad), $pad);
+    }
+    function byteArray2Hex($byteArray) {
+        $chars = array_map("chr", $byteArray);
+        $bin = join($chars);
+        return bin2hex($bin);
+    }
 }

@@ -102,10 +102,10 @@ Route::group(['middleware' => 'auth:customers_api'], function() {
     Route::post('/GetSiteAddress','OtherController@GetSiteAddress');
 
     // payment
-//    Route::post('/get-transaction-by-userid','Admin\API\PaymentController@GetTransactionByUserId');
-    Route::post('/eventenrollamt','Admin\API\PaymentController@EventEnrollAmt');
-    Route::post('/enrollmentamtpaymentgateway', 'Admin\API\PaymentController@EnrollmentAmtpaymentGateway');
-    Route::post('/paymentlog', 'Admin\API\PaymentController@paymentlog');
+//    Route::post('/get-transaction-by-userid','PaymentController@GetTransactionByUserId');
+    Route::post('/eventenrollamt','PaymentController@EventEnrollAmt');
+    Route::post('/enrollmentamtpaymentgateway', 'PaymentController@EnrollmentAmtpaymentGateway');
+    Route::post('/paymentlog', 'PaymentController@paymentlog');
 
 
 });
