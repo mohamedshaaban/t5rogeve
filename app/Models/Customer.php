@@ -125,7 +125,8 @@ class Customer extends Authenticatable
 		'is_deleted',
 		'validate_string',
 		'forgot_password_validate_string',
-		'password_temp'
+		'password_temp',
+        'image'
 	];
 
 	public function knet_transactions2s()
@@ -135,6 +136,11 @@ class Customer extends Authenticatable
     public function getAllNameAttribute()
     {
             return $this->full_name.' ' .$this->father_name.' '.$this->grandfather_name.' '.$this->family_name;
+
+    }
+    public function getImageAttribute()
+    {
+            return asset('uploads/'.$this->attributes['image']);
 
     }
 

@@ -13,6 +13,65 @@ use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
+    public function userUpdatePassword(Request $request)
+    {
+        $formData	= $request->all();
+        $detail = (object) null;
+
+        $response	= array();
+        $messages = array(
+
+            'password' 		    => "Please Enter Password",
+        );
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+
+                'password'			=> 'required',
+            ), $messages
+        );
+        if ($validator->fails())
+        {
+            $allErrors =  '';
+            foreach ($validator->errors()->all() as $message){
+                $allErrors =  $message;
+                break;
+            }
+
+            $response	=	array(
+                'status' 	=> 0,
+                'message'	=> $allErrors,
+                'detail'    => $detail
+            );
+        }
+        else
+        {
+
+            $password =  Hash::make($formData['password']);
+            $user_id = Auth::guard('customers_api')->user();
+            $user_id = $user_id->id;
+
+            $results = User::where('id',$user_id)->update(['password' => $password]);
+
+                if($results){
+                    $response	=	array(
+                        'status' 	=> 1,
+                        'message'	=> "Password Updated Successfully",
+
+                    );
+                }else{
+                    $response	=	array(
+                        'status' 	=> 0,
+                        'message'	=> 'Unsuccessful',
+                    );
+                }
+
+
+        }
+
+        return Response::json($response);
+    }
     public function userUpdateProfile(Request $request)
     {
         $formData	= $request->all();
@@ -72,7 +131,7 @@ class AuthController extends Controller
 
                  if($request->hasFile('image')){
 
-                    $results = User::where('id',$user_id)->update([
+                    $results = Customer::where('id',$user_id)->update([
                         'full_name' => $full_name,
                         'civil_id' => $civil_id,
                         'faulty' => $faulty,
@@ -91,8 +150,8 @@ class AuthController extends Controller
                     $extension 	=	 $image ->getClientOriginalExtension();
                     $fileName	=	time().'-image.'.$extension;
 
-                    if($image->move(USER_PROFILE_IMAGE_ROOT_PATH, $fileName)){
-                        $affected = Customer::where('id',$user_id)
+                    if($image->move('uploads/', $fileName)){
+                         $affected = Customer::where('id',$user_id)
                             ->update([
                                 'image'	 =>  	$fileName,
                             ]);
@@ -567,7 +626,7 @@ class AuthController extends Controller
 
         $user = Auth::guard('customers_api')->user();
         $user_id = $user->id;
-                $results = User::find($user_id)->update(['is_login' => 0, 'is_temp_login' => 0]);
+                $results = Customer::find($user_id)->update(['is_login' => 0, 'is_temp_login' => 0]);
                 if($results)
                 {
                     $response	=	array(
