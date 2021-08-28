@@ -37,10 +37,16 @@
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('invoices') }}"><i class="nav-icon la la-cog"></i> <span>Invoices</span></a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('SponsorPlatinums') }}"><i class="nav-icon la la-cog"></i> <span>Sponsor Platinums</span></a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('customers') }}"><i class="nav-icon la la-cog"></i> <span>Students</span></a></li>
-
-<li class="nav-title">  Configuration</li>
-<li class="nav-item"><a class="nav-link" href="{{ backpack_url('faq') }}"><i class="nav-icon la la-cog"></i> <span>Faqs</span></a></li>
+<li class="nav-item nav-dropdown">
+    <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-cogs"></i>Configuration</a>
+    <ul class="nav-dropdown-items">
+ <li class="nav-item"><a class="nav-link" href="{{ backpack_url('faq') }}"><i class="nav-icon la la-cog"></i> <span>Faqs</span></a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('whoweare') }}"><i class="nav-icon la la-cog"></i> <span>WhoWeAre</span></a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('wayuse') }}"><i class="nav-icon la la-cog"></i> <span>Way use</span></a></li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('siteaddress') }}"><i class="nav-icon la la-cog"></i> <span>Site Address</span></a></li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('termsconditions') }}"><i class="nav-icon la la-cog"></i> <span>Terms & Conditions</span></a></li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('canceleventsub') }}"><i class="nav-icon la la-cog"></i> <span>Cacncel Subscriptions</span></a></li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('contact') }}"><i class="nav-icon la la-cog"></i> <span>Contact Us</span></a></li>
 
-<li class="nav-item"><a class="nav-link" href="{{ backpack_url('setting') }}"><i class="nav-icon la la-cog"></i> <span>Settings</span></a></li>
+    </ul>
+</li>

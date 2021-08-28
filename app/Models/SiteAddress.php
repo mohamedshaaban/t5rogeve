@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class SiteAddress extends Model
 {
+    use CrudTrait;
 	protected $table = 'site_addresses';
 
 	protected $fillable = [

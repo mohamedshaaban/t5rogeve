@@ -27,6 +27,7 @@ class CancelEventSub extends Model
 {
     use CrudTrait;
 	protected $table = 'cancel_event_sub';
+	protected $appends = ['statstitle'];
 
 	protected $casts = [
 		'user_id' => 'int',
@@ -41,4 +42,20 @@ class CancelEventSub extends Model
 		'book_id',
 		'status'
 	];
+    public function ceremony() {
+
+        return $this->belongsTo(Ceremony::class,'event_id');
+    }
+
+    public function user() {
+        return $this->belongsTo(Customer::class,'user_id');
+    }
+    public function getStatstitleAttribute()
+    {
+        if($this->attributes['status'])
+        {
+            return 'Cancaled';
+        }
+        return 'Not Cancaled';
+    }
 }

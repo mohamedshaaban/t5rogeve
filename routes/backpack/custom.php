@@ -27,6 +27,10 @@ Route::group([
     Route::crud('faq', 'FaqCrudController');
     Route::crud('whoweare', 'WhoweareCrudController');
     Route::crud('wayuse', 'WayuseCrudController');
+    Route::crud('contact', 'ContactCrudController');
+    Route::crud('canceleventsub', 'CancelEventSubCrudController');
+    Route::crud('termsconditions', 'TermsConditionsCrudController');
+    Route::crud('siteaddress', 'SiteAddressCrudController');
     Route::crud('invoices', 'InvoicesCrudController');
     Route::crud('SponsorPlatinums', 'SponsorPlatinumsCrudController');
     Route::crud('events', 'EventsCrudController');

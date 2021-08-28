@@ -42,4 +42,7 @@ class ContactU extends Model
 		'reply',
 		'mobile'
 	];
+    public function user() {
+        return $this->belongsTo(Customer::class,'user_id');
+    }
 }
