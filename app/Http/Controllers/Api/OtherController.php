@@ -17,7 +17,7 @@ use App\Models\Booking;
 use App\Models\TermsConditions;
 use App\Models\SponsorPlatinum;
 use App\Models\WayUse;
-use App\Models\WhoweAre;
+use App\Models\Whoweare;
 use App\Models\SiteAddressDescription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
