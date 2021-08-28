@@ -17,7 +17,7 @@ use App\Models\Booking;
 use App\Models\TermsConditions;
 use App\Models\SponsorPlatinum;
 use App\Models\WayUse;
-use App\Models\WhoWeAre;
+use App\Models\WhoweAre;
 use App\Models\SiteAddressDescription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -113,7 +113,7 @@ class OtherController extends Controller
 			$sort_by     	= $request->sort_by ? $request->sort_by : 'created_at';
 	    	$sort_type     	= $request->sort_type ? $request->sort_type : 'desc';
 	    	
-			 $result= WhoWeAre::orderBy($sort_by, $sort_type)->get();
+			 $result= WhoweAre::orderBy($sort_by, $sort_type)->get();
 
 				$response=array('status'=>1,'data'=>$result);
 				return Response::json($response);
