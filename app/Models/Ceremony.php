@@ -300,6 +300,8 @@ class Ceremony extends Model
     }
     public function getImageAttribute($value)
     {
+        return $value;
+
         if ($value != null && $value != '') {
             return asset('uploads/folder_1/folder_2/' . $value);
         }
@@ -307,6 +309,8 @@ class Ceremony extends Model
     }
     public function getImagemainAttribute($value)
     {
+        return $value;
+
         if ($value != null && $value != '') {
             return asset('uploads/folder_1/folder_2/' . $value);
         }
@@ -315,6 +319,8 @@ class Ceremony extends Model
 
     public function getImagedesAttribute($value)
     {
+        return $value;
+
         if ($value != null && $value != '') {
             return asset('uploads/folder_1/folder_2/' . $value);
         }
