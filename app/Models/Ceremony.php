@@ -77,6 +77,8 @@ class Ceremony extends Model
 		'date'
 	];
 
+	protected $appends = ['nameexdate','robeexdate'];
+
 	protected $fillable = [
 		'name',
 		'code',
@@ -237,7 +239,24 @@ class Ceremony extends Model
             return $this->attributes[$attribute_name] = $value;
         }
     }
+    public function getRobeexdateAttribute()
+    {
+        if(!$this->attributes['RobSize_Ex_Date'])
+        {
+            return $this->attributes['date'];
+        }
+        return $this->attributes['RobSize_Ex_Date'];
+    }
 
+    public function getNameexdateAttribute()
+    {
+        if(!$this->attributes['Name_Ex_Date'])
+        {
+            return $this->attributes['date'];
+        }
+        return $this->attributes['Name_Ex_Date'];
+
+    }
     public function setImagedesAttribute($value)
     {
         $attribute_name = "imagedes";
