@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,7 +28,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Notification extends Model
 {
-	protected $table = 'notifications';
+    use CrudTrait;
+
+    protected $table = 'notifications';
 
 	protected $casts = [
 		'userid' => 'int',

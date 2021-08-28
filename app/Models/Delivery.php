@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -37,6 +38,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Delivery extends Model
 {
+    use CrudTrait;
 	protected $table = 'delivery';
 
 	protected $casts = [

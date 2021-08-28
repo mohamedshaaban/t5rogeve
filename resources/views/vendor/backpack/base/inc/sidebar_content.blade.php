@@ -39,4 +39,8 @@
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('customers') }}"><i class="nav-icon la la-cog"></i> <span>Students</span></a></li>
 
 <li class="nav-title">  Configuration</li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('faq') }}"><i class="nav-icon la la-cog"></i> <span>Faqs</span></a></li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('whoweare') }}"><i class="nav-icon la la-cog"></i> <span>WhoWeAre</span></a></li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('wayuse') }}"><i class="nav-icon la la-cog"></i> <span>Way use</span></a></li>
+
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('setting') }}"><i class="nav-icon la la-cog"></i> <span>Settings</span></a></li>

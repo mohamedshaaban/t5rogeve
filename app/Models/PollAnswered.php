@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,7 +24,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class PollAnswered extends Model
 {
-	protected $table = 'poll_answered';
+    use CrudTrait;
+
+    protected $table = 'poll_answered';
 
 	protected $casts = [
 		'poll_id' => 'int',

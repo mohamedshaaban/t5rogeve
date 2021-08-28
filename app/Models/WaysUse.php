@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,15 +24,27 @@ use Illuminate\Database\Eloquent\Model;
  */
 class WaysUse extends Model
 {
-	protected $table = 'ways_use';
+    use CrudTrait;
+
+    protected $table = 'ways_use';
 
 	protected $casts = [
 		'status' => 'int'
 	];
 
+	protected $appends =['statstitle'];
 	protected $fillable = [
 		'title',
 		'link',
 		'status'
 	];
+    public function getStatstitleAttribute()
+    {
+        if($this->attributes['status'])
+        {
+            return 'Active';
+        }
+        return 'Not Active';
+    }
+
 }

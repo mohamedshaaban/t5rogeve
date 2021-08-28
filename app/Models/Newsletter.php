@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,7 +26,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Newsletter extends Model
 {
-	protected $table = 'newsletters';
+    use CrudTrait;
+
+    protected $table = 'newsletters';
 
 	protected $casts = [
 		'newsletter_template_id' => 'int',

@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,6 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Ad extends Model
 {
+    use CrudTrait;
 	protected $table = 'ads';
 
 	protected $casts = [

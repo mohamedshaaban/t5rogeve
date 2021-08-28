@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,7 +23,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class TermsCondition extends Model
 {
-	protected $table = 'terms_conditions';
+    use CrudTrait;
+
+    protected $table = 'terms_conditions';
 
 	protected $fillable = [
 		'content',

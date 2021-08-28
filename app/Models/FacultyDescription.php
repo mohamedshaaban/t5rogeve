@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,7 +24,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class FacultyDescription extends Model
 {
-	protected $table = 'faculty_descriptions';
+    use CrudTrait;
+
+    protected $table = 'faculty_descriptions';
 
 	protected $casts = [
 		'parent_id' => 'int',

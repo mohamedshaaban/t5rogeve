@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,8 +24,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Faq extends Model
 {
+    use CrudTrait;
 	protected $table = 'faqs';
 
+	protected $appends=['isactive'];
 	protected $casts = [
 		'is_active' => 'int'
 	];
@@ -34,4 +37,12 @@ class Faq extends Model
 		'answer',
 		'is_active'
 	];
+    public function getIsactiveAttribute()
+    {
+        if($this->attributes['is_active'])
+        {
+            return 'Active';
+        }
+        return 'Not Active';
+    }
 }

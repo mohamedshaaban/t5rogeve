@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,7 +25,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class EmailLog extends Model
 {
-	protected $table = 'email_logs';
+    use CrudTrait;
+
+    protected $table = 'email_logs';
 	public $timestamps = false;
 
 	protected $fillable = [

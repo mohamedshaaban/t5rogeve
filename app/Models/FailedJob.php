@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,7 +24,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class FailedJob extends Model
 {
-	protected $table = 'failed_jobs';
+    use CrudTrait;
+
+    protected $table = 'failed_jobs';
 	public $timestamps = false;
 
 	protected $dates = [

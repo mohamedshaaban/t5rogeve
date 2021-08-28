@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -28,6 +29,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CmsPage extends Model
 {
+    use CrudTrait;
 	protected $table = 'cms_pages';
 
 	protected $casts = [
