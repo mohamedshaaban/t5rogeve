@@ -298,7 +298,21 @@ class Ceremony extends Model
             return $this->attributes[$attribute_name] = $value;
         }
     }
+    public function getImagemainAttributegetImageAttribute($value)
+    {
+        if ($value != null && $value != '') {
+            return asset('uploads/folder_1/folder_2/' . $value);
+        }
+        return $value;
+    }
 
+    public function getImagedesAttributegetImageAttribute($value)
+    {
+        if ($value != null && $value != '') {
+            return asset('uploads/folder_1/folder_2/' . $value);
+        }
+        return $value;
+    }
     public function booking(){
         return $this->hasMany(Booking::class, 'id','booking_id');
     }
