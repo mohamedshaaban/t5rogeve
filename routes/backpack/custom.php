@@ -24,6 +24,7 @@ Route::group([
     Route::crud('dummy', 'DummyCrudController');
     Route::crud('faculty', 'FacultyCrudController');
     Route::crud('booking', 'BookingCrudController');
+    Route::crud('invoices', 'InvoicesCrudController');
     Route::crud('SponsorPlatinums', 'SponsorPlatinumsCrudController');
     Route::crud('events', 'EventsCrudController');
     Route::crud('customers', 'CustomersCrudController');

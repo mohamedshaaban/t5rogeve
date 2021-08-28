@@ -1,11 +1,13 @@
 <?php
 
 namespace App\Models; 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Eloquent;
 
 class Invoice extends Eloquent
 {
   //
+    use CrudTrait;
   public $table = "payment_log";
   
   	public function ceremony() {

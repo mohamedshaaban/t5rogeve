@@ -50,7 +50,8 @@ class BookingCrudController extends CrudController
             'attribute'=>'all_name'
         ]);
         $this->crud->addColumn([ // Text
-            'name' => 'user',
+            'name' => 'phone',
+            'entity'=>'user',
             'label' => 'Student phone ',
             'type' => 'relationship',
             'attribute'=>'phone'

@@ -262,7 +262,7 @@ else
     public static function customerProfile(Request $request)
     {
         $response	=	array(
-            'status' 	=> 0,
+            'status' 	=> 1,
             'message'	=> 'تفاصيل الحساب',
             'user'    => new CustomerResources(Auth::guard('customers_api')->user()),
         );
