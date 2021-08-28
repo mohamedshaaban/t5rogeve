@@ -140,7 +140,12 @@ class Customer extends Authenticatable
     }
     public function getImageAttribute()
     {
+        if($this->attributes['image'])
+        {
             return asset('uploads/'.$this->attributes['image']);
+        }
+        return asset('uploads/default.png');
+
 
     }
 
