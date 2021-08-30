@@ -6,6 +6,7 @@ use App\Http\Requests\FaqRequest as StoreRequest;
 // VALIDATION: change the requests to match your own file names if you need form validation
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Support\Facades\App;
 
 class WayuseCrudController extends CrudController
 {
@@ -20,6 +21,8 @@ class WayuseCrudController extends CrudController
 
     public function setup()
     {
+        App::setLocale(session('locale'));
+
         CRUD::setModel(\App\Models\WaysUse::class);
         CRUD::setRoute(config('backpack.base.route_prefix').'/wayuse');
         CRUD::setEntityNameStrings('wayuse', 'wayuse');

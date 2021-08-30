@@ -8,6 +8,7 @@ use App\Models\Cars;
 use App\Models\Faculty;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Support\Facades\App;
 
 class FacultyCrudController extends CrudController
 {
@@ -22,15 +23,20 @@ class FacultyCrudController extends CrudController
 
     public function setup()
     {
+        App::setLocale(session('locale'));
+
         CRUD::setModel(\App\Models\Faculty::class);
         CRUD::setRoute(config('backpack.base.route_prefix').'/faculty');
-        CRUD::setEntityNameStrings('faculty', 'faculty');
+        CRUD::setEntityNameStrings(trans('admin.Faculty'), trans('admin.Faculty'));
     }
 
     protected function setupListOperation()
     {
-        CRUD::addColumns(['full_name']); // add multiple columns, at the end of the stack
-
+//        CRUD::addColumns(['full_name']); // add multiple columns, at the end of the stack
+        $this->crud->addColumn([
+            'name'  => 'full_name',
+            'label' => trans('admin.Faculty name')
+        ]);
     }
 
     protected function setupCreateOperation()
@@ -39,7 +45,7 @@ class FacultyCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name'  => 'full_name',
-            'label' => 'full name',
+            'label' => __('Faculty name'),
             'type'  => 'text',
             'tab'   => 'Texts',
         ]);

@@ -51,6 +51,7 @@ Route::group([
     // ---------------------------
     Route::get('/switch_lang/{locale}', function ($locale = '') {
         session(['locale' => $locale]);
+        app()->setLocale($locale);
         App::setLocale($locale);
         return redirect()->back();
     })->name('switch_lang');

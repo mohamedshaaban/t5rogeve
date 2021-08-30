@@ -9,6 +9,7 @@ use App\Models\Customer;
 use App\Models\Faculty;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Support\Facades\App;
 
 class EventsCrudController extends CrudController
 {
@@ -23,6 +24,8 @@ class EventsCrudController extends CrudController
 
     public function setup()
     {
+        App::setLocale(session('locale'));
+
         CRUD::setModel(\App\Models\Ceremony::class);
         CRUD::setRoute(config('backpack.base.route_prefix').'/events');
         CRUD::setEntityNameStrings('event', 'events');

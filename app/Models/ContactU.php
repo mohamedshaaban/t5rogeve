@@ -30,6 +30,7 @@ class ContactU extends Model
     use CrudTrait;
 	protected $table = 'contact_us';
 
+	protected $appends = ['isreply'];
 	protected $casts = [
 		'user_id' => 'int'
 	];
@@ -44,5 +45,12 @@ class ContactU extends Model
 	];
     public function user() {
         return $this->belongsTo(Customer::class,'user_id');
+    }
+    public function getIsreplyAttribute()
+    {
+        if ($this->attributes['reply']) {
+            return true;
+        }
+        return false;
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Requests\ContactRequest as StoreRequest;
 // VALIDATION: change the requests to match your own file names if you need form validation
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Support\Facades\App;
 
 class TermsConditionsCrudController extends CrudController
 {
@@ -20,6 +21,8 @@ class TermsConditionsCrudController extends CrudController
 
     public function setup()
     {
+        App::setLocale(session('locale'));
+
         CRUD::setModel(\App\Models\TermsCondition::class);
         CRUD::setRoute(config('backpack.base.route_prefix').'/termsconditions');
         CRUD::setEntityNameStrings('terms conditions', 'terms conditions');
@@ -49,10 +52,10 @@ class TermsConditionsCrudController extends CrudController
 
         ]);
 
-        $this->crud->addColumn([ // Text
-            'type'=>'image',
-            'name' => 'image',
-            'label' => 'Image']);
+//        $this->crud->addColumn([ // Text
+//            'type'=>'image',
+//            'name' => 'image',
+//            'label' => 'Image']);
 
         $this->crud->setOperationSetting('contentClass', 'col-md-12');
     }

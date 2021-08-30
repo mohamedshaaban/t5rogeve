@@ -6,6 +6,7 @@ use App\Http\Requests\ContactRequest as StoreRequest;
 // VALIDATION: change the requests to match your own file names if you need form validation
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Support\Facades\App;
 
 class ContactCrudController extends CrudController
 {
@@ -20,6 +21,8 @@ class ContactCrudController extends CrudController
 
     public function setup()
     {
+        App::setLocale(session('locale'));
+
         CRUD::setModel(\App\Models\ContactU::class);
         CRUD::setRoute(config('backpack.base.route_prefix').'/contact');
         CRUD::setEntityNameStrings('contact', 'contact');
@@ -27,8 +30,20 @@ class ContactCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        CRUD::addColumns(['name', 'email','mobile','subject','reply']); // add multiple columns, at the end of the stack
+        CRUD::addColumns(['name', 'email','mobile','subject' ]); // add multiple columns, at the end of the stack
+        $this->crud->addColumn([ // Text
+            'name' => 'reply',
+            'label' => 'Is Replied',
+            'type'     => 'closure',
+            'function' => function($entry) {
+                if($entry->isreply)
+                {
+                    return '<span style="background-color: green;border-radius: 11px;" > Replied </span>';
+                }
+                return '<span style="background-color: red;border-radius: 11px;" > Not Replied </span>';
 
+            }
+        ]);
         $this->crud->enableExportButtons();
         $this->crud->enableResponsiveTable();
         $this->crud->enablePersistentTable();

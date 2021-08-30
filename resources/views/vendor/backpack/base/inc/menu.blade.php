@@ -14,16 +14,10 @@
             >
 
                 @if( $lang == 'en')
-                    <?php
-                    dump(config(['html_direction' => 'rtl']));
-                    \Config::set('backpack.base.html_direction', 'ltr');
-                    ?>
+
                     عربي
                 @else
-                    <?php
-                    dump(config(['html_direction' => 'rtl']));
-                    \Config::set('backpack.base.html_direction', 'ltr');
-                    ?>
+
                     English
                 @endif
 
@@ -40,7 +34,7 @@
 <!-- ========================================================= -->
 <!-- ========= Top menu right items (ordered right) ========== -->
 <!-- ========================================================= -->
-<ul class="nav navbar-nav ml-auto @if(config('backpack.base.html_direction') == 'rtl') mr-0 @endif">
+<ul class="nav navbar-nav ml-auto @if(session('locale') == 'ar') mr-0 @endif">
     @if (backpack_auth()->guest())
         <li class="nav-item"><a class="nav-link" href="{{ route('backpack.auth.login') }}">{{ trans('backpack::base.login') }}</a>
         </li>

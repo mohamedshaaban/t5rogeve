@@ -6,6 +6,7 @@ use App\Http\Requests\SponsorPlatinumsRequest as StoreRequest;
 // VALIDATION: change the requests to match your own file names if you need form validation
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Support\Facades\App;
 
 class SponsorPlatinumsCrudController extends CrudController
 {
@@ -20,6 +21,8 @@ class SponsorPlatinumsCrudController extends CrudController
 
     public function setup()
     {
+        App::setLocale(session('locale'));
+
         CRUD::setModel(\App\Models\Sponsorplatinum::class);
         CRUD::setRoute(config('backpack.base.route_prefix').'/SponsorPlatinums');
         CRUD::setEntityNameStrings('sponsorplatinum', 'sponsorplatinum');

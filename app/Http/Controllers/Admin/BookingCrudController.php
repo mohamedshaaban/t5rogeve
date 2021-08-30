@@ -12,6 +12,7 @@ use App\Models\Payment;
 use App\Models\PaymentLog;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Support\Facades\App;
 
 class BookingCrudController extends CrudController
 {
@@ -26,6 +27,8 @@ class BookingCrudController extends CrudController
 
     public function setup()
     {
+        App::setLocale(session('locale'));
+
         CRUD::setModel(\App\Models\Booking::class);
         CRUD::setRoute(config('backpack.base.route_prefix').'/booking');
         CRUD::setEntityNameStrings('booking', 'booking');
