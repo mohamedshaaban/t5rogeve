@@ -104,7 +104,7 @@ class CustomersCrudController extends CrudController
         ]);
         CRUD::addField([ // Text
             'name'  => 'faulty',
-            'label' => 'faulty',
+            'label' => 'faculty',
             'type'  => 'radio',
             'tab'   => 'Texts',
             'options'     => [

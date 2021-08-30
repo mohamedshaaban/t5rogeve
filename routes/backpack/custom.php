@@ -49,6 +49,11 @@ Route::group([
     // Backpack DEMO Custom Routes
     // Prevent people from doing nasty stuff in the online demo
     // ---------------------------
+    Route::get('/switch_lang/{locale}', function ($locale = '') {
+        session(['locale' => $locale]);
+        App::setLocale($locale);
+        return redirect()->back();
+    })->name('switch_lang');
     if (app('env') == 'production') {
         // disable delete and bulk delete for all CRUDs
         $cruds = ['article', 'category', 'tag', 'monster', 'icon', 'product', 'page', 'menu-item', 'user', 'role', 'permission'];

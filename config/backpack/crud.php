@@ -154,7 +154,7 @@ return [
         // "ar_EG" => "Arabic (Egypt)",
         // "ar_IQ" => "Arabic (Iraq)",
         // "ar_JO" => "Arabic (Jordan)",
-        // "ar_KW" => "Arabic (Kuwait)",
+         "ar_KW" => "Arabic (Kuwait)",
         // "ar_LB" => "Arabic (Lebanon)",
         // "ar_LY" => "Arabic (Libya)",
         // "ar_MA" => "Arabic (Morocco)",

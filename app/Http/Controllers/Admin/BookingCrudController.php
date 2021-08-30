@@ -110,6 +110,7 @@ class BookingCrudController extends CrudController
             'entity' => 'ceremony', // the method that defines the relationship in your Model
             'attribute' => 'name', // foreign key attribute that is shown to use
             'tab' => 'Texts',
+            'view_namespace' => 'vendor.backpack.booking.edit',
             'data_source' => url("/admin/fetch/ceremony"), // url to controller search function (with /{id} should return model)
         ]);
 
@@ -122,7 +123,9 @@ class BookingCrudController extends CrudController
                 'full' => 'full',
                 'down2' => 'Down2',
                 'down' => 'Down'
-            ]]
+            ],
+            'attributes' => [
+        'class'       => 'form-control payment-class']]
         );
 
         CRUD::addField([ // Text
@@ -192,6 +195,7 @@ class BookingCrudController extends CrudController
 
     protected function setupUpdateOperation()
     {
+
         $this->setupCreateOperation();
     }
     public static function fetch(\Illuminate\Http\Request  $request)
