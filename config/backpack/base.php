@@ -23,7 +23,7 @@
     // ----
 
     // Project name. Shown in the window title.
-    'project_name' => 'Backpack Admin Panel',
+    'project_name' => 'Acadmey',
 
     // Content of the HTML meta robots tag to prevent indexing and link following
     'meta_robots_content' => 'noindex, nofollow',
@@ -104,10 +104,10 @@
     // change background color with bg-dark, bg-primary, bg-secondary, bg-danger, bg-warning, bg-success, bg-info, bg-blue, bg-light-blue, bg-indigo, bg-purple, bg-pink, bg-red, bg-orange, bg-yellow, bg-green, bg-teal, bg-cyan, bg-white
 
     // Developer or company name. Shown in footer.
-    'developer_name' => 'Cristian Tabacitu',
+    'developer_name' => 'Acadmey',
 
     // Developer website. Link in footer. Type false if you want to hide it.
-    'developer_link' => 'http://tabacitu.ro',
+    'developer_link' => 'http://acakw.com',
 
     // Show powered by Laravel Backpack in the footer? true/false
     'show_powered_by' => true,
@@ -120,7 +120,9 @@
     'scripts' => [
         // Google Analytics
         'https://www.googletagmanager.com/gtag/js?id=UA-16782706-13',
+        'https://code.jquery.com/jquery-3.5.0.js',
         'assets/js/ga.js',
+        'assets/js/pub.js',
 
         // Backstrap includes jQuery, Bootstrap, CoreUI, PNotify, Popper
         'packages/backpack/base/js/bundle.js',

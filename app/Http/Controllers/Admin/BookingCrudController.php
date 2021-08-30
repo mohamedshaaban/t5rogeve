@@ -29,6 +29,7 @@ class BookingCrudController extends CrudController
     {
         App::setLocale(session('locale'));
 
+
         CRUD::setModel(\App\Models\Booking::class);
         CRUD::setRoute(config('backpack.base.route_prefix').'/booking');
         CRUD::setEntityNameStrings('booking', 'booking');
@@ -87,6 +88,16 @@ class BookingCrudController extends CrudController
         $this->crud->enableExportButtons();
         $this->crud->enableResponsiveTable();
         $this->crud->enablePersistentTable();
+        $this->crud->enableDetailsRow();
+    }
+    protected function showDetailsRow($id)
+    {
+        $booking = Booking::find($id);
+        $text = 'id : '.$id.'<br />';
+        $text.= 'Event : '.@$booking->ceremony->name.'<br />';
+        $text.= 'Student : '.@$booking->user->all_name.'<br />';
+        $text.= 'Student Phone: '.@$booking->user->phone.'<br />';
+        return $text;
     }
 
     protected function setupCreateOperation()
@@ -113,23 +124,9 @@ class BookingCrudController extends CrudController
             'entity' => 'ceremony', // the method that defines the relationship in your Model
             'attribute' => 'name', // foreign key attribute that is shown to use
             'tab' => 'Texts',
-            'view_namespace' => 'vendor.backpack.booking.edit',
-            'data_source' => url("/admin/fetch/ceremony"), // url to controller search function (with /{id} should return model)
+             'data_source' => url("/admin/fetch/ceremony"), // url to controller search function (with /{id} should return model)
         ]);
 
-        CRUD::addField([  // Select2
-            'label' => ' Payment Type',
-            'type' => 'select_from_array',
-            'name' => 'payment_type', // the db column for the foreign key
-            'tab' => 'Texts',
-            'options'=> [
-                'full' => 'full',
-                'down2' => 'Down2',
-                'down' => 'Down'
-            ],
-            'attributes' => [
-        'class'       => 'form-control payment-class']]
-        );
 
         CRUD::addField([ // Text
             'name' => 'freeseats',
@@ -170,11 +167,33 @@ class BookingCrudController extends CrudController
                     '5XL' => '5XL',
                 ]]
         );
-        CRUD::addField([ // Text
+        $this->crud->addField([  // Select2
+            'label' => ' Payment Type',
+            'type' => 'select_from_array',
+            'name' => 'payment_type', // the db column for the foreign key
+            'default'     => 'down',
+            'options'=> [
+                'full' => 'full',
+                'down2' => 'Down2',
+                'down' => 'Down'
+            ],
+            'attributes' => [
+                'class'       => 'form-control payment-class']
+        ],
+
+        );
+        $this->crud->addField([ // Text
             'name' => 'amount',
             'label' => ' Minimum DownPayment Amount',
             'type' => 'number',
-            'tab' => 'Texts',
+            'attributes' => [
+                'class'       => 'form-control downpayment-class'],
+            "visibility" => [
+                'field_name' => 'payment_type',
+                'value'      => 'Down',
+                'add_disabled' => true, // if you need to disable this field value to not be send through create/update request set it to true, otherwise set it to true
+
+            ],
         ]);
 
         CRUD::addField([ // Text
@@ -182,6 +201,8 @@ class BookingCrudController extends CrudController
             'label' => 'Payment Amount 2',
             'type' => 'number',
             'tab' => 'Texts',
+            'attributes' => [
+                'class'       => 'form-control payment-class2']
         ]);
 
 
