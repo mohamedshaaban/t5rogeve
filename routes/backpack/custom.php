@@ -38,6 +38,10 @@ Route::group([
     Route::post('fetch/faculty', 'FacultyCrudController@fetch');
     Route::post('fetch/ceremony', 'EventsCrudController@fetch');
     Route::post('fetch/bookinguser', 'EventsCrudController@fetchuser');
+    Route::get('fetch/eventdetails/{id}', 'EventsCrudController@fetchEventDetails');
+    Route::get('fetch/studentdetails/{id}', 'CustomersCrudController@fetchStudentDetails');
+    Route::get('fetch/bookingfilteruser', 'CustomersCrudController@studentOptions');
+    Route::get('fetch/eventfilteruser', 'EventsCrudController@eventOptions');
 
     // ------------------
     // AJAX Chart Widgets

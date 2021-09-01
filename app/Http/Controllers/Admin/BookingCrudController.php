@@ -38,6 +38,27 @@ class BookingCrudController extends CrudController
     protected function setupListOperation()
     {
         CRUD::addColumns(['id']); // add multiple columns, at the end of the stack
+        $this->crud->addFilter([
+            'name'        => 'user_id',
+            'type'        => 'select2_ajax',
+            'label'       => 'Student',
+            'placeholder' => 'Name Or Phone'
+        ],
+            url('admin/fetch/bookingfilteruser'), // the ajax route
+            function($value) { // if the filter is active
+                 $this->crud->addClause('where', 'user_id', $value);
+            });
+        $this->crud->addFilter([
+            'name'        => 'event_id',
+            'type'        => 'select2_ajax',
+            'label'       => 'Event',
+            'placeholder' => 'Pick a event'
+        ],
+            url('admin/fetch/eventfilteruser'), // the ajax route
+            function($value) { // if the filter is active
+                 $this->crud->addClause('where', 'event_id', $value);
+            });
+
         $this->crud->addColumn([ // Text
             'name' => 'created_at',
             'label' => 'Date ',
@@ -93,10 +114,42 @@ class BookingCrudController extends CrudController
     protected function showDetailsRow($id)
     {
         $booking = Booking::find($id);
-        $text = 'id : '.$id.'<br />';
-        $text.= 'Event : '.@$booking->ceremony->name.'<br />';
-        $text.= 'Student : '.@$booking->user->all_name.'<br />';
+        $text = '<div class="row">';
+        $text .= '<div class="col-4">';
+        $text.= 'Student Email : '.@$booking->user->email.'<br />';
         $text.= 'Student Phone: '.@$booking->user->phone.'<br />';
+        $text.= 'Seats: '.@$booking->no_of_seats.'<br />';
+        $text.= 'Robe size : '.@$booking->robe_size.'<br />';
+        $text.= 'Payment Type : '.@$booking->payment_type.'<br />';
+        if($booking->payment_type == 'down2')
+        {
+            $text.= 'downpayment amount2 : '.@$booking->downpayment_amount2.'<br />';
+            $text.= ' Minimum DownPayment Amount  : '.@$booking->amount.'<br />';
+
+        }
+        if($booking->payment_type == 'down')
+        {
+            $text.= ' Minimum DownPayment Amount  : '.@$booking->amount.'<br />';
+        }
+        $text.= ' amount : '.@$booking->ceremony_price.'<br />';
+        $text.= '</div>';
+        $text .= '<div class="col-4">';
+        $payments = PaymentLog::where('user_id',$booking->user_id)->where('event_id',$booking->event_id)->get();
+        foreach ($payments as $payment)
+        {
+            $text .='paymentid : ' . @$payment->paymentid.'<br />' ;
+		$text .='result : '. @$payment->result.'<br />' ;
+            $text .='ref : '. @$payment->ref.'<br />' ;
+            $text .='tranid : '. @$payment->tranid.'<br />' ;
+            $text .='trackid : '. @$payment->trackid.'<br />' ;
+            $text .='amt : '. @$payment->amt.'<br />' ;
+
+            $text.='<hr>';
+        }
+
+        $text.= '</div>';
+        $text.= '</div>';
+
         return $text;
     }
 
@@ -113,17 +166,59 @@ class BookingCrudController extends CrudController
             'entity' => 'user', // the method that defines the relationship in your Model
             'attribute' => 'all_name', // foreign key attribute that is shown to use
             'tab' => 'Texts',
+            'attributes' => [
+                'class'       => 'form-control student-class'],
             'data_source' => url("/admin/fetch/bookinguser"), // url to controller search function (with /{id} should return model)
         ]);
 
+        CRUD::addField([ // Text
+            'name' => 'full_name',
+            'label' => 'First name',
+            'type' => 'text',
+            'tab' => 'Texts',
+            'attributes' => [
+                'class'       => 'form-control booking-full_name'],
+
+        ]);
+
+        CRUD::addField([ // Text
+            'name' => 'father_name',
+            'label' => 'Second name',
+            'type' => 'text',
+            'tab' => 'Texts',
+            'attributes' => [
+                'class'       => 'form-control booking-father_name'],
+
+        ]);
+        CRUD::addField([ // Text
+            'name' => 'grandfather_name',
+            'label' => 'Third name',
+            'type' => 'text',
+            'tab' => 'Texts',
+            'attributes' => [
+                'class'       => 'form-control booking-grandfather_name'],
+
+        ]);
+
+        CRUD::addField([ // Text
+            'name' => 'family_name',
+            'label' => 'Forth name',
+            'type' => 'text',
+            'tab' => 'Texts',
+            'attributes' => [
+                'class'       => 'form-control booking-family_name'],
+
+        ]);
 
         CRUD::addField([  // Select2
             'label' => 'Event',
-            'type' => 'relationship',
+            'type' => 'select2',
             'name' => 'event_id', // the db column for the foreign key
             'entity' => 'ceremony', // the method that defines the relationship in your Model
             'attribute' => 'name', // foreign key attribute that is shown to use
             'tab' => 'Texts',
+            'attributes' => [
+                'class'       => 'form-control event-class'],
              'data_source' => url("/admin/fetch/ceremony"), // url to controller search function (with /{id} should return model)
         ]);
 
@@ -133,6 +228,8 @@ class BookingCrudController extends CrudController
             'label' => 'Free Seats',
             'type' => 'number',
             'tab' => 'Texts',
+            'attributes' => [
+                'class'       => 'form-control freeseats-class'],
 
         ]);
 
@@ -141,6 +238,8 @@ class BookingCrudController extends CrudController
             'label' => 'Event Price',
             'type' => 'number',
             'tab' => 'Texts',
+            'attributes' => [
+                'class'       => 'form-control eventprice-class'],
 
         ]);
         CRUD::addField([ // Text
@@ -148,6 +247,7 @@ class BookingCrudController extends CrudController
             'label' => ' No of Seats',
             'type' => 'number',
             'tab' => 'Texts',
+
         ]);
 
         CRUD::addField([  // Select2
@@ -172,6 +272,7 @@ class BookingCrudController extends CrudController
             'type' => 'select_from_array',
             'name' => 'payment_type', // the db column for the foreign key
             'default'     => 'down',
+            'tab' => 'Texts',
             'options'=> [
                 'full' => 'full',
                 'down2' => 'Down2',
@@ -186,6 +287,7 @@ class BookingCrudController extends CrudController
             'name' => 'amount',
             'label' => ' Minimum DownPayment Amount',
             'type' => 'number',
+            'tab' => 'Texts',
             'attributes' => [
                 'class'       => 'form-control downpayment-class'],
             "visibility" => [
@@ -206,12 +308,6 @@ class BookingCrudController extends CrudController
         ]);
 
 
-        CRUD::addField([ // Text
-            'name' => 'total_amount',
-            'label' => 'Total Amount',
-            'type' => 'number',
-            'tab' => 'Texts',
-        ]);
 
 
         $this->crud->setOperationSetting('contentClass', 'col-md-12');
@@ -242,8 +338,9 @@ class BookingCrudController extends CrudController
 
         $invoice = Booking::find($this->crud->entry->id);
         $total = 0 ;
-
-
+        $event = Ceremony::find($invoice->event_id);
+         $invoice->total_amount = $event->price;
+         $invoice->save();
         //|||||||||| payment type == full ||||||||||
         //||||||||||||||||||||||||||||||||||||||||||
         $freeseats=$invoice->freeseats;
@@ -310,7 +407,6 @@ class BookingCrudController extends CrudController
             'status' => 1,
             'price' => $payValue,
             'payment_method' =>$invoice->payment_type,
-
         ];
 
 
@@ -342,7 +438,9 @@ class BookingCrudController extends CrudController
 
         $response = $this->traitUpdate();
         $invoice = Booking::find($this->crud->entry->id);
-
+        $event = Ceremony::find($invoice->event_id);
+        $invoice->total_amount = $event->price;
+        $invoice->save();
         $BookingId = $this->crud->entry->id;
         $input_seats = $invoice->seats;
         $price = $invoice->amount;

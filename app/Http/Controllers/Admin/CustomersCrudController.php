@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\Event;
 use App\Http\Requests\CustomersRequest as StoreRequest;
 // VALIDATION: change the requests to match your own file names if you need form validation
+use App\Models\Booking;
+use App\Models\PaymentLog;
+use Illuminate\Http\Request;
+use App\Models\Customer;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Facades\App;
@@ -30,6 +35,16 @@ class CustomersCrudController extends CrudController
 
     protected function setupListOperation()
     {
+        $this->crud->addFilter([
+            'name'        => 'id',
+            'type'        => 'select2_ajax',
+            'label'       => 'Student',
+            'placeholder' => 'Name Or Phone'
+        ],
+            url('admin/fetch/bookingfilteruser'), // the ajax route
+            function($value) { // if the filter is active
+                $this->crud->addClause('where', 'id', $value);
+            });
          $this->crud->addColumn([ // Text
             'name'  => 'all_name',
             'label' => 'Full Name',
@@ -38,8 +53,77 @@ class CustomersCrudController extends CrudController
             'name'  => 'phone',
             'label' => 'Phone',
          ]);
+
+        $this->crud->enableExportButtons();
+        $this->crud->enableResponsiveTable();
+        $this->crud->enablePersistentTable();
+        $this->crud->enableDetailsRow();
     }
 
+    protected function showDetailsRow($id)
+    {
+        $bookings = Booking::where('user_id',$id)->orderBy('id','DESC')->get();
+        $text = '<div class="row">';
+        $text .= '<div class="col-12">';
+        $text .= '<table class="bg-white table table-striped table-hover nowrap rounded shadow-xs border-xs mt-2 dataTable dtr-inline">';
+        $text .= '<tr role="row"><th data-orderable="false">Event Name </th><th data-orderable="false">Event Date </th><th data-orderable="false">Seats</th><th data-orderable="false">Robe size </th><th data-orderable="false">Payment Type</th></tr>';
+        foreach ($bookings as $booking)
+        {
+            $text.='<tr class="even">';
+            $text.= '<td>'.@$booking->ceremony->name.'</td>';
+            $text.= '<td>'.@$booking->ceremony->date.'</td>';
+            $text.= '<td>'.@$booking->no_of_seats.'</td>';
+            $text.= '<td>'.$booking->robe_size.'</td>';
+            $text.= '<td>'.@$booking->payment_type.'</td>';
+            $text.= '<td><table class="bg-white table table-striped table-hover nowrap rounded shadow-xs border-xs mt-2 dataTable dtr-inline">';
+            $text .= '<tr role="row"><th data-orderable="false">paymentid</th><th data-orderable="false">Result</th><th data-orderable="false">Ref</th><th data-orderable="false">tranid</th><th data-orderable="false">amt</th></tr>';
+            $payments = PaymentLog::where('user_id',$id)->where('event_id',$booking->event_id)->get();
+            foreach ($payments as $payment)
+            {
+                $text.='<tr class="even">';
+                $text.= '<td>'.@$payment->paymentid.'</td>';
+                $text.= '<td>'.@$payment->result.'</td>';
+                $text.= '<td>'.@$payment->ref.'</td>';
+                $text.= '<td>'.@$payment->tranid.'</td>';
+                 $text.= '<td>'.@$payment->amt.'</td>';
+                $text.='</tr>';
+            }
+            $text.='</td></table>';
+//            if($booking->payment_type == 'down2')
+//            {
+//                $text.= 'downpayment amount2 : '.@$booking->downpayment_amount2.'<br />';
+//                $text.= ' Minimum DownPayment Amount  : '.@$booking->amount.'<br />';
+//
+//            }
+//            if($booking->payment_type == 'down')
+//            {
+//                $text.= ' Minimum DownPayment Amount  : '.@$booking->amount.'<br />';
+//            }
+//            $text.= ' amount : '.@$booking->ceremony_price.'<br />';
+            $text.='</tr>';
+        }
+        $text.='</table>';
+
+        $text.= '</div>';
+        $text .= '<div class="col-6">';
+  /*      $payments = PaymentLog::where('user_id',$booking->user_id)->where('event_id',$booking->event_id)->get();
+        foreach ($payments as $payment)
+        {
+            $text .='paymentid : ' . @$payment->paymentid.'<br />' ;
+            $text .='result : '. @$payment->result.'<br />' ;
+            $text .='ref : '. @$payment->ref.'<br />' ;
+            $text .='tranid : '. @$payment->tranid.'<br />' ;
+            $text .='trackid : '. @$payment->trackid.'<br />' ;
+            $text .='amt : '. @$payment->amt.'<br />' ;
+
+            $text.='<hr>';
+        }
+*/
+        $text.= '</div>';
+        $text.= '</div>';
+
+        return $text;
+    }
     protected function setupCreateOperation()
     {
         CRUD::setValidation(StoreRequest::class);
@@ -123,5 +207,25 @@ class CustomersCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+    public function fetchStudentDetails(Request $request)
+    {
+        $student = Customer::find($request->id);
+        return ($student);
+    }
+    public function studentOptions(Request $request) {
+        $term = $request->input('term');
+        $options =  Customer::where('phone','like','%'.$term.'%')
+            ->orWhere('full_name','like','%'.$term.'%')
+            ->orWhere('grandfather_name','like','%'.$term.'%')
+            ->orWhere('father_name','like','%'.$term.'%')
+            ->orWhere('family_name','like','%'.$term.'%')->get();
+        $data = [];
+        foreach ($options as $option)
+        {
+            $data [$option->id] = $option->full_name .' '.$option->grandfather_name .' '.$option->father_name .' '.$option->family_name;
+
+        }
+        return $data;
     }
 }

@@ -66,7 +66,8 @@ class Booking extends Model
         'downpayment_amount2',
         'robe_size',
         'total_amount',
-        'remaining_amount'
+        'remaining_amount',
+        'full_name','father_name','grandfather_name','family_name'
 	];
     public function ceremony() {
 

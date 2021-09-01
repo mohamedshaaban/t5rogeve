@@ -9,6 +9,7 @@ use App\Models\Customer;
 use App\Models\Faculty;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 
 class EventsCrudController extends CrudController
@@ -158,12 +159,6 @@ class EventsCrudController extends CrudController
             'tab'   => 'Texts',
         ]);
 
-        CRUD::addField([ // Text
-            'name'  => 'free_seats',
-            'label' => 'Event Price',
-            'type'  => 'number',
-            'tab'   => 'Texts',
-        ]);
 
 
         CRUD::addField([ // Text
@@ -286,6 +281,12 @@ class EventsCrudController extends CrudController
         return $data;
 
     }
+    public static function fetchEventDetails(\Illuminate\Http\Request  $request)
+    {
+        $event = Ceremony::find($request->id);
+        return ($event);
+    }
+
     public static function fetchuser(\Illuminate\Http\Request  $request)
     {
         $users = Customer::where('phone','like','%'.$request->q.'%')
@@ -303,5 +304,16 @@ class EventsCrudController extends CrudController
         return $data;
 
     }
+    public function eventOptions(Request $request) {
+        $term = $request->input('term');
+        $options =  Ceremony::where('name','like','%'.$term.'%')
+            ->get();
+        $data = [];
+        foreach ($options as $option)
+        {
+            $data [$option->id] = $option->name;
 
+        }
+        return $data;
+    }
 }
