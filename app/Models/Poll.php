@@ -42,6 +42,16 @@ class Poll extends Model
 		'question',
 		'startDate',
 		'endDate',
-		'eventid'
+		'eventid',
+        'polloption'
 	];
+    public function ceremony() {
+
+        return $this->belongsTo(Ceremony::class,'eventid');
+    }
+    public function polloption() {
+
+        return $this->hasMany(PollOption::class,'poll_id');
+    }
+
 }

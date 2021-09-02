@@ -39,4 +39,12 @@ class PollAnswered extends Model
 		'user_id',
 		'poll_options_id'
 	];
+    public function user() {
+
+        return $this->belongsTo(Customer::class,'user_id');
+    }
+    public function polloption() {
+
+        return $this->belongsTo(PollOption::class,'poll_options_id');
+    }
 }

@@ -20,6 +20,8 @@
     </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('faculty') }}"><i class="nav-icon la la-cog"></i> <span>Faculty</span></a></li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('notifications') }}"><i class="nav-icon la la-cog"></i> <span>Notifications</span></a></li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('polls') }}"><i class="nav-icon la la-cog"></i> <span>Polls</span></a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('events') }}"><i class="nav-icon la la-cog"></i> <span>Events</span></a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('booking') }}"><i class="nav-icon la la-cog"></i> <span>Booking</span></a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('invoices') }}"><i class="nav-icon la la-cog"></i> <span>Invoices</span></a></li>

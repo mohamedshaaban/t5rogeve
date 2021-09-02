@@ -33,6 +33,8 @@ Route::group([
     Route::crud('siteaddress', 'SiteAddressCrudController');
     Route::crud('invoices', 'InvoicesCrudController');
     Route::crud('SponsorPlatinums', 'SponsorPlatinumsCrudController');
+    Route::crud('notifications', 'NotificationsCrudController');
+    Route::crud('polls', 'PollsCrudController');
     Route::crud('events', 'EventsCrudController');
     Route::crud('customers', 'CustomersCrudController');
     Route::post('fetch/faculty', 'FacultyCrudController@fetch');

@@ -39,13 +39,32 @@ class Notification extends Model
 		'ceremony_for' => 'int'
 	];
 
+	protected $appends =['ceremonyfor'];
 	protected $fillable = [
 		'userid',
 		'eventid',
 		'alluser',
 		'notification',
 		'link',
+		'for',
 		'ceremony_for',
 		'payment_type'
 	];
+
+    public function user() {
+        return $this->belongsTo(Customer::class,'userid');
+    }
+
+    public function ceremony() {
+
+        return $this->belongsTo(Ceremony::class,'eventid');
+    }
+    public function getCeremonyforAttribute()
+    {
+        if($this->attributes['ceremonyfor'])
+        {
+            return 'Cancaled';
+        }
+        return 'Not Cancaled';
+    }
 }

@@ -39,4 +39,8 @@ class PollOption extends Model
     {
         return $this->belongsTo(\App\Models\Poll::class, 'poll_id');
     }
+    public function pollanswered() {
+
+        return $this->hasMany(PollAnswered::class,'poll_options_id','id');
+    }
 }
