@@ -63,7 +63,7 @@ class PollsCrudController extends CrudController
         $text.='</table></div>';
         $text .= '<div class="col-md-6 col-sm-12">';
         $text .= '<table class="bg-white table table-striped table-hover nowrap rounded shadow-xs border-xs mt-2 dataTable dtr-inline">';
-        $text .= '<tr role="row"><th data-orderable="false" style="width:30%">Option</th><th width="30%" data-orderable="false">Count </th></tr>';
+        $text .= '<tr role="row"><th data-orderable="false" style="width:30%">Student</th><th width="30%" data-orderable="false">Answer </th></tr>';
         foreach($pollanswered as $pollanswer)
         {
             $text.='<tr class="even">';
