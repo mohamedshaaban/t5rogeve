@@ -551,7 +551,7 @@ class AuthController extends Controller
 
         /// 111
         if ($validator->fails()) {
-            $allErrors = '';
+            $allErrors = [];
             foreach ($validator->errors()->all() as $message) {
                 $allErrors[] = $message;
                 break;
