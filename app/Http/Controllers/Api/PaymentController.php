@@ -402,7 +402,7 @@ class PaymentController extends Controller
          if(Auth::guard('customers')->attempt($userdata)) {
 
          $user = Auth::guard('customers')->user();
-			
+
   	     $amount  = $request->amount ;
 
 	          $event_id  = $request->event_id ;
