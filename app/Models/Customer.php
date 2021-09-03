@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Asciisd\Knet\HasKnet;
 
 /**
  * Class Customer
@@ -65,7 +66,7 @@ class Customer extends Authenticatable
 {
     use CrudTrait;
     use HasApiTokens, Notifiable;
-
+    use HasKnet;
     use SoftDeletes;
 	protected $table = 'customers';
 

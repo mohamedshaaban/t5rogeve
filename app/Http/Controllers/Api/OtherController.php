@@ -54,49 +54,8 @@ class OtherController extends Controller
 			$formData=$request->all();
 			$sort_by     	= $request->sort_by ? $request->sort_by : 'created_at';
 	    	$sort_type     	= $request->sort_type ? $request->sort_type : 'desc';
-	    		/*
-			$messages=array(
-						'user_id.required'			=> 'Please Enter UserID',
-						'session_token.required'	=> 'Please Enter Session ID',
 
-			);
-
-			$validator=validator::make(
-						$request->all(),
-						array(
-							'user_id'		=> 'required',
-							'session_token'	=> 'required',
-						),$messages
-					);
-
-			if($validator->fails())
-			{
-
-				$allErrors ='';
-				foreach ($validator->errors()->all() as $message) {
-					$allErrors=$message;
-					break;
-				}
-
-				$response=array('status'=>0,'message'=>$allErrors);
-				return Response::json($response);
-				die();
-			}
-			else
-			{
 				
-				$user_id = $formData['user_id'];
-				$session_token =  $formData['session_token'];
-
-				$checkUserSession = $this->verifyUserSession($user_id, $session_token);
-				if(is_array($checkUserSession)){
-					return  Response::json($checkUserSession);
-					die();
-				}
-*/
-				
-				$result=SponsorPlatinum::where('status',1)->get();
-			//	$result=SponsorPlatinum::all;
 				$result= SponsorPlatinum::orderBy($sort_by, $sort_type)->get();
 
 				$response=array('status'=>1,'data'=>$result);
@@ -104,6 +63,14 @@ class OtherController extends Controller
 				
 		//	}
 	}
+	public function contactRequest(Request $request)
+    {
+        $user = Auth::guard('customers_api')->user();
+        $user_id = $user->id;
+        $response=array('status'=>1,'data'=>ContactU::where('user_id',$user_id)->get());
+
+        return Response::json($response);
+    }
 	
 	
 			public function whoweareList(Request $request)	

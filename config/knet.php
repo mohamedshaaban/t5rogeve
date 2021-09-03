@@ -13,7 +13,7 @@ return [
     |
     */
     'production_url' => env('KENT_PRODUCTION_URL', 'https://kpay.com.kw/kpg/PaymentHTTP.htm'),
-    'development_url' => env('KENT_PRODUCTION_URL', 'https://kpaytest.com.kw/kpg/PaymentHTTP.htm'),
+    'development_url' => env('KENT_PRODUCTION_URL', 'https://kpay.com.kw/kpg/PaymentHTTP.htm'),
 
     /*
     |--------------------------------------------------------------------------
@@ -94,7 +94,7 @@ return [
     | interacting with Knet related methods, and so on.
     |
     */
-    'model' => env('KNET_MODEL', App\Models\User::class),
+    'model' => env('KNET_MODEL', App\Models\Customer::class),
 
     /*
     |--------------------------------------------------------------------------

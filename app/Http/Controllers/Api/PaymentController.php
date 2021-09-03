@@ -438,8 +438,8 @@ $payment->actionUrl(); // redirect user to pay with url generated
             }
 		
 	 }
-	 
-	 
+
+
 	 	 function payknetremining(Request $request) {
 	     
             ///

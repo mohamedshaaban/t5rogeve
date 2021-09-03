@@ -90,7 +90,7 @@ Route::group(['middleware' => 'auth:customers_api'], function() {
 
     ///
 //
-//    Route::post('/contactRequest','OtherController@contactRequest');
+    Route::post('/contactRequest','OtherController@contactRequest');
     Route::post('/contactus','OtherController@contactus');
 
     //
