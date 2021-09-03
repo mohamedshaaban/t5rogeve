@@ -155,6 +155,7 @@ return [
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        App\Providers\KnetServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
         /*
