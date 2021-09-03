@@ -42,7 +42,7 @@ class TermsConditionsCrudController extends CrudController
 
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(StoreRequest::class);
+//        CRUD::setValidation(StoreRequest::class);
 
         CRUD::addField([ // Text
             'name'  => 'content',
