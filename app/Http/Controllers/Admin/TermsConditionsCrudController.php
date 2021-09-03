@@ -52,10 +52,16 @@ class TermsConditionsCrudController extends CrudController
 
         ]);
 
-        $this->crud->addColumn([ // Text
-            'type'=>'image',
-            'name' => 'image',
-            'label' => 'Image']);
+        $this->crud->addField([
+            'label' => "Image",
+            'name' => "image",
+            'type' => 'image',
+            'tab'   => 'Texts',
+            'crop' => false, // set to true to allow cropping, false to disable
+            'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
+            // 'disk'      => 's3_bucket', // in case you need to show images from a different disk
+            // 'prefix'    => 'uploads/images/profile_pictures/' // in case your db value is only the file name (no path), you can use this to prepend your path to the image src (in HTML), before it's shown to the user;
+        ]);
 
         $this->crud->setOperationSetting('contentClass', 'col-md-12');
     }
