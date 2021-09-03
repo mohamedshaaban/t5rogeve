@@ -399,9 +399,10 @@ class PaymentController extends Controller
 						'phone' 					=> $request->phone,
 						'password' 					=> $request->password,
 		);
-		
-			if (Auth::attempt($userdata)) {
-             $user = Auth::user();
+         if(Auth::guard('customers')->attempt($userdata)) {
+
+         $user = Auth::guard('customers')->user();
+			
   	     $amount  = $request->amount ;
 
 	          $event_id  = $request->event_id ;
