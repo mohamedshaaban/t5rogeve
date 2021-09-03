@@ -61,7 +61,7 @@ class Notification extends Model
     }
     public function getCeremonyforAttribute()
     {
-        if($this->attributes['ceremonyfor'])
+        if(isset($this->attributes['ceremonyfor']))
         {
             return 'Cancaled';
         }
