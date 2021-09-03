@@ -52,10 +52,10 @@ class TermsConditionsCrudController extends CrudController
 
         ]);
 
-//        $this->crud->addColumn([ // Text
-//            'type'=>'image',
-//            'name' => 'image',
-//            'label' => 'Image']);
+        $this->crud->addColumn([ // Text
+            'type'=>'image',
+            'name' => 'image',
+            'label' => 'Image']);
 
         $this->crud->setOperationSetting('contentClass', 'col-md-12');
     }
