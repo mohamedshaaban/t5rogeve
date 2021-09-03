@@ -307,6 +307,15 @@ class Ceremony extends Model
         }
         return $value;
     }
+    public function getImagetermAttribute($value)
+    {
+//        return $value;
+
+        if ($value != null && $value != '') {
+            return asset('uploads/folder_1/folder_2/' . $value);
+        }
+        return $value;
+    }
     public function getImagemainAttribute($value)
     {
 //        return $value;
