@@ -76,7 +76,7 @@ class Whoweare extends Model
     public function getImageAttribute()
     {
 
-            return asset(''.$this->attributes['image']);
+            return asset('uploads/'.$this->attributes['image']);
 
 
     }
