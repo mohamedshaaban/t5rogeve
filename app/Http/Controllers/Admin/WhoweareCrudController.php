@@ -25,17 +25,17 @@ class WhoweareCrudController extends CrudController
 
         CRUD::setModel(\App\Models\Whoweare::class);
         CRUD::setRoute(config('backpack.base.route_prefix').'/whoweare');
-        CRUD::setEntityNameStrings('whoweare', 'whoweare');
+        CRUD::setEntityNameStrings(trans('admin.whoweare'), trans('admin.whoweare'));
     }
 
     protected function setupListOperation()
     {
-        CRUD::addColumns(['title']); // add multiple columns, at the end of the stack
+        $this->crud->addColumn(['name'=>'title','label'=>trans('admin.Title')]);
 
         $this->crud->addColumn([ // Text
             'type'=>'image',
             'name' => 'image',
-            'label' => 'Image']);
+            'label' => trans('admin.Image')]);
         $this->crud->enableExportButtons();
         $this->crud->enableResponsiveTable();
         $this->crud->enablePersistentTable();
@@ -47,14 +47,14 @@ class WhoweareCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name'  => 'title',
-            'label' => 'Title',
+            'label' => trans('admin.Title'),
             'type'  => 'text',
             'tab'   => 'Texts',
 
         ]);
 //
         $this->crud->addField([
-            'label' => "Image",
+            'label' => trans('admin.Image'),
             'name' => "image",
             'type' => 'image',
             'tab'   => 'Texts',

@@ -45,14 +45,14 @@ class FacultyCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name'  => 'full_name',
-            'label' => __('Faculty name'),
+            'label' => trans('admin.Faculty name'),
             'type'  => 'text',
             'tab'   => 'Texts',
         ]);
 
         CRUD::addField([ // Text
             'name'  => 'status',
-            'label' => 'Activated',
+            'label' => trans('admin.Activated'),
             'type'  => 'radio',
             'tab'   => 'Texts',
             'options'     => [

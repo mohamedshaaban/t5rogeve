@@ -34,13 +34,13 @@ class AreasCrudController extends CrudController
         CRUD::addColumn([
             'name'           => 'price',
             'type'           => 'number',
-            'label'          => 'Price',
+            'label'          => trans('admin.Price'),
             'visibleInTable' => false,
             'visibleInModal' => true,
         ]);
         CRUD::addColumn([
             // 1-n relationship
-            'label'          => 'Category', // Table column heading
+            'label'          => trans('admin.Category'), // Table column heading
             'type'           => 'select',
             'name'           => 'category_id', // the column that contains the ID of that connected entity;
             'entity'         => 'category', // the method that defines the relationship in your Model
@@ -56,7 +56,7 @@ class AreasCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name'  => 'name',
-            'label' => 'Name',
+            'label' => trans('admin.Name'),
             'type'  => 'text',
             'tab'   => 'Texts',
 
@@ -77,21 +77,21 @@ class AreasCrudController extends CrudController
 
         CRUD::addField([   // Textarea
             'name'  => 'description',
-            'label' => 'Description',
+            'label' => trans('admin.Description'),
             'type'  => 'textarea',
             'tab'   => 'Texts',
         ]);
 
         CRUD::addField([   // Wysiwyg
             'name'  => 'details',
-            'label' => 'Details',
+            'label' => trans('admin.Details'),
             'type'  => 'wysiwyg',
             'tab'   => 'Texts',
         ]);
 
         CRUD::addField([ // Table
             'name'            => 'features',
-            'label'           => 'Features',
+            'label'           => trans('admin.Features'),
             'type'            => 'table',
             'entity_singular' => 'feature', // used on the "Add X" button
             'columns'         => [
@@ -105,7 +105,7 @@ class AreasCrudController extends CrudController
 
         CRUD::addField([ // Table
             'name'            => 'extra_features',
-            'label'           => 'Extra Features',
+            'label'           => trans('admin.Extra Features'),
             'type'            => 'table',
             'entity_singular' => 'extra feature', // used on the "Add X" button
             'columns'         => [
@@ -119,7 +119,7 @@ class AreasCrudController extends CrudController
         ]);
 
         CRUD::addField([  // Select2
-            'label'     => 'Category',
+            'label'     => trans('admin.Category'),
             'type'      => 'select2',
             'name'      => 'category_id', // the db column for the foreign key
             'entity'    => 'category', // the method that defines the relationship in your Model
@@ -132,7 +132,7 @@ class AreasCrudController extends CrudController
 
         CRUD::addField([   // Number
             'name'  => 'price',
-            'label' => 'Price',
+            'label' => trans('admin.Price'),
             'type'  => 'number',
             // optionals
             // 'attributes' => ["step" => "any"], // allow decimals
@@ -147,21 +147,21 @@ class AreasCrudController extends CrudController
         CRUD::addFields([
             [ // Text
                 'name'  => 'meta_title',
-                'label' => 'Meta Title',
+                'label' => trans('admin.Meta Title'),
                 'type'  => 'text',
                 'fake'  => true,
                 'tab'   => 'Metas',
             ],
             [ // Text
                 'name'  => 'meta_description',
-                'label' => 'Meta Description',
+                'label' => trans('admin.Meta Description'),
                 'type'  => 'text',
                 'fake'  => true,
                 'tab'   => 'Metas',
             ],
             [ // Text
                 'name'  => 'meta_keywords',
-                'label' => 'Meta Keywords',
+                'label' => trans('admin.Meta Keywords'),
                 'type'  => 'text',
                 'fake'  => true,
                 'tab'   => 'Metas',

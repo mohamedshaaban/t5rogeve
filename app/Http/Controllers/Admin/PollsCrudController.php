@@ -27,15 +27,15 @@ class PollsCrudController extends CrudController
 
         CRUD::setModel(\App\Models\Poll::class);
         CRUD::setRoute(config('backpack.base.route_prefix').'/polls');
-        CRUD::setEntityNameStrings('polls', 'polls');
+        CRUD::setEntityNameStrings(trans('admin.polls'), trans('admin.polls'));
     }
 
     protected function setupListOperation()
-    {
+    {$this->crud->addColumn(['name'=>'question','label'=>trans('admin.question')]);
         CRUD::addColumns(['question']); // add multiple columns, at the end of the stack
         $this->crud->addColumn([ // Text
             'name' => 'ceremony',
-            'label' => 'Event name ',
+            'label' => trans('admin.Event name'),
             'type' => 'relationship'
         ]);
 
@@ -83,14 +83,14 @@ class PollsCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name'  => 'question',
-            'label' => 'Question',
+            'label' => trans('admin.Question'),
             'type'  => 'text',
             'tab'   => 'Texts',
 
         ]);
         CRUD::addField([   // repeatable
             'name'  => 'polloption',
-            'label' => 'Poll Options',
+            'label' => trans('admin.Poll Options'),
             'type'  => 'repeatable',
             'tab'   => 'Texts',
 
@@ -112,7 +112,7 @@ class PollsCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name'  => 'startDate',
-            'label' => 'start Date',
+            'label' => trans('admin.start Date'),
             'type'  => 'date',
             'tab'   => 'Texts',
 
@@ -120,7 +120,7 @@ class PollsCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name'  => 'endDate',
-            'label' => 'end Date',
+            'label' => trans('admin.end Date'),
             'type'  => 'date',
             'tab'   => 'Texts',
 
@@ -129,7 +129,7 @@ class PollsCrudController extends CrudController
 
 
         CRUD::addField([  // Select2
-            'label' => 'Event',
+            'label' => trans('admin.Event'),
             'type' => 'select2',
             'name' => 'eventid', // the db column for the foreign key
             'entity' => 'ceremony', // the method that defines the relationship in your Model

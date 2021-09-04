@@ -25,25 +25,25 @@ class CancelEventSubCrudController extends CrudController
 
         CRUD::setModel(\App\Models\CancelEventSub::class);
         CRUD::setRoute(config('backpack.base.route_prefix').'/canceleventsub');
-        CRUD::setEntityNameStrings('canceleventsub', 'canceleventsub');
+        CRUD::setEntityNameStrings(trans('admin.canceleventsub'), trans('admin.canceleventsub'));
     }
 
     protected function setupListOperation()
     {
         $this->crud->addColumn([ // Text
             'name' => 'ceremony',
-            'label' => 'Event name ',
+            'label' => trans('admin.Event name'),
             'type' => 'relationship'
         ]);
         $this->crud->addColumn([ // Text
             'name' => 'user',
-            'label' => 'Student name ',
+            'label' => trans('admin.Student name'),
             'type' => 'relationship',
             'attribute'=>'all_name'
         ]);
         $this->crud->addColumn([ // Text
             'name' => 'statstitle',
-            'label' => 'Canceled']);
+            'label' => trans('admin.Canceled')]);
         $this->crud->enableExportButtons();
         $this->crud->enableResponsiveTable();
         $this->crud->enablePersistentTable();
@@ -53,7 +53,7 @@ class CancelEventSubCrudController extends CrudController
     {
         CRUD::setValidation(StoreRequest::class);
         CRUD::addField([  // Select2
-            'label' => 'Student',
+            'label' => trans('admin.Student'),
             'type' => 'relationship',
             'name' => 'user_id', // the db column for the foreign key
             'entity' => 'user', // the method that defines the relationship in your Model
@@ -63,7 +63,7 @@ class CancelEventSubCrudController extends CrudController
         ]);
 
         CRUD::addField([  // Select2
-            'label' => 'ceremony',
+            'label' => trans('admin.ceremony'),
             'type' => 'relationship',
             'name' => 'event_id', // the db column for the foreign key
             'entity' => 'ceremony', // the method that defines the relationship in your Model
@@ -73,7 +73,7 @@ class CancelEventSubCrudController extends CrudController
         ]);
         CRUD::addField([ // Text
             'name'  => 'status',
-            'label' => 'Canceled',
+            'label' => trans('admin.Canceled'),
             'type'  => 'radio',
             'tab'   => 'Texts',
             'options'     => [

@@ -17,8 +17,7 @@ Route::group([
     // -----
     // CRUDs
     // -----
-    Route::crud('monster', 'MonsterCrudController');
-    Route::crud('fluent-monster', 'FluentMonsterCrudController');
+
     Route::crud('icon', 'IconCrudController');
     Route::crud('product', 'ProductCrudController');
     Route::crud('dummy', 'DummyCrudController');
@@ -37,10 +36,14 @@ Route::group([
     Route::crud('polls', 'PollsCrudController');
     Route::crud('events', 'EventsCrudController');
     Route::crud('customers', 'CustomersCrudController');
+    Route::get('dashboard', 'AdminController@dashboard')->name('backpack.dashboard');
+    Route::get('/', 'AdminController@redirect')->name('backpack');
+
     Route::post('fetch/faculty', 'FacultyCrudController@fetch');
     Route::post('fetch/ceremony', 'EventsCrudController@fetch');
     Route::post('fetch/bookinguser', 'EventsCrudController@fetchuser');
     Route::get('fetch/eventdetails/{id}', 'EventsCrudController@fetchEventDetails');
+    Route::get('fetch/eventdashdetails/{id}', 'EventsCrudController@fetchDashEventDetails');
     Route::get('fetch/studentdetails/{id}', 'CustomersCrudController@fetchStudentDetails');
     Route::get('fetch/bookingfilteruser', 'CustomersCrudController@studentOptions');
     Route::get('fetch/eventfilteruser', 'EventsCrudController@eventOptions');
@@ -63,7 +66,7 @@ Route::group([
     })->name('switch_lang');
     if (app('env') == 'production') {
         // disable delete and bulk delete for all CRUDs
-        $cruds = ['article', 'category', 'tag', 'monster', 'icon', 'product', 'page', 'menu-item', 'user', 'role', 'permission'];
+        $cruds = ['article', 'category', 'tag', 'icon', 'product', 'page', 'menu-item', 'user', 'role', 'permission'];
         foreach ($cruds as $name) {
             Route::delete($name.'/{id}', function () {
                 return false;

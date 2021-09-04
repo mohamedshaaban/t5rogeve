@@ -30,7 +30,7 @@ class CustomersCrudController extends CrudController
 
         CRUD::setModel(\App\Models\Customer::class);
         CRUD::setRoute(config('backpack.base.route_prefix').'/customers');
-        CRUD::setEntityNameStrings('customers', 'customers');
+        CRUD::setEntityNameStrings(trans('admin.customers'), trans('admin.customers'));
     }
 
     protected function setupListOperation()
@@ -38,7 +38,7 @@ class CustomersCrudController extends CrudController
         $this->crud->addFilter([
             'name'        => 'id',
             'type'        => 'select2_ajax',
-            'label'       => 'Student',
+            'label'       => trans('admin.Student'),
             'placeholder' => 'Name Or Phone'
         ],
             url('admin/fetch/bookingfilteruser'), // the ajax route
@@ -47,11 +47,11 @@ class CustomersCrudController extends CrudController
             });
          $this->crud->addColumn([ // Text
             'name'  => 'all_name',
-            'label' => 'Full Name',
+            'label' => trans('admin.Full Name'),
          ]);
         $this->crud->addColumn([ // Text
             'name'  => 'phone',
-            'label' => 'Phone',
+            'label' => trans('admin.Phone'),
          ]);
 
         $this->crud->enableExportButtons();
@@ -130,32 +130,32 @@ class CustomersCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name'  => 'first_name',
-            'label' => 'first name',
+            'label' => trans('admin.first name'),
             'type'  => 'text',
             'tab'   => 'Texts',
         ]);
         CRUD::addField([ // Text
             'name'  => 'father_name',
-            'label' => 'father name',
+            'label' => trans('admin.father name'),
             'type'  => 'text',
             'tab'   => 'Texts',
         ]);
 
         CRUD::addField([ // Text
             'name'  => 'grandfather_name',
-            'label' => 'grandfather name',
+            'label' => trans('admin.grandfather name'),
             'type'  => 'text',
             'tab'   => 'Texts',
         ]);
         CRUD::addField([ // Text
             'name'  => 'family_name',
-            'label' => 'family name',
+            'label' => trans('admin.family name'),
             'type'  => 'text',
             'tab'   => 'Texts',
         ]);
         CRUD::addField([ // Text
             'name'  => 'email',
-            'label' => 'email',
+            'label' => trans('admin.email'),
             'type'  => 'email',
             'tab'   => 'Texts',
         ]);
@@ -163,14 +163,14 @@ class CustomersCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name'  => 'phone_number',
-            'label' => 'phone_number',
+            'label' => trans('admin.phone_number'),
             'type'  => 'text',
             'tab'   => 'Texts',
         ]);
 
 
         $this->crud->addField([
-            'label' => "Image",
+            'label' => trans('admin.Image'),
             'name' => "image",
             'type' => 'image',
             'tab'   => 'Texts',
@@ -180,7 +180,7 @@ class CustomersCrudController extends CrudController
             // 'prefix'    => 'uploads/images/profile_pictures/' // in case your db value is only the file name (no path), you can use this to prepend your path to the image src (in HTML), before it's shown to the user;
         ]);
         $this->crud->addField([
-            'label' => "civil_id",
+            'label' => trans('admin.civil_id'),
             'name' => "civil_id",
             'type' => 'text',
             'tab'   => 'Texts',
@@ -191,7 +191,7 @@ class CustomersCrudController extends CrudController
         ]);
         CRUD::addField([ // Text
             'name'  => 'faulty',
-            'label' => 'faculty',
+            'label' => trans('admin.faculty'),
             'type'  => 'radio',
             'tab'   => 'Texts',
             'options'     => [

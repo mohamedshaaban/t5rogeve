@@ -25,15 +25,16 @@ class WayuseCrudController extends CrudController
 
         CRUD::setModel(\App\Models\WaysUse::class);
         CRUD::setRoute(config('backpack.base.route_prefix').'/wayuse');
-        CRUD::setEntityNameStrings('wayuse', 'wayuse');
+        CRUD::setEntityNameStrings(trans('admin.wayuse'), trans('admin.wayuse'));
     }
 
     protected function setupListOperation()
     {
-        CRUD::addColumns(['title', 'link']); // add multiple columns, at the end of the stack
+        $this->crud->addColumn(['name'=>'title','label'=>trans('admin.Title')]);
+        $this->crud->addColumn(['name'=>'link','label'=>trans('admin.link')]);
         $this->crud->addColumn([ // Text
             'name' => 'statstitle',
-            'label' => 'Active']);
+            'label' => trans('admin.Active')]);
 
         $this->crud->enableExportButtons();
         $this->crud->enableResponsiveTable();
@@ -46,14 +47,14 @@ class WayuseCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name'  => 'title',
-            'label' => 'Title',
+            'label' => trans('admin.Title'),
             'type'  => 'text',
             'tab'   => 'Texts',
 
         ]);
         CRUD::addField([ // Text
             'name'  => 'link',
-            'label' => 'Link',
+            'label' => trans('admin.Link'),
             'type'  => 'text',
             'tab'   => 'Texts',
 
@@ -61,7 +62,7 @@ class WayuseCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name'  => 'status',
-            'label' => 'Status',
+            'label' => trans('admin.Status'),
             'type'  => 'radio',
             'tab'   => 'Texts',
             'options'     => [

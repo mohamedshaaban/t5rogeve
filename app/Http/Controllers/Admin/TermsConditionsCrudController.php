@@ -25,16 +25,17 @@ class TermsConditionsCrudController extends CrudController
 
         CRUD::setModel(\App\Models\TermsCondition::class);
         CRUD::setRoute(config('backpack.base.route_prefix').'/termsconditions');
-        CRUD::setEntityNameStrings('terms conditions', 'terms conditions');
+        CRUD::setEntityNameStrings(trans('admin.terms conditions'), trans('admin.terms conditions'));
     }
 
     protected function setupListOperation()
     {
-        CRUD::addColumns(['content']); // add multiple columns, at the end of the stack
+        $this->crud->addColumn(['name'=>'content','label'=>trans('admin.content')]);
+
         $this->crud->addColumn([ // Text
             'type'=>'image',
             'name' => 'image',
-            'label' => 'Image']);
+            'label' => trans('admin.Image')]);
         $this->crud->enableExportButtons();
         $this->crud->enableResponsiveTable();
         $this->crud->enablePersistentTable();
@@ -46,14 +47,14 @@ class TermsConditionsCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name'  => 'content',
-            'label' => 'Content',
+            'label' => trans('admin.Content'),
             'type'  => 'textarea',
             'tab'   => 'Texts',
 
         ]);
 
         $this->crud->addField([
-            'label' => "Image",
+            'label' => trans('admin.Image"'),
             'name' => "image",
             'type' => 'image',
             'tab'   => 'Texts',

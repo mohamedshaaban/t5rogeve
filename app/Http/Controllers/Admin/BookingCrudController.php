@@ -32,7 +32,7 @@ class BookingCrudController extends CrudController
 
         CRUD::setModel(\App\Models\Booking::class);
         CRUD::setRoute(config('backpack.base.route_prefix').'/booking');
-        CRUD::setEntityNameStrings('booking', 'booking');
+        CRUD::setEntityNameStrings(trans('admin.booking'), trans('admin.booking'));
     }
 
     protected function setupListOperation()
@@ -41,7 +41,7 @@ class BookingCrudController extends CrudController
         $this->crud->addFilter([
             'name'        => 'user_id',
             'type'        => 'select2_ajax',
-            'label'       => 'Student',
+            'label'       => trans('admin.Student'),
             'placeholder' => 'Name Or Phone'
         ],
             url('admin/fetch/bookingfilteruser'), // the ajax route
@@ -51,7 +51,7 @@ class BookingCrudController extends CrudController
         $this->crud->addFilter([
             'name'        => 'event_id',
             'type'        => 'select2_ajax',
-            'label'       => 'Event',
+            'label'       => trans('admin.Event'),
             'placeholder' => 'Pick a event'
         ],
             url('admin/fetch/eventfilteruser'), // the ajax route
@@ -61,48 +61,48 @@ class BookingCrudController extends CrudController
 
         $this->crud->addColumn([ // Text
             'name' => 'created_at',
-            'label' => 'Date ',
+            'label' => trans('admin.Date'),
         ]);
         $this->crud->addColumn([ // Text
             'name' => 'ceremony',
-            'label' => 'Event name ',
+            'label' => trans('admin.Event name'),
             'type' => 'relationship'
         ]);
         $this->crud->addColumn([ // Text
             'name' => 'user',
-            'label' => 'Student name ',
+            'label' => trans('admin.Student name'),
             'type' => 'relationship',
             'attribute'=>'all_name'
         ]);
         $this->crud->addColumn([ // Text
             'name' => 'phone',
             'entity'=>'user',
-            'label' => 'Student phone ',
+            'label' => trans('admin.Student phone'),
             'type' => 'relationship',
             'attribute'=>'phone'
         ]);
 
         $this->crud->addColumn([ // Text
             'name' => 'no_of_seats',
-            'label' => 'Seats Book',
+            'label' => trans('admin.Seats Book'),
          ]);
         $this->crud->addColumn([ // Text
             'name' => 'amount',
-            'label' => 'Amount',
+            'label' => trans('admin.Amount'),
         ]);
         $this->crud->addColumn([ // Text
             'name' => 'payment_type',
-            'label' => 'Payment Type',
+            'label' => trans('admin.Payment Type'),
         ]);
 
         $this->crud->addColumn([ // Text
             'name' => 'remaining_amount',
-            'label' => 'Remaining Amount',
+            'label' => trans('admin.Remaining Amount'),
         ]);
 
         $this->crud->addColumn([ // Text
             'name' => 'robe_size',
-            'label' => 'Robe Size',
+            'label' => trans('admin.Robe Size'),
         ]);
 
 
@@ -160,7 +160,7 @@ class BookingCrudController extends CrudController
 
 
         CRUD::addField([  // Select2
-            'label' => 'Student',
+            'label' => trans('admin.Student'),
             'type' => 'relationship',
             'name' => 'user_id', // the db column for the foreign key
             'entity' => 'user', // the method that defines the relationship in your Model
@@ -173,7 +173,7 @@ class BookingCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name' => 'full_name',
-            'label' => 'First name',
+            'label' => trans('admin.First name'),
             'type' => 'text',
             'tab' => 'Texts',
             'attributes' => [
@@ -183,7 +183,7 @@ class BookingCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name' => 'father_name',
-            'label' => 'Second name',
+            'label' => trans('admin.Second name'),
             'type' => 'text',
             'tab' => 'Texts',
             'attributes' => [
@@ -192,7 +192,7 @@ class BookingCrudController extends CrudController
         ]);
         CRUD::addField([ // Text
             'name' => 'grandfather_name',
-            'label' => 'Third name',
+            'label' => trans('admin.Third name'),
             'type' => 'text',
             'tab' => 'Texts',
             'attributes' => [
@@ -202,7 +202,7 @@ class BookingCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name' => 'family_name',
-            'label' => 'Forth name',
+            'label' => trans('admin.Forth name'),
             'type' => 'text',
             'tab' => 'Texts',
             'attributes' => [
@@ -211,7 +211,7 @@ class BookingCrudController extends CrudController
         ]);
 
         CRUD::addField([  // Select2
-            'label' => 'Event',
+            'label' => trans('admin.Event'),
             'type' => 'select2',
             'name' => 'event_id', // the db column for the foreign key
             'entity' => 'ceremony', // the method that defines the relationship in your Model
@@ -225,7 +225,7 @@ class BookingCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name' => 'freeseats',
-            'label' => 'Free Seats',
+            'label' => trans('admin.Free Seats'),
             'type' => 'number',
             'tab' => 'Texts',
             'attributes' => [
@@ -235,7 +235,7 @@ class BookingCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name' => 'event_price',
-            'label' => 'Event Price',
+            'label' => trans('admin.Event Price'),
             'type' => 'number',
             'tab' => 'Texts',
             'attributes' => [
@@ -244,14 +244,14 @@ class BookingCrudController extends CrudController
         ]);
         CRUD::addField([ // Text
             'name' => 'seats',
-            'label' => ' No of Seats',
+            'label' => trans('admin. No of Seats'),
             'type' => 'number',
             'tab' => 'Texts',
 
         ]);
 
         CRUD::addField([  // Select2
-                'label' => 'Robe Size',
+                'label' => trans('admin.Robe Size'),
                 'type' => 'select2_from_array',
                 'name' => 'robe_size', // the db column for the foreign key
                 'tab' => 'Texts',
@@ -268,7 +268,7 @@ class BookingCrudController extends CrudController
                 ]]
         );
         $this->crud->addField([  // Select2
-            'label' => ' Payment Type',
+            'label' => trans('admin. Payment Type'),
             'type' => 'select_from_array',
             'name' => 'payment_type', // the db column for the foreign key
             'default'     => 'down',
@@ -285,7 +285,7 @@ class BookingCrudController extends CrudController
         );
         $this->crud->addField([ // Text
             'name' => 'amount',
-            'label' => ' Minimum DownPayment Amount',
+            'label' => trans('admin. Minimum DownPayment Amount'),
             'type' => 'number',
             'tab' => 'Texts',
             'attributes' => [
@@ -300,7 +300,7 @@ class BookingCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name' => 'downpayment_amount2',
-            'label' => 'Payment Amount 2',
+            'label' => trans('admin.Payment Amount 2'),
             'type' => 'number',
             'tab' => 'Texts',
             'attributes' => [

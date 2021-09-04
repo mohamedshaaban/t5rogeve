@@ -30,7 +30,7 @@ class NotificationsCrudController extends CrudController
 
         CRUD::setModel(\App\Models\Notification::class);
         CRUD::setRoute(config('backpack.base.route_prefix').'/notifications');
-        CRUD::setEntityNameStrings('notifications', 'notifications');
+        CRUD::setEntityNameStrings(trans('admin.notifications'), trans('admin.notifications'));
     }
 
     protected function setupListOperation()
@@ -38,7 +38,7 @@ class NotificationsCrudController extends CrudController
         CRUD::addColumn([
             'name'           => 'notification',
             'type'           => 'text',
-            'label'          => 'notification',
+            'label'          => trans('admin.notification'),
             'visibleInTable' => true,
             'visibleInModal' => true,
         ]);
@@ -47,14 +47,14 @@ class NotificationsCrudController extends CrudController
             'name'           => 'ceremony', // the column that contains the ID of that connected entity;
 
             'attribute'        =>'name',
-            'label'          => 'Ceremony For',
+            'label'          => trans('admin.Ceremony For'),
             'visibleInTable' => true,
             'visibleInModal' => true,
         ]);
         CRUD::addColumn([
             'name'           => 'link',
             'type'           => 'text',
-            'label'          => 'link'
+            'label'          => trans('admin.link')
         ]);
 
     }
@@ -67,7 +67,7 @@ class NotificationsCrudController extends CrudController
             'name'           => 'ceremony', // the column that contains the ID of that connected entity;
 
             'attribute'        =>'name',
-            'label'          => 'Ceremony For',
+            'label'          => trans('admin.Ceremony For'),
             'type'  => 'radio',
             'tab'   => 'Texts',
             'default'=>'2',
@@ -86,7 +86,7 @@ class NotificationsCrudController extends CrudController
             'name'           => 'sent_to', // the column that contains the ID of that connected entity;
 
             'attribute'        =>'sent_to',
-            'label'          => 'Sent To',
+            'label'          => trans('admin.Sent To'),
             'type'  => 'select_from_array',
             'tab'   => 'Texts',
 
@@ -102,7 +102,7 @@ class NotificationsCrudController extends CrudController
         ]);
 
         CRUD::addField([  // Select2
-            'label' => 'Event',
+            'label' => trans('admin.Event'),
             'type' => 'select2_multiple',
             'name' => 'event_id', // the db column for the foreign key
             'entity' => 'ceremony', // the method that defines the relationship in your Model
@@ -119,7 +119,7 @@ class NotificationsCrudController extends CrudController
 
 
         CRUD::addField([  // Select2
-            'label' => 'Student',
+            'label' => trans('admin.Student'),
             'type' => 'select2_multiple',
             'name' => 'user_id', // the db column for the foreign key
             'entity' => 'user', // the method that defines the relationship in your Model
@@ -136,7 +136,7 @@ class NotificationsCrudController extends CrudController
         CRUD::addField([
             'name'           => 'full_name',
             'type'           => 'text',
-            'label'          => 'First name',
+            'label'          => trans('admin.First name'),
             'tab' => 'Texts',
             'attributes' => [
                 'class'       => 'form-control notificationfull_name-class'],
@@ -144,7 +144,7 @@ class NotificationsCrudController extends CrudController
         CRUD::addField([
             'name'           => 'grandfather_name',
             'type'           => 'text',
-            'label'          => 'Second name',
+            'label'          => trans('admin.Second name'),
             'tab' => 'Texts',
             'attributes' => [
                 'class'       => 'form-control notificationgrandfather_name'],
@@ -152,7 +152,7 @@ class NotificationsCrudController extends CrudController
         CRUD::addField([
             'name'           => 'father_name',
             'type'           => 'text',
-            'label'          => 'Third name',
+            'label'          => trans('admin.Third name'),
             'tab' => 'Texts',
             'attributes' => [
                 'class'       => 'form-control notificationfather_name'],
@@ -160,7 +160,7 @@ class NotificationsCrudController extends CrudController
         CRUD::addField([
             'name'           => 'family_name',
             'type'           => 'text',
-            'label'          => 'Forth name',
+            'label'          => trans('admin.Forth name'),
             'tab' => 'Texts',
             'attributes' => [
         'class'       => 'form-control notificationfamily_name-class'],
@@ -169,14 +169,14 @@ class NotificationsCrudController extends CrudController
         CRUD::addField([
             'name'           => 'notification',
             'type'           => 'text',
-            'label'          => 'notification',
+            'label'          => trans('admin.notification'),
             'tab' => 'Texts'
         ]);
 
         CRUD::addField([
             'name'           => 'link',
             'type'           => 'text',
-            'label'          => 'link',
+            'label'          => trans('admin.link'),
             'tab' => 'Texts'
 
         ]);

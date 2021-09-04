@@ -25,22 +25,37 @@ class ContactCrudController extends CrudController
 
         CRUD::setModel(\App\Models\ContactU::class);
         CRUD::setRoute(config('backpack.base.route_prefix').'/contact');
-        CRUD::setEntityNameStrings('contact', 'contact');
+        CRUD::setEntityNameStrings(trans('admin.contact'), trans('admin.contact'));
     }
 
     protected function setupListOperation()
     {
-        CRUD::addColumns(['name', 'email','mobile','subject' ]); // add multiple columns, at the end of the stack
+        $this->crud->addColumn([
+            'name'=>'name',
+            'label'=>trans('admin.Name')
+        ]);
+        $this->crud->addColumn([
+            'name'=>'email',
+            'label'=>trans('admin.email')
+        ]);
+        $this->crud->addColumn([
+            'name'=>'mobile',
+            'label'=>trans('admin.phone')
+        ]);
+        $this->crud->addColumn([
+            'name'=>'subject',
+            'label'=>trans('admin.Subject')
+        ]);
         $this->crud->addColumn([ // Text
             'name' => 'reply',
-            'label' => 'Is Replied',
+            'label' => trans('admin.Is Replied'),
             'type'     => 'closure',
             'function' => function($entry) {
                 if($entry->isreply)
                 {
-                    return '<span style="background-color: green;border-radius: 11px;" > Replied </span>';
+                    return '<span style="background-color: green;border-radius: 11px;" > '.trans('admin.Replied').' </span>';
                 }
-                return '<span style="background-color: red;border-radius: 11px;" > Not Replied </span>';
+                return '<span style="background-color: red;border-radius: 11px;" > '.trans('admin.Not Replied').'</span>';
 
             }
         ]);
@@ -53,7 +68,7 @@ class ContactCrudController extends CrudController
     {
         CRUD::setValidation(StoreRequest::class);
         CRUD::addField([  // Select2
-            'label' => 'Student',
+            'label' => trans('admin.Student'),
             'type' => 'relationship',
             'name' => 'user_id', // the db column for the foreign key
             'entity' => 'user', // the method that defines the relationship in your Model
@@ -63,35 +78,35 @@ class ContactCrudController extends CrudController
         ]);
         CRUD::addField([ // Text
             'name'  => 'name',
-            'label' => 'Name',
+            'label' => trans('admin.Name'),
             'type'  => 'text',
             'tab'   => 'Texts',
 
         ]);
         CRUD::addField([ // Text
             'name'  => 'email',
-            'label' => 'Email',
+            'label' => trans('admin.Email'),
             'type'  => 'email',
             'tab'   => 'Texts',
 
         ]);
         CRUD::addField([ // Text
             'name'  => 'mobile',
-            'label' => 'Mobile',
+            'label' => trans('admin.Mobile'),
             'type'  => 'text',
             'tab'   => 'Texts',
 
         ]);
         CRUD::addField([ // Text
             'name'  => 'subject',
-            'label' => 'Subject',
+            'label' => trans('admin.Subject'),
             'type'  => 'text',
             'tab'   => 'Texts',
 
         ]);
         CRUD::addField([ // Text
             'name'  => 'reply',
-            'label' => 'Reply',
+            'label' => trans('admin.Reply'),
             'type'  => 'text',
             'tab'   => 'Texts',
 

@@ -25,15 +25,18 @@ class SponsorPlatinumsCrudController extends CrudController
 
         CRUD::setModel(\App\Models\Sponsorplatinum::class);
         CRUD::setRoute(config('backpack.base.route_prefix').'/SponsorPlatinums');
-        CRUD::setEntityNameStrings('sponsorplatinum', 'sponsorplatinum');
+        CRUD::setEntityNameStrings(trans('admin.sponsorplatinum'), trans('admin.sponsorplatinum'));
     }
 
     protected function setupListOperation()
     {
-        CRUD::addColumns(['title']); // add multiple columns, at the end of the stack
         $this->crud->addColumn([ // Text
+            'name'  => 'title',
+            'label' => trans('admin.Title'),
+            'type'      => 'image'
+        ]);        $this->crud->addColumn([ // Text
             'name'  => 'image',
-            'label' => 'image',
+            'label' => trans('admin.image'),
             'type'      => 'image'
         ]);
     }
@@ -44,19 +47,19 @@ class SponsorPlatinumsCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name'  => 'title',
-            'label' => 'Title',
+            'label' => trans('admin.Title'),
             'type'  => 'text',
             'tab'   => 'Texts',
         ]);
 
         CRUD::addField([ // Text
             'name'  => 'link',
-            'label' => 'Link',
+            'label' => trans('admin.Link'),
             'type'  => 'text',
             'tab'   => 'Texts',
         ]);
         $this->crud->addField([
-            'label' => "Image",
+            'label' => trans('admin.Image'),
             'name' => "image",
             'type' => 'image',
             'tab'   => 'Texts',
@@ -67,7 +70,7 @@ class SponsorPlatinumsCrudController extends CrudController
         ]);
         CRUD::addField([ // Text
             'name'  => 'status',
-            'label' => 'Activated',
+            'label' => trans('admin.Activated'),
             'type'  => 'radio',
             'tab'   => 'Texts',
             'options'     => [

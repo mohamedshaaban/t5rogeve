@@ -53,7 +53,7 @@ class ProductCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name'  => 'name',
-            'label' => 'Name',
+            'label' => trans('admin.Name'),
             'type'  => 'text',
             'tab'   => 'Texts',
 

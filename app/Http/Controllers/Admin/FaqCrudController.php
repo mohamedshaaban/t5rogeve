@@ -25,15 +25,16 @@ class FaqCrudController extends CrudController
 
         CRUD::setModel(\App\Models\Faq::class);
         CRUD::setRoute(config('backpack.base.route_prefix').'/faq');
-        CRUD::setEntityNameStrings('faq', 'faq');
+        CRUD::setEntityNameStrings(trans('admin.faq'), trans('admin.faq'));
     }
 
     protected function setupListOperation()
     {
-        CRUD::addColumns(['question', 'answer']); // add multiple columns, at the end of the stack
+        $this->crud->addColumn(['name'=>'question','label'=>trans('admin.Question')]);
+        $this->crud->addColumn(['name'=>'answer','label'=>trans('admin.Answer')]);
         $this->crud->addColumn([ // Text
             'name' => 'isactive',
-            'label' => 'Active']);
+            'label' => trans('admin.Active')]);
 
         $this->crud->enableExportButtons();
         $this->crud->enableResponsiveTable();
@@ -46,14 +47,14 @@ class FaqCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name'  => 'question',
-            'label' => 'Question',
+            'label' => trans('admin.Question'),
             'type'  => 'text',
             'tab'   => 'Texts',
 
         ]);
         CRUD::addField([ // Text
             'name'  => 'answer',
-            'label' => 'Answer',
+            'label' => trans('admin.Answer'),
             'type'  => 'text',
             'tab'   => 'Texts',
 
@@ -61,7 +62,7 @@ class FaqCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name'  => 'is_active',
-            'label' => 'Active',
+            'label' => trans('admin.Active'),
             'type'  => 'radio',
             'tab'   => 'Texts',
             'options'     => [

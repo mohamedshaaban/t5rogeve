@@ -29,12 +29,18 @@ class EventsCrudController extends CrudController
 
         CRUD::setModel(\App\Models\Ceremony::class);
         CRUD::setRoute(config('backpack.base.route_prefix').'/events');
-        CRUD::setEntityNameStrings('event', 'events');
+        CRUD::setEntityNameStrings(trans('admin.event'), trans('admin.events'));
     }
 
     protected function setupListOperation()
     {
-        CRUD::addColumns(['name', 'date','total_seats','remaining_seats','ceremony_price','number_of_students']); // add multiple columns, at the end of the stack
+
+        $this->crud->addColumn(['name'=>'name','label'=>trans('admin.Name')]);
+        $this->crud->addColumn(['name'=>'date','label'=>trans('admin.date')]);
+        $this->crud->addColumn(['name'=>'total_seats','label'=>trans('admin.total_seats')]);
+        $this->crud->addColumn(['name'=>'remaining_seats','label'=>trans('admin.remaining_seats')]);
+        $this->crud->addColumn(['name'=>'ceremony_price','label'=>trans('admin.ceremony_price')]);
+        $this->crud->addColumn(['name'=>'number_of_students','label'=>trans('admin.number_of_students')]);
 
     }
 
@@ -44,27 +50,27 @@ class EventsCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name'  => 'name',
-            'label' => 'Event Name',
+            'label' => trans('admin.Event Name'),
             'type'  => 'text',
             'tab'   => 'Texts',
         ]);
 
         CRUD::addField([ // Text
             'name'  => 'code',
-            'label' => 'Event Code',
+            'label' => trans('admin.Event Code'),
             'type'  => 'text',
             'tab'   => 'Texts',
         ]);
 
         CRUD::addField([ // Text
             'name'  => 'description',
-            'label' => 'Event Description',
+            'label' => trans('admin.Event Description'),
             'type'  => 'text',
             'tab'   => 'Texts',
         ]);
         CRUD::addField([ // Text
             'name'  => 'address',
-            'label' => 'Event address',
+            'label' => trans('admin.Event address'),
             'type'  => 'text',
             'tab'   => 'Texts',
         ]);
@@ -72,7 +78,7 @@ class EventsCrudController extends CrudController
 
          CRUD::addField([ // Text
             'name'  => 'latitude',
-            'label' => 'Event latitude',
+            'label' => trans('admin.Event latitude'),
             'type'  => 'text',
             'tab'   => 'Texts',
         ]);
@@ -80,7 +86,7 @@ class EventsCrudController extends CrudController
 
          CRUD::addField([ // Text
             'name'  => 'longitude',
-            'label' => 'Event longitude',
+            'label' => trans('admin.Event longitude'),
             'type'  => 'text',
             'tab'   => 'Texts',
         ]);
@@ -88,7 +94,7 @@ class EventsCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name'  => 'ceremony_for',
-            'label' => 'Event for',
+            'label' => trans('admin.Event for'),
             'type'  => 'radio',
             'tab'   => 'Texts',
             'options'     => [
@@ -101,14 +107,14 @@ class EventsCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name'  => 'date',
-            'label' => 'Event date',
+            'label' => trans('admin.Event date'),
             'type'  => 'date',
             'tab'   => 'Texts',
         ]);
 
         CRUD::addField([ // Text
             'name'  => 'hideDate',
-            'label' => 'hide Date',
+            'label' => trans('admin.hide Date'),
             'type'  => 'checkbox',
             'tab'   => 'Texts',
             'options'     => [
@@ -119,42 +125,42 @@ class EventsCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name'  => 'total_seats',
-            'label' => 'Event total seats',
+            'label' => trans('admin.Event total seats'),
             'type'  => 'number',
             'tab'   => 'Texts',
         ]);
 
         CRUD::addField([ // Text
             'name'  => 'number_of_students',
-            'label' => ' Maximum number of Students ',
+            'label' => trans('admin. Maximum number of Students'),
             'type'  => 'number',
             'tab'   => 'Texts',
         ]);
 
         CRUD::addField([ // Text
             'name'  => 'minimum_downpayment_amount',
-            'label' => ' Minimum DownPayment Amount ',
+            'label' => trans('admin. Minimum DownPayment Amount'),
             'type'  => 'number',
             'tab'   => 'Texts',
         ]);
 
         CRUD::addField([ // Text
             'name'  => 'downpayment_amount2',
-            'label' => ' Payment Amount 2 ',
+            'label' => trans('admin. Payment Amount 2'),
             'type'  => 'text',
             'tab'   => 'Texts',
         ]);
 
         CRUD::addField([ // Text
             'name'  => 'price',
-            'label' => 'Seat Price',
+            'label' => trans('admin.Seat Price'),
             'type'  => 'number',
             'tab'   => 'Texts',
         ]);
 
         CRUD::addField([ // Text
             'name'  => 'event_price',
-            'label' => 'Event Price',
+            'label' => trans('admin.Event Price'),
             'type'  => 'number',
             'tab'   => 'Texts',
         ]);
@@ -163,7 +169,7 @@ class EventsCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name'  => 'free_seats',
-            'label' => 'Free Seats',
+            'label' => trans('admin.Free Seats'),
             'type'  => 'number',
             'tab'   => 'Texts',
         ]);
@@ -172,7 +178,7 @@ class EventsCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name'  => 'hashtag',
-            'label' => 'hashtag',
+            'label' => trans('admin.hashtag'),
             'type'  => 'text',
             'tab'   => 'Texts',
         ]);
@@ -189,7 +195,7 @@ class EventsCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name'  => 'hideSeats',
-            'label' => ' Hide Seats ',
+            'label' => trans('admin. Hide Seats'),
             'type'  => 'radio',
             'tab'   => 'Texts',
             'options'     => [
@@ -201,7 +207,7 @@ class EventsCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name'  => 'hide_UsersSeatsN',
-            'label' => ' Hide Users & Seats Number ',
+            'label' => trans('admin. Hide Users & Seats Number'),
             'type'  => 'radio',
             'tab'   => 'Texts',
             'options'     => [
@@ -213,21 +219,21 @@ class EventsCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name'  => 'NameExDate',
-            'label' => ' Name amendment expiration date ',
+            'label' => trans('admin. Name amendment expiration date'),
             'type'  => 'date',
             'tab'   => 'Texts',
 
         ]);
         CRUD::addField([ // Text
             'name'  => 'RobeExDate',
-            'label' => ' The expiry date of resize the robe ',
+            'label' => trans('admin. The expiry date of resize the robe'),
             'type'  => 'date',
             'tab'   => 'Texts',
 
         ]);
 
         $this->crud->addField([
-            'label' => "Event Logo",
+            'label' => trans("admin.Event Logo"),
             'name' => "image",
             'type' => 'image',
             'tab'   => 'Texts',
@@ -236,7 +242,7 @@ class EventsCrudController extends CrudController
         ]);
 
         $this->crud->addField([
-            'label' => "Event Image",
+            'label' => trans("admin.Event Image"),
             'name' => "imagemain",
             'type' => 'image',
             'tab'   => 'Texts',
@@ -245,7 +251,7 @@ class EventsCrudController extends CrudController
         ]);
 
         $this->crud->addField([
-            'label' => "Terms Image",
+            'label' => trans("admin.Terms Image"),
             'name' => "imageterm",
             'type' => 'image',
             'tab'   => 'Texts',
@@ -254,7 +260,7 @@ class EventsCrudController extends CrudController
         ]);
 
         $this->crud->addField([
-            'label' => "Description Image",
+            'label' => trans("admin.Description Image"),
             'name' => "imagedes",
             'type' => 'image',
             'tab'   => 'Texts',
@@ -285,6 +291,17 @@ class EventsCrudController extends CrudController
     {
         $event = Ceremony::find($request->id);
         return ($event);
+    }
+    public static function fetchDashEventDetails(\Illuminate\Http\Request  $request)
+    {
+        $event = Ceremony::find($request->id);
+        return ([
+             'eveDetBookSeats'=>$event->total_seats.'/'.$event->remaining_seats,
+            'eveDetAmtFull'=>$event->booking()->where('payment_type','full')->sum('amount'),
+            'eveDetAmtDwnPay'=>$event->booking()->where('payment_type','down')->sum('amount'),
+            'eveDetAmtRem'=>$event->booking()->where('payment_type','down')->sum('remaining_amount'),
+            'eveDetRegUser'=>$event->booking()->count('id')
+        ]);
     }
 
     public static function fetchuser(\Illuminate\Http\Request  $request)

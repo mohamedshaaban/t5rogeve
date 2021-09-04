@@ -53,16 +53,23 @@ $(function(){
 
 
     $('.event-class').on('change', function() {
-        var data = $(".event-class option:selected").text();
+
+    });
+
+    $('.filterevent-class').on('change', function() {
+        var data = $(".filterevent-class option:selected").text();
         $.ajax({
             type: "GET",
-            url: "/admin/fetch/eventdetails/"+$( this ).val(),
+            url: "/admin/fetch/eventdashdetails/"+$( this ).val(),
             success: function(response){
                 //if request if made successfully then the response represent the data
-                $('.freeseats-class').val(response.free_seats);
-                $('.eventprice-class').val(response.price);
-                $('.downpayment-class').val(response.minimum_downpayment_amount);
-                $('.payment-class2').val(response.downpayment_amount2);
+                $('#eveDetAmtRem').text(response.eveDetAmtRem);
+                $('#eveDetBookSeats').text(response.eveDetBookSeats);
+                $('#eveDetAmtFull').text(response.eveDetAmtFull);
+                $('#eveDetAmtDwnPay').text(response.eveDetAmtDwnPay);
+                $('#eveDetAmtRem').text(response.eveDetAmtRem);
+                $('#eveDetRegUser').text(response.eveDetRegUser);
+
 
             }
         });

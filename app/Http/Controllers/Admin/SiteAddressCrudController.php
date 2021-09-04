@@ -25,13 +25,13 @@ class SiteAddressCrudController extends CrudController
 
         CRUD::setModel(\App\Models\SiteAddress::class);
         CRUD::setRoute(config('backpack.base.route_prefix').'/siteaddress');
-        CRUD::setEntityNameStrings('siteaddress', 'siteaddress');
+        CRUD::setEntityNameStrings(trans('admin.siteaddress'), trans('admin.siteaddress'));
     }
 
     protected function setupListOperation()
     {
-        CRUD::addColumns(['content']); // add multiple columns, at the end of the stack
-
+//        CRUD::addColumns(['content']); // add multiple columns, at the end of the stack
+        $this->crud->addColumn(['name'=>'content','label'=>trans('admin.content')]);
         $this->crud->enableExportButtons();
         $this->crud->enableResponsiveTable();
         $this->crud->enablePersistentTable();
@@ -44,7 +44,7 @@ class SiteAddressCrudController extends CrudController
 
         CRUD::addField([ // Text
             'name'  => 'content',
-            'label' => 'Address',
+            'label' => trans('admin.Address'),
             'type'  => 'textarea',
             'tab'   => 'Texts',
 

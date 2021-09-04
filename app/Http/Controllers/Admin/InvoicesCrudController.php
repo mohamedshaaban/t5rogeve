@@ -33,28 +33,28 @@ class InvoicesCrudController extends CrudController
         CRUD::addColumns(['id']); // add multiple columns, at the end of the stack
         $this->crud->addColumn([ // Text
             'name' => 'created_at',
-            'label' => 'Date ',
+            'label' => trans('admin.Date'),
         ]);
         $this->crud->addColumn([ // Text
             'name' => 'ceremony',
-            'label' => 'Event name ',
+            'label' => trans('admin.Event name'),
             'type' => 'relationship'
         ]);
         $this->crud->addColumn([ // Text
             'name' => 'amt',
-            'label' => 'Amount',
+            'label' => trans('admin.Amount'),
             'type' => 'link'
         ]);
         $this->crud->addColumn([ // Text
             'name' => 'user',
-            'label' => 'Student name ',
+            'label' => trans('admin.Student name'),
             'type' => 'relationship',
             'attribute'=>'all_name'
         ]);
         $this->crud->addColumn([ // Text
             'name' => 'phone',
             'entity'=>'user',
-            'label' => 'Student phone ',
+            'label' => trans('admin.Student phone'),
             'type' => 'relationship',
             'attribute'=>'phone'
         ]);
@@ -69,7 +69,7 @@ class InvoicesCrudController extends CrudController
 //        CRUD::setValidation(StoreRequest::class);
 
         CRUD::addField([  // Select2
-            'label' => 'Student',
+            'label' => trans('admin.Student'),
             'type' => 'relationship',
             'name' => 'user_id', // the db column for the foreign key
             'entity' => 'user', // the method that defines the relationship in your Model
@@ -80,7 +80,7 @@ class InvoicesCrudController extends CrudController
 
 
         CRUD::addField([  // Select2
-            'label' => 'Event',
+            'label' => trans('admin.Event'),
             'type' => 'relationship',
             'name' => 'event_id', // the db column for the foreign key
             'entity' => 'ceremony', // the method that defines the relationship in your Model
@@ -88,67 +88,67 @@ class InvoicesCrudController extends CrudController
              'data_source' => url("/admin/fetch/ceremony"), // url to controller search function (with /{id} should return model)
         ]);
         CRUD::addField([  // Select2
-            'label' => 'payment id',
+            'label' => trans('admin.payment id'),
              'name' => 'paymentid', // the db column for the foreign key
 
         ]);
         CRUD::addField([  // Select2
-            'label' => 'Result',
+            'label' => trans('admin.Result'),
             'type' => 'text',
             'name' => 'result', // the db column for the foreign key
 
         ]);
         CRUD::addField([  // Select2
-            'label' => 'auth',
+            'label' => trans('admin.auth'),
             'type' => 'text',
             'name' => 'auth', // the db column for the foreign key
 
         ]);
         CRUD::addField([  // Select2
-            'label' => 'avr',
+            'label' => trans('admin.avr'),
             'type' => 'text',
             'name' => 'avr', // the db column for the foreign key
 
         ]);
         CRUD::addField([  // Select2
-            'label' => 'Refernence',
+            'label' => trans('admin.Refernence'),
             'type' => 'text',
             'name' => 'avr', // the db column for the foreign key
 
         ]);
         CRUD::addField([  // Select2
-            'label' => 'tran id',
+            'label' => trans('admin.tran id'),
             'type' => 'text',
             'name' => 'tranid', // the db column for the foreign key
 
         ]);
         CRUD::addField([  // Select2
-            'label' => 'post date',
+            'label' => trans('admin.post date'),
             'type' => 'date',
             'name' => 'postdate', // the db column for the foreign key
 
         ]);
         CRUD::addField([  // Select2
-            'label' => 'Track id',
+            'label' => trans('admin.Track id'),
             'type' => 'text',
             'name' => 'trackid', // the db column for the foreign key
 
         ]);
         CRUD::addField([  // Select2
-            'label' => 'Amount',
+            'label' => trans('admin.Amount'),
             'type' => 'text',
             'name' => 'amt', // the db column for the foreign key
 
         ]);
 
         CRUD::addField([  // Select2
-            'label' => 'invoic id',
+            'label' => trans('admin.invoic id'),
             'type' => 'text',
             'name' => 'invoic_id', // the db column for the foreign key
 
         ]);
         CRUD::addField([  // Select2
-            'label' => 'phone',
+            'label' => trans('admin.phone'),
             'type' => 'text',
             'name' => 'phone', // the db column for the foreign key
 
