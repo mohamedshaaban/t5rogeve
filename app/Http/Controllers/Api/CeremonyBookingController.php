@@ -166,7 +166,7 @@ class CeremonyBookingController extends Controller
             $user = Auth::guard('customers_api')->user();
             $user_id = $user->id;
 
-                $booking = Booking::with('ceremony', 'ceremonyWithDescription', 'payments')
+                $booking = Booking::with('ceremony','ceremony.poll.polloption.pollanswered', 'ceremonyWithDescription', 'payments')
                     ->where('user_id', $user_id)->orderBy('id', 'desc')->paginate()->toArray();
 
                 $booking['next_page_url'] = (!empty($booking['next_page_url'])) ? str_replace('/?', '?', $booking['next_page_url']) : '';
@@ -185,7 +185,11 @@ class CeremonyBookingController extends Controller
                 $data = $booking['data'];
 
                 foreach ($data as $value) {
-                    $id = (int)$value['id'];
+                    if(!isset($value['ceremony']))
+                    {
+                        continue;
+                    }
+                     $id = (int)$value['id'];
                     $user_id = (int)$value['user_id'];
 
                     $event_id = (int)$value['event_id'];
@@ -204,6 +208,7 @@ class CeremonyBookingController extends Controller
                     $NameExDate = $value['ceremony']['Name_Ex_Date'];
                     $RobeExDate = $value['ceremony']['RobSize_Ex_Date'];
                     $ceremony = $value['ceremony'];
+                    $poll = $value['ceremony']['poll'];
 
                     $ceremony_with_description = $value['ceremony'];
                     if (empty($ceremony_with_description)) {
@@ -258,7 +263,8 @@ class CeremonyBookingController extends Controller
                             "ceremony_for" => $ceremony_for,
                             "ceremony_image" => $ceremony_image,
                             "ceremony_medium_image" => $ceremony_medium_image,
-                            "ceremony_thumbnail_image" => $ceremony_thumbnail_image
+                            "ceremony_thumbnail_image" => $ceremony_thumbnail_image,
+                            "poll" => $poll
 
                         );
                     }

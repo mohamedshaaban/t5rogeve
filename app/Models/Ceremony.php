@@ -338,4 +338,8 @@ class Ceremony extends Model
     public function booking(){
         return $this->hasMany(Booking::class,'event_id');
     }
+    public function poll(){
+        return $this->hasMany(Poll::class,'eventid');
+    }
+
 }
