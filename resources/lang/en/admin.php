@@ -213,6 +213,7 @@ return [
     'Event Logo'=>'Event Logo',
     'Event Image'=>'Event Image',
     'Description Image'=>'Description Image',
-    ''=>'',
+    'Event details'=>'Event details',
+    'Event Term Image'=>'Event Term Image',
 
     ];

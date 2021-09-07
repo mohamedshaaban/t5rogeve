@@ -216,9 +216,11 @@ return [
     'New Entries'=>'طلبات جديدة',
     'amenities'=>'تفاصيل الفاعلية',
     'Terms'=>'الشروط والاحكام ',
+    'Event Term Image'=>'الشروط والاحكام ',
     'Event Logo'=>'شعار الفاعلية',
     'Event Image'=>'صةرى الفاعلية',
     'Description Image'=>'الوصف',
+    'Event details'=>'الوصف',
 
 
 ];
