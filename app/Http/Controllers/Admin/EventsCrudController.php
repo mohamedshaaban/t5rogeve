@@ -260,7 +260,7 @@ class EventsCrudController extends CrudController
         ]);
 
         $this->crud->addField([
-            'label' => trans("admin.Description Image"),
+            'label' => trans("admin.Description"),
             'name' => "amenities",
             'type' => 'relationship',
             'tab'   => 'Texts',
