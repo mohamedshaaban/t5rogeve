@@ -46,7 +46,7 @@ class AmenitiesCrudController extends CrudController
 //        CRUD::setValidation(StoreRequest::class);
 
         CRUD::addField([ // Text
-            'name'  => 'title',
+            'name'  => 'name',
             'label' => trans('admin.Title'),
             'type'  => 'text',
             'tab'   => 'Texts',
