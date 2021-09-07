@@ -14,6 +14,7 @@
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('faculty') }}"><i class="nav-icon la la-cog"></i> <span>{{ trans('admin.Faculty') }}</span></a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('notifications') }}"><i class="nav-icon la la-cog"></i> <span>{{ trans('admin.Notifications')}}</span></a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('polls') }}"><i class="nav-icon la la-cog"></i> <span>{{ trans('admin.Polls')}}</span></a></li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('amenities') }}"><i class="nav-icon la la-cog"></i> <span>{{ trans('admin.amenities')}}</span></a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('events') }}"><i class="nav-icon la la-cog"></i> <span>{{ trans('admin.Events')}}</span></a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('booking') }}"><i class="nav-icon la la-cog"></i> <span>{{ trans('admin.Bookings')}}</span></a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('SponsorPlatinums') }}"><i class="nav-icon la la-cog"></i> <span>{{ trans('admin.Sponsor Platinums')}}</span></a></li>

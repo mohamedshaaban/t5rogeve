@@ -251,12 +251,32 @@ class EventsCrudController extends CrudController
         ]);
 
         $this->crud->addField([
-            'label' => trans("admin.Terms Image"),
+            'label' => trans("admin.Terms"),
             'name' => "imageterm",
-            'type' => 'image',
+            'type' => 'easymde',
             'tab'   => 'Texts',
             'crop' => true, // set to true to allow cropping, false to disable
             'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
+        ]);
+
+        $this->crud->addField([
+            'label' => trans("admin.Description Image"),
+            'name' => "amenities",
+            'type' => 'relationship',
+            'tab'   => 'Texts',
+            'crop' => true, // set to true to allow cropping, false to disable
+            'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
+
+            // optional
+            'entity'    => 'amenities', // the method that defines the relationship in your Model
+            'model'     => "App\Models\amenities", // foreign key model
+            'attribute' => 'name', // foreign key attribute that is shown to user
+            'pivot'     => true, // on create&update, do you need to add/delete pivot table entries?
+
+            // also optional
+            'options'   => (function ($query) {
+                return $query->orderBy('name', 'ASC')->get();
+            }), // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
         ]);
 
         $this->crud->addField([

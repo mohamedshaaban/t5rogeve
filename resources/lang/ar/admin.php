@@ -214,6 +214,13 @@ return [
     'Cancel Request.'=>'طلبات الالغاء',
     'New Users Past 7 Days'=>'الطلاب المسجلين في 7 ايام ',
     'New Entries'=>'طلبات جديدة',
+    'amenities'=>'Amenities',
+    'Terms'=>'الشروط والاحكام ',
+    'amenities'=>'Amenities',
+    'Terms'=>'Terms & Conditions',
+    'Event Logo'=>'Event Logo',
+    'Event Image'=>'Event Image',
+    'Description Image'=>'Description Image',
 
 
 ];

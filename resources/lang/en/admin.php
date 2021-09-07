@@ -208,5 +208,11 @@ return [
      'Cancel Request.'=>'Cancel Request.',
     'New Users Past 7 Days'=>'New Users Past 7 Days',
     'New Entries'=>'New Entries',
+    'amenities'=>'Amenities',
+    'Terms'=>'Terms & Conditions',
+    'Event Logo'=>'Event Logo',
+    'Event Image'=>'Event Image',
+    'Description Image'=>'Description Image',
+    ''=>'',
 
     ];

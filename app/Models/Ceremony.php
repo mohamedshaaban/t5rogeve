@@ -198,7 +198,7 @@ class Ceremony extends Model
         }
     }
 
-    public function setImagetermAttribute($value)
+    /*public function setImagetermAttribute($value)
     {
         $attribute_name = "imageterm";
         // or use your own disk, defined in config/filesystems.php
@@ -238,7 +238,7 @@ class Ceremony extends Model
         } else {
             return $this->attributes[$attribute_name] = $value;
         }
-    }
+    }*/
     public function getRobeexdateAttribute()
     {
         if(!$this->attributes['RobSize_Ex_Date'])
@@ -307,7 +307,7 @@ class Ceremony extends Model
         }
         return $value;
     }
-    public function getImagetermAttribute($value)
+    /*public function getImagetermAttribute($value)
     {
 //        return $value;
 
@@ -315,7 +315,7 @@ class Ceremony extends Model
             return asset('uploads/folder_1/folder_2/' . $value);
         }
         return $value;
-    }
+    }*/
     public function getImagemainAttribute($value)
     {
 //        return $value;
@@ -341,5 +341,8 @@ class Ceremony extends Model
     public function poll(){
         return $this->hasMany(Poll::class,'eventid');
     }
-
+    public function amenities()
+    {
+        return $this->belongsToMany(Amenities::class, 'event_amenities','event_id');
+    }
 }
