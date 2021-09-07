@@ -280,7 +280,16 @@ class EventsCrudController extends CrudController
         ]);
 
         $this->crud->addField([
-            'label' => trans("admin.Description Image"),
+            'label' => trans("admin.Event Term Image"),
+            'name' => "imageterm2",
+            'type' => 'image',
+            'tab'   => 'Texts',
+            'crop' => true, // set to true to allow cropping, false to disable
+            'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
+
+        ]);
+        $this->crud->addField([
+            'label' => trans("admin.Event details"),
             'name' => "imagedes",
             'type' => 'image',
             'tab'   => 'Texts',
