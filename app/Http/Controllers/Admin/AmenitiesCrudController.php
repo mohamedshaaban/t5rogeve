@@ -30,7 +30,7 @@ class AmenitiesCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        $this->crud->addColumn(['name'=>'title','label'=>trans('admin.Title')]);
+        $this->crud->addColumn(['name'=>'name','label'=>trans('admin.Title')]);
 
         $this->crud->addColumn([ // Text
             'type'=>'image',
