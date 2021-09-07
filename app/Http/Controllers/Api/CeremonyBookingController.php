@@ -204,6 +204,7 @@ class CeremonyBookingController extends Controller
                     $created_at = $value['created_at'];
                     $updated_at = $value['updated_at'];
                     $imageterm = $value['ceremony']['imageterm'];
+                    $imageterm2 = $value['ceremony']['imageterm2'];
                     $hide_seats = (int)$value['ceremony']['hide_seats'];
                     $NameExDate = $value['ceremony']['Name_Ex_Date'];
                     $RobeExDate = $value['ceremony']['RobSize_Ex_Date'];
@@ -253,6 +254,7 @@ class CeremonyBookingController extends Controller
                             "NameExDate" => $NameExDate,
                             "RobeExDate" => $RobeExDate,
                             "imageterm" => $imageterm,
+                            "imageterm2" => $imageterm2,
                             "faculty" => $ceremony_faculty,
                             "minimum_downpayment_amount" => $ceremony_minimum_downpayment_amount,
                             "created_at" => $ceremony_created_at,
