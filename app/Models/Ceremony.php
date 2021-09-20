@@ -71,12 +71,6 @@ class Ceremony extends Model
 		'ceremony_for' => 'int'
 	];
 
-	protected $dates = [
-		'Name_Ex_Date',
-		'RobSize_Ex_Date',
-		'date'
-	];
-
 	protected $appends = ['nameexdate','robeexdate'];
 
 	protected $fillable = [
@@ -302,38 +296,30 @@ class Ceremony extends Model
     {
 //        return $value;
 
-        if ($value != null && $value != '') {
-            return asset('uploads/folder_1/folder_2/' . $value);
-        }
+
         return $value;
     }
     public function getImageterm2Attribute($value)
     {
-//        return $value;
-
-        if ($value != null && $value != '') {
-            return asset('uploads/folder_1/folder_2/' . $value);
+        if (strpos($value, 'http') !== false) {
+            return (  $value);
         }
-        return $value;
+        return asset('uploads/folder_1/folder_2/' . $value);
     }
     public function getImagemainAttribute($value)
     {
-//        return $value;
-
-        if ($value != null && $value != '') {
-            return asset('uploads/folder_1/folder_2/' . $value);
+        if (strpos($value, 'http') !== false) {
+            return (  $value);
         }
-        return $value;
+        return asset('uploads/folder_1/folder_2/' . $value);
     }
 
     public function getImagedesAttribute($value)
     {
-//        return $value;
-
-        if ($value != null && $value != '') {
-            return asset('uploads/folder_1/folder_2/' . $value);
+        if (strpos($value, 'http') !== false) {
+            return (  $value);
         }
-        return $value;
+        return asset('uploads/folder_1/folder_2/' . $value);
     }
     public function booking(){
         return $this->hasMany(Booking::class,'event_id');

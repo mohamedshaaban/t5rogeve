@@ -89,9 +89,9 @@ class AuthController extends Controller
         $validator = Validator::make(
             $request->all(),
             array(
-                'full_name' 		=> 'required',
-                'father_name'       => 'required',
-                'grandfather_name'  => 'required',
+//                'full_name' 		=> 'required',
+//                'father_name'       => 'required',
+//                'grandfather_name'  => 'required',
                 'gender' 			=> 'required',
 
                 'faulty'			=> 'required',
@@ -113,16 +113,16 @@ class AuthController extends Controller
                 'message'	=> $allErrors,
                 'detail'    => $detail
             );
-
+            return  $response;
         }else{
 
             $user_id = Auth::guard('customers_api')->user();
             $user_id = $user_id->id;
 
-                $full_name = $formData['full_name'];
-                $father_name = $formData['father_name'];
-                $grandfather_name = $formData['grandfather_name'];
-                $family_name = $formData['family_name'];
+//                $full_name = $formData['full_name'];
+//                $father_name = $formData['father_name'];
+//                $grandfather_name = $formData['grandfather_name'];
+//                $family_name = $formData['family_name'];
                 $gender = $formData['gender'];
                  $civil_id = $formData['civil_id'];
                 $faulty = $formData['faulty'];
@@ -132,14 +132,14 @@ class AuthController extends Controller
                  if($request->hasFile('image')){
 
                     $results = Customer::where('id',$user_id)->update([
-                        'full_name' => $full_name,
+//                        'full_name' => $full_name,
                         'civil_id' => $civil_id,
                         'faulty' => $faulty,
                         'gender' => $gender,
                         // 'image' => $filename ,
-                        'father_name' => $father_name,
-                        'family_name' => $family_name,
-                        'grandfather_name' => $grandfather_name
+//                        'father_name' => $father_name,
+//                        'family_name' => $family_name,
+//                        'grandfather_name' => $grandfather_name
 
                     ]);
 
@@ -172,11 +172,11 @@ class AuthController extends Controller
                         );
                     }
 
-                    return Response::json($response); die;
+                    return Response::json($response);
 
 
                 }else{
-                    $results = Customer::where('id',$user_id)->update(['full_name' => $full_name,'civil_id' => $civil_id, 'faulty' => $faulty,'gender' => $gender,'father_name' => $father_name,'family_name' => $family_name,'grandfather_name' => $grandfather_name]);
+                    $results = Customer::where('id',$user_id)->update(['civil_id' => $civil_id, 'faulty' => $faulty,'gender' => $gender]);
 
                     $data = Customer::where('id',$user_id)->select('id','full_name','grandfather_name','father_name','gender','family_name','civil_id','faulty','phone','image')
                         ->first();

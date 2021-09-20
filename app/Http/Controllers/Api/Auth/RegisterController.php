@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CustomerResources;
 use App\Models\Customer;
+use App\Models\Booking;
 use App\Models\DeviceInfo;
 use Backpack\NewsCRUD\app\Models\Article;
 use Illuminate\Http\Request;
@@ -35,7 +36,7 @@ class RegisterController extends Controller
         {
             $allErrors =  [];
             foreach ($validator->errors()->all() as $message){
-                $allErrors[] =  $message;
+                $allErrors =  $message;
             }
 
             $response	=	array(
@@ -43,6 +44,7 @@ class RegisterController extends Controller
                 'message'	=> $allErrors,
                 'detail'    => ''
             );
+            return $response ;
 
         }
         else
@@ -67,7 +69,7 @@ class RegisterController extends Controller
             $customer->gender			=  $request->gender;
             $customer->phone				=  $request->phone;
             $customer->civil_id			=  $request->civil_id;
-            $customer->faulty			=  $request->faulty;
+            $customer->faulty			=  $request->faculty;
             $customer->date_of_birth			=  $request->date_of_birth;
             $customer->otp = $otp;
             $customer->is_verified      = 0;
@@ -244,10 +246,15 @@ else
                  }
                  else
                  {
+                     $event = Booking::with('ceremony','ceremonywithdescription')->
+                         whereHas('ceremony', function($q){
+                         $q->where('date', '>=', \Carbon\Carbon::today()->format('Y-m-d'));
+                     })->where('user_id',$user->id)->orderBy('id','DESC')->first();
                      $response	=	array(
                          'status' 	=> 1,
                          'message'	=> 'تم تسجيل الدخول',
                          'user'    => new CustomerResources($user),
+                         'booking'   =>$event ,
                          'token'=>  $user->createToken('token')->accessToken
                      );
                  }

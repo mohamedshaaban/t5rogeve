@@ -60,7 +60,7 @@ class EventsController extends Controller
             $response	=	array(
                 'status' 	=> 0,
                 'message'	=> $allErrors,
-                'detail'    => ''
+                'data'    => ''
             );
 
         }
@@ -85,9 +85,9 @@ class EventsController extends Controller
                     $response	=	array(
                         'status' 	=>  0,
                         'message'	=> 'Seats are not available.',
-                        'detail'    => ''
+                        'data'    => ''
                     );
-                    return Response::json($response); die;
+                    return Response::json($response);
                 }
 
 
@@ -98,7 +98,7 @@ class EventsController extends Controller
                     $response	=	array(
                         'status' 	=> 0,
                         'message'	=> 'فشل الاجراء',
-                        /*'detail'    => $detail*/
+                        /*'data'    => $detail*/
                     );
                 }
                 else
@@ -124,7 +124,7 @@ class EventsController extends Controller
                             'message'	=> 'لا يمكن الحجز أكثر من مره',
                         );
 
-                        return Response::json($response); die;
+                        return Response::json($response);
                     }
 
                     if($payment_type=='Full' || $payment_type=='full')
@@ -290,7 +290,7 @@ class EventsController extends Controller
             $response	=	array(
                 'status' 	=> 0,
                 'message'	=> $allErrors,
-                'detail'    => $detail
+                'data'    => $detail
             );
 
         }
@@ -319,9 +319,9 @@ class EventsController extends Controller
                     $response	=	array(
                         'status' 	=>  0,
                         'message'	=> 'Seats are not available.',
-                        'detail'    => $detail
+                        'data'    => $detail
                     );
-                    return Response::json($response); die;
+                    return Response::json($response);
                 }
 
 
@@ -363,7 +363,7 @@ class EventsController extends Controller
                             'message'	=> 'You need to book minimum '.$free_seats.' seats.',
                         );
 
-                        return Response::json($response); die;
+                        return Response::json($response);
                     }
                     else
                     {
@@ -394,7 +394,7 @@ class EventsController extends Controller
                             'message'	=> 'You need to book minimum '.$free_seats.' seats.',
                         );
 
-                        return Response::json($response); die;
+                        return Response::json($response);
                     }
                     else
                     {
@@ -465,7 +465,7 @@ class EventsController extends Controller
                             'paymentID'=>$payment_details->paymentid,
                             'amount'=>$payment_details->amt,
                             'created_at'=>$payment_details->created_at
-                            /*'detail'    => $detail*/
+                            /*'data'    => $detail*/
                         );
                     }
                 }
@@ -521,7 +521,7 @@ class EventsController extends Controller
             $response	=	array(
                 'status' 	=> 0,
                 'message'	=> $allErrors,
-                'detail'    => $detail
+                'data'    => $detail
             );
 
         }
@@ -550,9 +550,9 @@ class EventsController extends Controller
                     $response	=	array(
                         'status' 	=>  0,
                         'message'	=> 'Seats are not available.',
-                        'detail'    => $detail
+                        'data'    => $detail
                     );
-                    return Response::json($response); die;
+                    return Response::json($response);
                 }
 
 
@@ -579,7 +579,7 @@ class EventsController extends Controller
                         'message'	=> 'لا يمكن الحجز أكثر من مره',
                     );
 
-                    return Response::json($response); die;
+                    return Response::json($response);
                 }
 
                 if($payment_type=='Full' || $payment_type=='full')
@@ -620,7 +620,7 @@ class EventsController extends Controller
                             'message'	=> 'You need to book minimum '.$free_seats.' seats.',
                         );
 
-                        return Response::json($response); die;
+                        return Response::json($response);
                     }
                     else
                     {
@@ -665,7 +665,7 @@ class EventsController extends Controller
                             'message'	=> 'You need to book minimum '.$free_seats.' seats.',
                         );
 
-                        return Response::json($response); die;
+                        return Response::json($response);
                     }
                     else
                     {
@@ -719,7 +719,7 @@ class EventsController extends Controller
 
             }
         }
-        return Response::json($response); die;
+        return Response::json($response);
     }
 
 
@@ -733,8 +733,6 @@ class EventsController extends Controller
         $response	= array();
         $messages = array(
             'booking_id.required' => "Please Enter Booking ID",
-            'user_id.required'  => "Please Enter User ID",
-            'session_token.required'	=> "Please Enter Session ID",
 
         );
 
@@ -742,8 +740,6 @@ class EventsController extends Controller
             $request->all(),
             array(
                 'booking_id' => 'required',
-                'user_id'  => 'required',
-                'session_token'	=> 'required',
 
             ), $messages
         );
@@ -759,7 +755,7 @@ class EventsController extends Controller
             $response	=	array(
                 'status' 	=> 0,
                 'message'	=> $allErrors,
-                'detail'    => $detail
+                'data'    => $detail
             );
 
         }
@@ -767,17 +763,14 @@ class EventsController extends Controller
         else{
 
 
-            $user_id = $formData['user_id'];
+            $user = Auth::guard('customers_api')->user();
+            $user_id = $user->id;
             $booking_id = $formData['booking_id'];
             $seats = $formData['no_of_seats'];
-            $session_token =  $formData['session_token'];
-            $trans_id 	= $formData['trans_id'];
+             $trans_id 	= $formData['trans_id'];
             $robe_size 	= $formData['rob_size'];
 
-            $checkUserSession = $this->verifyUserSession($user_id, $session_token);
-            if(is_array($checkUserSession)){
-                return  Response::json($checkUserSession);
-            }
+
 
 
             $checkseat_detail = DB::table('booking')->find($booking_id);
@@ -790,9 +783,9 @@ class EventsController extends Controller
                     $response	=	array(
                         'status' 	=>  0,
                         'message'	=> 'Seats are not available.',
-                        'detail'    => $detail
+                        'data'    => $detail
                     );
-                    return Response::json($response); die;
+                    return Response::json($response);
                 }
 
                 if(empty($trans_id))
@@ -802,20 +795,20 @@ class EventsController extends Controller
                     $response	=	array(
                         'status' 	=> 1,
                         'message'	=> "Booking Updated Successfully",
-                        /*'detail'   => $data,*/
+                        /*'data'   => $data,*/
 
                     );
                     return Response::json($response);
-                    die;
+
 
                 }
-                $booking_details=DB::table('booking')->select('*')->where('id',$booking_id)->first();
+                $booking_details=Booking::where('id',$booking_id)->first();
                 $booking_user=$booking_details->user_id;
                 $ceremony_id=$booking_details->event_id;
                 $prive_amount=$booking_details->amount;
                 $pri_no_of_seats=$booking_details->no_of_seats;
 
-                $ceremony_details=DB::table('ceremony')->select('*')->where('id',$ceremony_id)->first();
+                $ceremony_details=Ceremony::where('id',$ceremony_id)->first();
                 $price=$ceremony_details->price;
                 $allseats=$ceremony_details->total_seats;
                 $new_amout=$price*$seats;
@@ -823,14 +816,14 @@ class EventsController extends Controller
                 $total_seats=$pri_no_of_seats+$seats;
                 $total_price=$prive_amount+$new_amout;
 
-                $payment_details=DB::table('payment_log')->select('*')->where('tranid',$trans_id)->first();
+                $payment_details=PaymentLog::where('tranid',$trans_id)->first();
 
                 if($payment_details->result!='CAPTURED' || $payment_details->amt!=$new_amout)
                 {
                     $response	=	array(
                         'status' 	=> 0,
                         'message'	=> 'فشل الاجراء',
-                        /*'detail'    => $detail*/
+                        /*'data'    => $detail*/
                     );
                 }
                 else
@@ -864,7 +857,7 @@ class EventsController extends Controller
                         'paymentID'=>$payment_details->paymentid,
                         'amount'=>$payment_details->amt,
                         'created_at'=>$payment_details->created_at
-                        /*'detail'   => $data,*/
+                        /*'data'   => $data,*/
 
                     );
 
@@ -873,7 +866,7 @@ class EventsController extends Controller
         }
 
         return Response::json($response);
-        die;
+
     }
 
 
@@ -908,7 +901,7 @@ class EventsController extends Controller
                 break;
             }
 
-            $response=array('status'=>0,'message'=>$allErrors,'detail'=> $detail);
+            $response=array('status'=>0,'message'=>$allErrors,'data'=> $detail);
         }
         else
         {
@@ -929,7 +922,7 @@ class EventsController extends Controller
                 $response	=	array(
                     'status' 	=> 1,
                     'message'	=> "Booking Deleted Successfully",
-                    /*'detail'   => $data,*/
+                    /*'data'   => $data,*/
 
                 );
             }
@@ -938,14 +931,13 @@ class EventsController extends Controller
                 $response	=	array(
                     'status' 	=> 0,
                     'message'	=> 'Unsuccessful',
-                    /*'detail'	=> $detail*/
+                    /*'data'	=> $detail*/
                 );
             }
 
         }
 
         return Response::json($response);
-        die;
 
     }
 

@@ -36,7 +36,7 @@ class CeremonyController extends Controller
                 $userdetail  	=  Customer::where('id',$user_id)->first();
                 if(!empty($search)){
 
-                    $ceremonies = Ceremony::where('status','1')
+                    $ceremonies = Ceremony::with('poll','poll.polloption')->where('status','1')
                         ->where('name','like', '%' . $search . '%')
                         ->where('status','1')
                         ->get();
@@ -49,7 +49,7 @@ class CeremonyController extends Controller
                 }else{
 
                     if($filter_by=='gender'){
-                        $ceremonies = Ceremony::where('status','1')
+                        $ceremonies = Ceremony::with('poll','poll.polloption')->where('status','1')
                             ->whereRaw("FIND_IN_SET($filter_type,ceremony_for)")
                             ->get();
 
@@ -62,7 +62,7 @@ class CeremonyController extends Controller
                     }
                     else if($filter_by=='faculty'){
 
-                        $ceremonies = Ceremony::where('status','1')
+                        $ceremonies = Ceremony::with('poll','poll.polloption')->where('status','1')
                             ->whereRaw("FIND_IN_SET($filter_type,faculty)")
                             ->get();
 
@@ -75,7 +75,7 @@ class CeremonyController extends Controller
 
                     }
                     else{
-                        $ceremonies = Ceremony::where('status','1')
+                        $ceremonies = Ceremony::with('poll','poll.polloption')->where('status','1')
                             ->where(function ($query) use ($userdetail) {
                                 $query->whereDate('date', '>=' ,date("Y-m-d"));
 
@@ -446,7 +446,7 @@ class CeremonyController extends Controller
     public function ceremonydetail(Request $request){
 
                 $event_id = $request->event_id ;
-                $ceremony = Ceremony::where('id',$event_id)
+                $ceremony = Ceremony::with('poll','poll.polloption')->where('id',$event_id)
                     ->get();
                 $bookinglist = Booking::where('event_id',$event_id)
                     ->get();
@@ -466,6 +466,7 @@ class CeremonyController extends Controller
                 $ceremony[0]->ceremony_price = (double)$ceremony[0]->ceremony_price;
                 $ceremony[0]->free_seats = (int)$ceremony[0]->free_seats;
                 $ceremony[0]->total_seats = (int)$ceremony[0]->total_seats;
+                $ceremony[0]->poll = $ceremony[0]->poll;
                 $ceremony[0]->number_of_booking_students = (int)sizeof($bookinglist);
                 if(!empty($bookinglist)){
                     $sum = array_sum(array_column($bookinglist->toArray(), 'no_of_seats'));

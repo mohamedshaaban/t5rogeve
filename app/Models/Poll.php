@@ -33,10 +33,7 @@ class Poll extends Model
 		'eventid' => 'int'
 	];
 
-	protected $dates = [
-		'startDate',
-		'endDate'
-	];
+
 
 	protected $fillable = [
 		'question',
@@ -53,5 +50,7 @@ class Poll extends Model
 
         return $this->hasMany(PollOption::class,'poll_id');
     }
+
+
 
 }

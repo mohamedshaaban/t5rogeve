@@ -28,9 +28,9 @@ class PollController extends Controller
             $user_id = $user->id;
 
 					 $userId 		=  $user_id;
-					$eventid =  $request->event_id ;
+					$eventid =  $request->eventid ;
 					
-					$polllist  	=  Poll::where('eventid',$eventid)->get();	 
+					$polllist  	=  Poll::with('polloption')->where('eventid',$eventid)->get();
 
                         if($polllist->isEmpty()){
 						$response=array(

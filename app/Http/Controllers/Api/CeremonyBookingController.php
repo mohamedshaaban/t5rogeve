@@ -51,7 +51,7 @@ class CeremonyBookingController extends Controller
                 break;
             }
 
-            $response=array('status'=>0,'message'=>$allErrors,'detail'=> $detail);
+            $response=array('status'=>0,'message'=>$allErrors,'data'=> $detail);
 
             return ($response);
         }
@@ -321,13 +321,13 @@ class CeremonyBookingController extends Controller
                     $response = array(
                         'status' => 1,
                         'messages' => 'Booking List',
-                        'detail' => $booking_responce,
+                        'data' => $booking_responce,
                     );
                 } else {
                     $response = array(
                         'status' => 1,
                         'messages' => 'Booking List',
-                        'detail' => $booking_responce,
+                        'data' => $booking_responce,
                     );
                 }
 
@@ -400,7 +400,7 @@ class CeremonyBookingController extends Controller
             $response	=	array(
                 'status' 	=> 0,
                 'message'	=> $allErrors,
-                'detail'    => $detail
+                'data'    => $detail
             );
 
         }else{
@@ -460,7 +460,7 @@ class CeremonyBookingController extends Controller
             $response	=	array(
                 'status' 	=> 0,
                 'message'	=> $allErrors,
-                'detail'    => $detail
+                'data'    => $detail
             );
 
         }
@@ -485,7 +485,7 @@ class CeremonyBookingController extends Controller
                     $response	=	array(
                         'status' 	=> 0,
                         'message'	=> 'فشل الاجراء',
-                        /*'detail'    => $detail*/
+                        /*'data'    => $detail*/
                     );
                 }
                 else
@@ -510,7 +510,7 @@ class CeremonyBookingController extends Controller
                         'paymentID'=>$payment_details->paymentid,
                         'amount'=>$payment_details->amt,
                         'created_at'=>$payment_details->created_at
-                        /*'detail'    => $detail*/
+                        /*'data'    => $detail*/
                     );
 
                 }
