@@ -157,6 +157,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\KnetServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        LaravelFCM\FCMServiceProvider::class,
 
         /*
         * Other Service Providers...
@@ -210,6 +211,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
 
+        'FCM'      => LaravelFCM\Facades\FCM::class,
+        'FCMGroup' => LaravelFCM\Facades\FCMGroup::class, // Optional
         /*
         * Other Aliases...
         */
