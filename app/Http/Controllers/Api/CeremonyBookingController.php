@@ -167,7 +167,9 @@ class CeremonyBookingController extends Controller
             $user_id = $user->id;
 
                 $booking = Booking::with('ceremony','ceremony.amenities','ceremony.poll.polloption.pollanswered', 'ceremonyWithDescription', 'payments')
-                    ->where('user_id', $user_id)->orderBy('id', 'desc')->paginate()->toArray();
+                    ->whereHas('ceremony', function($q){
+                        $q->where('date', '>=', \Carbon\Carbon::today()->format('Y-m-d'));
+                    })->where('user_id', $user_id)->orderBy('id', 'desc')->paginate()->toArray();
 
                 $booking['next_page_url'] = (!empty($booking['next_page_url'])) ? str_replace('/?', '?', $booking['next_page_url']) : '';
                 $booking['prev_page_url'] = (!empty($booking['prev_page_url'])) ? str_replace('/?', '?', $booking['prev_page_url']) : '';

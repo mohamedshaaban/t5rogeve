@@ -202,14 +202,8 @@ class HomeController extends Controller
         $detail = (object) null;
 
 
-
-            $language_id =  isset($request->language_id) ? $request->language_id : 1;
-
-
-
-                \Session::put("lang",$language_id);
-
         $user_id=Auth::guard('customers_api')->user()->id;
+        dd($user_id);
                 $booking = Booking::with('ceremony' , 'ceremonyWithDescription','payments')
                     ->where('user_id',$user_id)->orderBy('id','desc')->paginate(15);
                  //	return Response::json($booking);

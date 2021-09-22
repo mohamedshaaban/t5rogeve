@@ -109,6 +109,7 @@ class EventsCrudController extends CrudController
             'name'  => 'date',
             'label' => trans('admin.Event date'),
             'type'  => 'date',
+            'format'   => 'Y-m-d',
             'tab'   => 'Texts',
         ]);
 
@@ -216,11 +217,31 @@ class EventsCrudController extends CrudController
                 1 => "Yes"
             ],
         ]);
+        $this->crud->addField([
+            'label' => trans("admin.link_store"),
+            'name' => "link_store",
+            'type' => 'text',
+            'tab'   => 'Texts',
+            'crop' => true, // set to true to allow cropping, false to disable
+            'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
+        ]);
+
+        $this->crud->addField([
+            'label' => trans("admin.Link Store Image"),
+            'name' => "link_store_image",
+            'type' => 'image',
+            'tab'   => 'Texts',
+            'crop' => true, // set to true to allow cropping, false to disable
+            'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
+
+        ]);
+
 
         CRUD::addField([ // Text
             'name'  => 'NameExDate',
             'label' => trans('admin. Name amendment expiration date'),
             'type'  => 'date',
+            'format'   => 'Y-m-d',
             'tab'   => 'Texts',
 
         ]);
@@ -228,6 +249,7 @@ class EventsCrudController extends CrudController
             'name'  => 'RobeExDate',
             'label' => trans('admin. The expiry date of resize the robe'),
             'type'  => 'date',
+            'format'   => 'Y-m-d',
             'tab'   => 'Texts',
 
         ]);
@@ -249,6 +271,7 @@ class EventsCrudController extends CrudController
             'crop' => true, // set to true to allow cropping, false to disable
             'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
         ]);
+
 
         $this->crud->addField([
             'label' => trans("admin.Terms"),
@@ -278,6 +301,7 @@ class EventsCrudController extends CrudController
                 return $query->orderBy('name', 'ASC')->get();
             }), // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
         ]);
+
 
         $this->crud->addField([
             'label' => trans("admin.Event Term Image"),

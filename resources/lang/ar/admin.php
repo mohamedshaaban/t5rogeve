@@ -221,6 +221,11 @@ return [
     'Event Image'=>'صةرى الفاعلية',
     'Description Image'=>'الوصف',
     'Event details'=>'الوصف',
+    'link_store'=>'Link to store',
+    'Link Store Image'=>'Link Store Image',
+    ''=>'',
+    ''=>'',
+    ''=>'',
 
 
 ];

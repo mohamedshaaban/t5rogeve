@@ -441,11 +441,11 @@ class EventsController extends Controller
                     {
 
                         $payment_arr = [
-                            'user_id' => $obj->user_id,
-                            'ceremony_id' => $obj->event_id,
+                            'user_id' => $onebooking->user_id,
+                            'ceremony_id' => $onebooking->event_id,
                             'booking_id' => $b_id,
-                            'price' => $obj->amount,
-                            'payment_method'=>$obj->payment_type,
+                            'price' => $onebooking->amount,
+                            'payment_method'=>$onebooking->payment_type,
                             'status'=>'1',
                         ];
 

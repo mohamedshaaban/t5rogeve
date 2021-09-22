@@ -215,5 +215,12 @@ return [
     'Description Image'=>'Description Image',
     'Event details'=>'Event details',
     'Event Term Image'=>'Event Term Image',
+    'link_store'=>'Link to store',
+    'Link Store Image'=>'Link Store Image',
+''=>'',
+''=>'',
+''=>'',
 
-    ];
+
+
+];
