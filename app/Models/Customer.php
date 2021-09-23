@@ -127,7 +127,8 @@ class Customer extends Authenticatable
 		'validate_string',
 		'forgot_password_validate_string',
 		'password_temp',
-        'image'
+        'image',
+        'device_token','device_id','device_type'
 	];
 
 	public function knet_transactions2s()

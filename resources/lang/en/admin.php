@@ -217,6 +217,8 @@ return [
     'Event Term Image'=>'Event Term Image',
     'link_store'=>'Link to store',
     'Link Store Image'=>'Link Store Image',
+    'active'=>'Active',
+    'not_active'=>'Not Active',
 ''=>'',
 ''=>'',
 ''=>'',

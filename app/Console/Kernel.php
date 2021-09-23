@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\RefreshDb::class,
+        Commands\sendBirthNotification::class,
     ];
 
     /**
@@ -25,7 +26,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('createxerotoken')->everyMinute();
+        $schedule->command('sendBirthNotification')->everyMinute();
         $schedule->command('db:fresh')->hourly();
     }
 }

@@ -234,7 +234,10 @@ else
               if (Auth::guard('customers')->attempt($userdata)) {
 
                  $user = Auth::guard('customers')->user();
-
+                  $user->device_token=$request->device_token;
+                  $user->device_id=$request->device_id;
+                  $user->device_type=$request->device_type;
+                      $user->save();
                  if(!$user->is_verified)
                  {
                      $response	=	array(

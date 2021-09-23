@@ -37,11 +37,14 @@ class FacultyCrudController extends CrudController
             'name'  => 'full_name',
             'label' => trans('admin.Faculty name')
         ]);
+        $this->crud->addButtonFromModelFunction('line', 'statustext ', 'openStatus', 'beginning');
+
+
     }
 
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(StoreRequest::class);
+//        CRUD::setValidation(StoreRequest::class);
 
         CRUD::addField([ // Text
             'name'  => 'full_name',

@@ -21,24 +21,14 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models
  */
-class Faculty extends Model
+class UserFaculty extends Model
 {
     use CrudTrait;
-	protected $table = 'faculty';
+	protected $table = 'users_faculty';
 
 	protected $fillable = [
-		'full_name',
-		'status'
+		'user_id',
+		'faculty_id'
 	];
-	protected $appends = ['statustext'];
 
-	public function openStatus($crud = false)
-    {
-        if($this->status)
-        {
-            return '<span class="badge badge-success">'.trans('admin.active').'</span>';
-        }
-        return '<span class="badge badge-danger">'.trans('admin.not_active').'</span>';
-
-    }
 }

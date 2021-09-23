@@ -13,8 +13,8 @@ return [
     |
     */
 
-    'Faculty name'   => 'اسم الكلية',
-    'Faculty'   => ' كلية',
+    'Faculty name'   => 'اسم الجامعة',
+    'Faculty'   => ' جامعة',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
     'Price'=>'السعر',
     'Category'=>'التصنيف', // Table column heading
@@ -75,7 +75,7 @@ return [
   'phone_number'=>'رقم الهاتف',
   'Image'=>'الصورة',
   'civil_id'=>'الرقم المدني',
-  'faculty'=>'الكلية',
+  'faculty'=>'الجامعة',
   'Event Name'=>'اسم الفاعلية',
   'Event Code'=>'كود الفاعلية',
   'Event Description'=>'وصف الفاعلية',
@@ -97,8 +97,8 @@ return [
   ' Hide Users & Seats Number'=>'إخفاء عدد المستخدمين والمقاعد',
   ' Name amendment expiration date'=>'تاريخ انتهاء تعديل الاسم',
   ' The expiry date of resize the robe'=>'تاريخ انتهاء صلاحية تغيير حجم الروب ',
-  ' Faculty'=>'الكلية',
-  'Faculty name'=>'اسم الكلية',
+  ' Faculty'=>'الجامعة',
+  'Faculty name'=>'اسم الجامعة',
   'Question'=>'السؤال',
   'Answer'=>'الاجابة',
   'Active'=>'فعال',
@@ -223,8 +223,8 @@ return [
     'Event details'=>'الوصف',
     'link_store'=>'Link to store',
     'Link Store Image'=>'Link Store Image',
-    ''=>'',
-    ''=>'',
+    'active'=>'Active',
+    'not_active'=>'Not Active',
     ''=>'',
 
 

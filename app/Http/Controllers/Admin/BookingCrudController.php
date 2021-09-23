@@ -28,8 +28,6 @@ class BookingCrudController extends CrudController
     public function setup()
     {
         App::setLocale(session('locale'));
-
-
         CRUD::setModel(\App\Models\Booking::class);
         CRUD::setRoute(config('backpack.base.route_prefix').'/booking');
         CRUD::setEntityNameStrings(trans('admin.booking'), trans('admin.booking'));
@@ -38,6 +36,19 @@ class BookingCrudController extends CrudController
     protected function setupListOperation()
     {
         CRUD::addColumns(['id']); // add multiple columns, at the end of the stack
+        if(backpack_user()->faculty_id!=0)
+        {
+            $eventIds = Ceremony::where('faculty',backpack_user()->faculty_id)->pluck('id')->toArray();
+//            dd($eventIds);
+            $ids = [] ;
+            foreach ($eventIds as $key=>$eventId)
+            {
+                $ids[] = $eventId;
+            }
+//dd($ids);
+            $this->crud->addClause('whereIn', 'event_id',[50]);
+
+        }
         $this->crud->addFilter([
             'name'        => 'user_id',
             'type'        => 'select2_ajax',

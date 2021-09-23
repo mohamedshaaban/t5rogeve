@@ -17,6 +17,7 @@ Route::group([
     // -----
     // CRUDs
     // -----
+    Route::crud('users', 'UserCrudController');
 
     Route::crud('icon', 'IconCrudController');
     Route::crud('product', 'ProductCrudController');
@@ -60,6 +61,7 @@ Route::group([
     // Prevent people from doing nasty stuff in the online demo
     // ---------------------------
     Route::get('/switch_lang/{locale}', function ($locale = '') {
+
         session(['locale' => $locale]);
         app()->setLocale($locale);
         App::setLocale($locale);
@@ -67,7 +69,7 @@ Route::group([
     })->name('switch_lang');
     if (app('env') == 'production') {
         // disable delete and bulk delete for all CRUDs
-        $cruds = ['article', 'category', 'tag', 'icon', 'product', 'page', 'menu-item', 'user', 'role', 'permission'];
+        $cruds = ['article', 'category', 'tag', 'icon', 'product', 'page', 'menu-item', 'role', 'permission'];
         foreach ($cruds as $name) {
             Route::delete($name.'/{id}', function () {
                 return false;

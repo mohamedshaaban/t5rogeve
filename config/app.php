@@ -158,6 +158,7 @@ return [
         App\Providers\KnetServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         LaravelFCM\FCMServiceProvider::class,
+        App\Providers\HelperServiceProvider::class,
 
         /*
         * Other Service Providers...

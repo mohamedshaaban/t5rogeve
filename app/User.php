@@ -3,6 +3,7 @@
 namespace App;
 
 use Alert;
+use App\Models\Faculty;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -20,7 +21,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','faculty_id'
     ];
 
     /**
@@ -34,14 +35,12 @@ class User extends Authenticatable
 
     public function save(array $options = [])
     {
-        if (app('env') == 'production' &&
-            !app()->runningInConsole() &&
-            !app()->runningUnitTests()) {
-            Alert::warning('User editing is disabled in the demo.');
 
-            return true;
-        }
 
         return parent::save($options);
+    }
+    public function faculty()
+    {
+        return $this->belongsTo(Faculty::class, 'faculty_id');
     }
 }

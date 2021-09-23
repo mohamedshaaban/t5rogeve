@@ -13,7 +13,7 @@
             <a href="{{ route('switch_lang' , [$lang == 'en' ? 'ar' : 'en'])}}"  class="main"
             >
 
-                @if( $lang == 'en')
+                @if( $lang == 'en' || !$lang)
 
                     عربي
                 @else
