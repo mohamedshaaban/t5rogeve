@@ -230,96 +230,87 @@ class NotificationsCrudController extends CrudController
              $notify  = Notification::find($this->crud->entry->id);
              foreach($notify->events as $event)
              {
+                 $usersids = [] ;
+                 $notification = $request->notification;
                  foreach($event->booking as $book)
                  {
-                     dump($book->user);
+                     $usersids[] = ($book->user->id);
                  }
-             }
-             dd(2);
-            // this is use  for validation
 
-            //  if  validation error then redirect with error otherwise result will be save
+                 $users_device = DeviceInfo::whereIn('user_id',$usersids )->orderBy('id')->get();
+                 foreach($users_device->chunk(500) as $key => $value) {
+                     $gender = $request->ceremony_for;
+                     $usersid = [];
+                     $usersid[] = $value[$key]->user_id;
+                     if($gender == "1" || $gender == "0" ){
+                         $user_by_gender =  Customer::
+                         whereIn('id',$usersid)
+                             ->where('gender',"$gender")
+                             ->select('id')->get();
 
+                         $usersid = [];
 
-                $notification = $request->notification;
+                         foreach($user_by_gender as $key => $value) {
 
-                $usersids =
-                $users_device = DeviceInfo::orderBy('id')->get();
-                foreach($users_device->chunk(500) as $key => $value) {
-                    $gender = $request->ceremony_for;
-                    $usersid = [];
-                    $usersid[] = $value[$key]->user_id;
-                    if($gender == "1" || $gender == "0" ){
-                        $user_by_gender =  Customer::
-                            whereIn('id',$usersid)
-                            ->where('gender',"$gender")
-                            ->select('id')->get();
+                             $usersid[] = $user_by_gender[$key]->id;
 
-                        $usersid = [];
+                         }
+                         $users_device = DeviceInfo::whereIn('user_id',$usersid)->get();
+                     }
+                     ////
+                     $token = [];
+                     $token_data = (array) $users_device;
 
-                        foreach($user_by_gender as $key => $value) {
-
-                            $usersid[] = $user_by_gender[$key]->id;
-
-                        }
-
-                        $users_device = DeviceInfo::whereIn('user_id',$usersid)->get();
-
-
-                    }
-                    ////
-                    $token = [];
-                    $token_data = (array) $users_device;
-
-                    foreach($users_device as $key => $value) {
-                        $token[] = $users_device[$key]->device_token;
-                    }
+                     foreach($users_device as $key => $value) {
+                         $token[] = $users_device[$key]->device_token;
+                     }
 
 
 
-                    $data = [
-                        "to" => implode(',',$token),
-                        "notification" =>
-                            [
-                                "title" => "",
-                                "body" => $notification,
-                                'sound' => 'default',
-                                'badge' => '1',
-                                "icon" => url('/logo.png')
-                            ],
-                    ];
+                     $data = [
+                         "to" => implode(',',$token),
+                         "notification" =>
+                             [
+                                 "title" => "",
+                                 "body" => $notification,
+                                 'sound' => 'default',
+                                 'badge' => '1',
+                                 "icon" => url('/logo.png')
+                             ],
+                     ];
                      $dataString = json_encode($data);
 
-                    $server_key = 'AAAAcboXqwo:APA91bGdDymdgWGQk07orQFVRTbzHbyZvJ4CSKXIbbpWpFphjnqYVOVJu3pmVBfalzNeXVBWrljrazmPRJe79cY1KjeAtkyg3FQrZAhIRXbe-xtOd0LN7FaxNxqdy_IylOm-sbbj0LV8';
+                     $server_key = 'AAAAcboXqwo:APA91bGdDymdgWGQk07orQFVRTbzHbyZvJ4CSKXIbbpWpFphjnqYVOVJu3pmVBfalzNeXVBWrljrazmPRJe79cY1KjeAtkyg3FQrZAhIRXbe-xtOd0LN7FaxNxqdy_IylOm-sbbj0LV8';
 
-                    $headers = [
-                        'Authorization: key=' . $server_key,
-                        'Content-Type: application/json',
-                    ];
+                     $headers = [
+                         'Authorization: key=' . $server_key,
+                         'Content-Type: application/json',
+                     ];
 
-                    $ch = curl_init();
+                     $ch = curl_init();
 
-                    curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
-                    curl_setopt($ch, CURLOPT_POST, true);
-                    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+                     curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+                     curl_setopt($ch, CURLOPT_POST, true);
+                     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+                     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                     curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
 
-                    $result = curl_exec($ch);
+                     $result = curl_exec($ch);
 
-                    if ($result === FALSE) {
-                        die('Oops! FCM Send Error: ' . curl_error($ch));
-                    }
-                    curl_close($ch);
-                    //	return $result;
-                    $obj 	= 	new Notification;
-                    $obj->alluser 		    = 1;
-                    $obj->notification 		    = $request->notification;
-                    $obj->link 		= $request->link;
-                    $obj->save();
-                }
+                     if ($result === FALSE) {
+                         die('Oops! FCM Send Error: ' . curl_error($ch));
+                     }
+                     curl_close($ch);
+                     //	return $result;
+                     $obj 	= 	new Notification;
+                     $obj->alluser 		    = 1;
+                     $obj->notification 		    = $request->notification;
+                     $obj->link 		= $request->link;
+                     $obj->save();
+                 }
+             }
 
 
         }
