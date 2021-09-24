@@ -375,6 +375,10 @@ class Ceremony extends Model
         return asset('uploads/folder_1/folder_2/' . $value);
     }
 
+    public function getStatustextAttribute()
+    {
+        return '';
+    }
     public function getImagedesAttribute($value)
     {
         if (strpos($value, 'http') !== false) {
