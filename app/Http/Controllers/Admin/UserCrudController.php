@@ -97,19 +97,34 @@ class UserCrudController extends CrudController
         $this->addUserFields();
         $this->crud->setValidation(UpdateRequest::class);
     }
-//    public function store()
-//    {
-//        $this->crud->setRequest($this->crud->validateRequest());
-//        $this->crud->setRequest($this->handlePasswordInput($this->crud->getRequest()));
-//        $this->crud->unsetValidation(); // validation has already been run
-//        $response = $this->traitStore();
-//        $user = \App\User::find($this->crud->entry->id);
-//        dd($response->getRequest()->faculty);
-////        $userFaculty::create([
-////
-////        ]);
-//        return $response;
-//    }
+    public function store()
+    {
+        $this->crud->setRequest($this->crud->validateRequest());
+        $this->crud->setRequest($this->handlePasswordInput($this->crud->getRequest()));
+        $this->crud->unsetValidation(); // validation has already been run
+        $response = $this->traitStore();
+        $user = \App\User::find($this->crud->entry->id);
+
+        return $response;
+    }
+
+    /**
+     * Update the specified resource in the database.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update()
+    {
+        $this->crud->setRequest($this->crud->validateRequest());
+        $this->crud->setRequest($this->handlePasswordInput($this->crud->getRequest()));
+        $this->crud->unsetValidation(); // validation has already been run
+
+        $response =  $this->traitUpdate();
+        $user = \App\User::find($_REQUEST['id']);
+
+        return $response;
+    }
+
 
 
     /**

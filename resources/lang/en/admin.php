@@ -219,7 +219,7 @@ return [
     'Link Store Image'=>'Link Store Image',
     'active'=>'Active',
     'not_active'=>'Not Active',
-''=>'',
+'reason'=>'Reason',
 ''=>'',
 ''=>'',
 

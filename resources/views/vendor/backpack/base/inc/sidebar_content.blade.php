@@ -5,7 +5,7 @@
 <li class="nav-item nav-dropdown">
   <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-group"></i> {{ trans('admin.Authentication') }}</a>
   <ul class="nav-dropdown-items">
-    <li class="nav-item"><a class="nav-link" href="{{ backpack_url('user') }}"><i class="nav-icon la la-user"></i> <span>{{ trans('admin.Users') }}</span></a></li>
+    <li class="nav-item"><a class="nav-link" href="{{ backpack_url('users') }}"><i class="nav-icon la la-user"></i> <span>{{ trans('admin.Users') }}</span></a></li>
     <li class="nav-item"><a class="nav-link" href="{{ backpack_url('role') }}"><i class="nav-icon la la-group"></i> <span>{{ trans('admin.Roles') }}</span></a></li>
     <li class="nav-item"><a class="nav-link" href="{{ backpack_url('permission') }}"><i class="nav-icon la la-key"></i> <span>{{ trans('admin.Permissions') }}</span></a></li>
   </ul>
@@ -17,7 +17,6 @@
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('amenities') }}"><i class="nav-icon la la-cog"></i> <span>{{ trans('admin.amenities')}}</span></a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('events') }}"><i class="nav-icon la la-cog"></i> <span>{{ trans('admin.Events')}}</span></a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('booking') }}"><i class="nav-icon la la-cog"></i> <span>{{ trans('admin.Bookings')}}</span></a></li>
-<li class="nav-item"><a class="nav-link" href="{{ backpack_url('SponsorPlatinums') }}"><i class="nav-icon la la-cog"></i> <span>{{ trans('admin.Sponsor Platinums')}}</span></a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('customers') }}"><i class="nav-icon la la-cog"></i> <span>{{ trans('admin.Students')}}</span></a></li>
 <li class="nav-item nav-dropdown">
     <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-cogs"></i>{{ trans('admin.Configuration')}}</a>

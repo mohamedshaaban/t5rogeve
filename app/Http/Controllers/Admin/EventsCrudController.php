@@ -34,7 +34,12 @@ class EventsCrudController extends CrudController
 
     protected function setupListOperation()
     {
+        if(backpack_user()->faculty_id!=0)
+        {
 
+            $this->crud->addClause('where', 'faculty',backpack_user()->faculty_id);
+
+        }
         $this->crud->addColumn(['name'=>'name','label'=>trans('admin.Name')]);
         $this->crud->addColumn(['name'=>'date','label'=>trans('admin.date')]);
         $this->crud->addColumn(['name'=>'total_seats','label'=>trans('admin.total_seats')]);
@@ -192,6 +197,7 @@ class EventsCrudController extends CrudController
             'entity'    => 'faculty', // the method that defines the relationship in your Model
             'attribute' => 'full_name', // foreign key attribute that is shown to use
             'tab' => 'Texts',
+            'default'=>backpack_user()->faculty_id
         ]);
 
         CRUD::addField([ // Text
@@ -331,6 +337,12 @@ class EventsCrudController extends CrudController
     public static function fetch(\Illuminate\Http\Request  $request)
     {
         $events = Ceremony::where('name','like','%'.$request->q.'%')->get(['id','name']);
+
+        if(backpack_user()->faculty_id!=0)
+        {
+            $events = Ceremony::where('name','like','%'.$request->q.'%')->where('faculty',backpack_user()->faculty_id)->get(['id','name']);
+
+        }
         $data = [] ;
         foreach ($events as $event)
         {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\PollRequest as StoreRequest;
 // VALIDATION: change the requests to match your own file names if you need form validation
+use App\Models\Ceremony;
 use App\Models\PollAnswered;
 use App\Models\PollOption;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -38,7 +39,13 @@ class PollsCrudController extends CrudController
             'label' => trans('admin.Event name'),
             'type' => 'relationship'
         ]);
+        if(backpack_user()->faculty_id!=0)
+        {
+            $eventIds = Ceremony::where('faculty',backpack_user()->faculty_id)->pluck('id')->toArray();
 
+            $this->crud->addClause('whereIn', 'eventid',$eventIds);
+
+        }
         $this->crud->enableExportButtons();
         $this->crud->enableResponsiveTable();
         $this->crud->enablePersistentTable();
@@ -137,6 +144,14 @@ class PollsCrudController extends CrudController
             'tab' => 'Texts',
             'attributes' => [
                 'class'       => 'form-control event-class'],
+            'options'   => (function ($query) {
+                if(backpack_user()->faculty_id!=0)
+                {
+                    $eventIds = Ceremony::where('faculty',backpack_user()->faculty_id)->pluck('id')->toArray();
+                    return $query->orderBy('name', 'ASC')->whereIn('id', $eventIds)->get();
+                }
+                return $query->orderBy('name', 'ASC')->get();
+            }),
             'data_source' => url("/admin/fetch/ceremony"), // url to controller search function (with /{id} should return model)
         ]);
 

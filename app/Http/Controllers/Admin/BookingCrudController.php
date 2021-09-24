@@ -39,14 +39,8 @@ class BookingCrudController extends CrudController
         if(backpack_user()->faculty_id!=0)
         {
             $eventIds = Ceremony::where('faculty',backpack_user()->faculty_id)->pluck('id')->toArray();
-//            dd($eventIds);
-            $ids = [] ;
-            foreach ($eventIds as $key=>$eventId)
-            {
-                $ids[] = $eventId;
-            }
-//dd($ids);
-            $this->crud->addClause('whereIn', 'event_id',[50]);
+
+            $this->crud->addClause('whereIn', 'event_id',$eventIds);
 
         }
         $this->crud->addFilter([

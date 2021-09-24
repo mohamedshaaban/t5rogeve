@@ -43,6 +43,12 @@ class Poll extends Model
         'polloption'
 	];
     public function ceremony() {
+//        if(backpack_user()->faculty_id!=0)
+//        {
+//            $eventIds = Ceremony::where('faculty',backpack_user()->faculty_id)->pluck('id')->toArray();
+//            return $this->belongsTo(Ceremony::class,'eventid')->whereIn('eventid',$eventIds);
+//
+//        }
 
         return $this->belongsTo(Ceremony::class,'eventid');
     }

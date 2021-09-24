@@ -48,16 +48,17 @@ class Notification extends Model
 		'link',
 		'for',
 		'ceremony_for',
-		'payment_type'
+		'payment_type',
+        'reason'
 	];
 
     public function user() {
         return $this->belongsTo(Customer::class,'userid');
     }
 
-    public function ceremony() {
+    public function events() {
 
-        return $this->belongsTo(Ceremony::class,'eventid');
+        return $this->belongsToMany(Ceremony::class,'event_notification','notification_id','event_id');
     }
     public function getCeremonyforAttribute()
     {

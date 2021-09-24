@@ -11,6 +11,7 @@ use App\Models\DeviceInfo;
 use App\Models\Notification;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use http\Env\Request;
 use Illuminate\Support\Facades\App;
 
 class NotificationsCrudController extends CrudController
@@ -80,8 +81,25 @@ class NotificationsCrudController extends CrudController
                 1 => "Male",
                 2 => "Both"
             ],
-
         ]);
+        CRUD::addField([   // repeatable
+            'name'  => 'reason',
+            'label' => trans('admin.reason'),
+            'type'  => 'repeatable',
+            'tab'   => 'Texts',
+            'fields' => [
+                [
+                    'name'    => 'reason',
+                    'type'    => 'text',
+                    'label'   => trans('admin.reason'),
+                    'wrapper' => ['class' => 'form-group col-md-12'],
+                ],
+            ],
+            // optional
+            'new_item_label'  => 'Add Reason', // customize the text of the button
+
+        ],);
+
         CRUD::addField([
             'name'           => 'sent_to', // the column that contains the ID of that connected entity;
 
@@ -89,38 +107,49 @@ class NotificationsCrudController extends CrudController
             'label'          => trans('admin.Sent To'),
             'type'  => 'select_from_array',
             'tab'   => 'Texts',
-
+            'allows_null' => false,
+            'default'=>2,
             'attributes' => [
-                'class'       => 'form-control notificationfor-class'],
+            'class'       => 'form-control notificationfor-class'],
             'options'     => [
                 // the key will be stored in the db, the value will be shown as label;
                 0 => "All",
-                1 => "ceremony",
                 2 => "User"
             ],
 
         ]);
 
-        CRUD::addField([  // Select2
-            'label' => trans('admin.Event'),
-            'type' => 'select2_multiple',
-            'name' => 'event_id', // the db column for the foreign key
-            'entity' => 'ceremony', // the method that defines the relationship in your Model
-            'tab' => 'Texts',
-            // optional
-            'attributes' => [
-                'class'       => 'form-control notificationevent-class'],
-            'model'     => Ceremony::class, // foreign key model
-            'attribute' => 'name', // foreign key attribute that is shown to user
-              'options'   => (function ($query) {
-                return $query->orderBy('date', 'ASC')->get();
-            }),
-        ]);
+
+        CRUD::addField(
+            [    // Select2Multiple = n-n relationship (with pivot table)
+                'label'     => trans('admin.Event'),
+                'type'      => 'select2_multiple',
+                'name'      => 'events', // the method that defines the relationship in your Model
+                'tab'   => 'Texts',
+                // optional
+                'entity'    => 'events', // the method that defines the relationship in your Model
+                'model'     => "App\Models\ceremony", // foreign key model
+                'attribute' => 'name', // foreign key attribute that is shown to user
+                'pivot'     => true, // on create&update, do you need to add/delete pivot table entries?
+                // 'select_all' => true, // show Select All and Clear buttons?
+
+                // optional
+                'options'   => (function ($query) {
+                    if(backpack_user()->faculty_id!=0)
+                    {
+                        return $query->orderBy('name', 'ASC')->where('faculty',backpack_user()->faculty_id)->get();
+                    }
+                    else
+                    {
+                        return $query->orderBy('name', 'ASC')->get();
+                    }
+                }), // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
+            ]);
 
 
         CRUD::addField([  // Select2
             'label' => trans('admin.Student'),
-            'type' => 'select2_multiple',
+            'type' => 'select2',
             'name' => 'user_id', // the db column for the foreign key
             'entity' => 'user', // the method that defines the relationship in your Model
              'tab' => 'Texts',
@@ -128,6 +157,7 @@ class NotificationsCrudController extends CrudController
              'model'     => Customer::class, // foreign key model
             'attribute' => 'phone', // foreign key attribute that is shown to user
             'attributes' => [
+                'style' =>'display:none',
                 'class'       => 'form-control notificationuser-class'],
               'options'   => (function ($query) {
                 return $query->orderBy('phone', 'ASC')->get();
@@ -139,6 +169,7 @@ class NotificationsCrudController extends CrudController
             'label'          => trans('admin.First name'),
             'tab' => 'Texts',
             'attributes' => [
+                
                 'class'       => 'form-control notificationfull_name-class'],
         ]);
         CRUD::addField([
@@ -192,11 +223,19 @@ class NotificationsCrudController extends CrudController
     {
         $this->crud->unsetValidation(); // validation has already been run
         $form = backpack_form_input();
+//        dd($request->all());
          $response = $this->traitStore();
         $for = $request->sent_to;
-
-        if ($for == 0){
-
+         if ($for == 0){
+             $notify  = Notification::find($this->crud->entry->id);
+             foreach($notify->events as $event)
+             {
+                 foreach($event->booking as $book)
+                 {
+                     dump($book->user);
+                 }
+             }
+             dd(2);
             // this is use  for validation
 
             //  if  validation error then redirect with error otherwise result will be save
@@ -204,6 +243,7 @@ class NotificationsCrudController extends CrudController
 
                 $notification = $request->notification;
 
+                $usersids =
                 $users_device = DeviceInfo::orderBy('id')->get();
                 foreach($users_device->chunk(500) as $key => $value) {
                     $gender = $request->ceremony_for;
