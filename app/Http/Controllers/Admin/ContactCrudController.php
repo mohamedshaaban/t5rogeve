@@ -82,12 +82,8 @@ class ContactCrudController extends CrudController
             'label' => trans('admin.Faculty'),
             'type'     => 'closure',
             'function' => function($entry) {
-            return $entry->user ;
-                if($entry->user)
-                {
-                    return '<span style="background-color: green;border-radius: 11px;" > '.trans('admin.Replied').' </span>';
-                }
-                return '<span style="background-color: red;border-radius: 11px;" > '.trans('admin.Not Replied').'</span>';
+            return @$entry->user->faculty->full_name ;
+
 
             }
         ]);

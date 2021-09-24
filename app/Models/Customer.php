@@ -150,5 +150,7 @@ class Customer extends Authenticatable
 
 
     }
-
+    public function faculty() {
+        return $this->belongsTo(Faculty::class,'faulty');
+    }
 }
