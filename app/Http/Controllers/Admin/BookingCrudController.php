@@ -35,7 +35,6 @@ class BookingCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        CRUD::addColumns(['id']); // add multiple columns, at the end of the stack
         if(backpack_user()->faculty_id!=0)
         {
             $eventIds = Ceremony::where('faculty',backpack_user()->faculty_id)->pluck('id')->toArray();
@@ -43,11 +42,12 @@ class BookingCrudController extends CrudController
             $this->crud->addClause('whereIn', 'event_id',$eventIds);
 
         }
+        $this->crud->addClause('orderBy', 'id','DESC');
         $this->crud->addFilter([
             'name'        => 'user_id',
             'type'        => 'select2_ajax',
             'label'       => trans('admin.Student'),
-            'placeholder' => 'Name Or Phone'
+            'placeholder' => 'Name , Phone Or Civil ID '
         ],
             url('admin/fetch/bookingfilteruser'), // the ajax route
             function($value) { // if the filter is active
@@ -80,40 +80,51 @@ class BookingCrudController extends CrudController
             'attribute'=>'all_name'
         ]);
         $this->crud->addColumn([ // Text
-            'name' => 'phone',
-            'entity'=>'user',
-            'label' => trans('admin.Student phone'),
-            'type' => 'relationship',
-            'attribute'=>'phone'
-        ]);
-
-        $this->crud->addColumn([ // Text
             'name' => 'no_of_seats',
             'label' => trans('admin.Seats Book'),
-         ]);
-        $this->crud->addColumn([ // Text
-            'name' => 'amount',
-            'label' => trans('admin.Amount'),
         ]);
         $this->crud->addColumn([ // Text
             'name' => 'payment_type',
             'label' => trans('admin.Payment Type'),
         ]);
+        $this->crud->addColumn([ // Text
+            'name' => 'amount',
+            'label' => trans('admin.Amount'),
+        ]);
+
 
         $this->crud->addColumn([ // Text
             'name' => 'remaining_amount',
             'label' => trans('admin.Remaining Amount'),
         ]);
 
+
         $this->crud->addColumn([ // Text
             'name' => 'robe_size',
             'label' => trans('admin.Robe Size'),
         ]);
+        $this->crud->addColumn([ // Text
+            'name' => 'phone',
+            'entity'=>'user',
+            'label' => trans('admin.Student phone'),
+            'type' => 'relationship',
+            'attribute'=>'phone'
+        ]);
+        $this->crud->addColumn([ // Text
+            'name' => 'civil_id',
+            'entity'=>'user',
+            'label' => trans('admin.civil_id'),
+            'type' => 'relationship',
+            'attribute'=>'civil_id'
+        ]);
+
+
+
 
 
         $this->crud->enableExportButtons();
-        $this->crud->enableResponsiveTable();
-        $this->crud->enablePersistentTable();
+
+        $this->crud->disableResponsiveTable();
         $this->crud->enableDetailsRow();
     }
     protected function showDetailsRow($id)
@@ -121,7 +132,6 @@ class BookingCrudController extends CrudController
         $booking = Booking::find($id);
         $text = '<div class="row">';
         $text .= '<div class="col-4">';
-        $text.= 'Student Email : '.@$booking->user->email.'<br />';
         $text.= 'Student Phone: '.@$booking->user->phone.'<br />';
         $text.= 'Seats: '.@$booking->no_of_seats.'<br />';
         $text.= 'Robe size : '.@$booking->robe_size.'<br />';

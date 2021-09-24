@@ -11,13 +11,30 @@ use Illuminate\Support\Facades\App;
 class ContactCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation { store as traitStore; }
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation { update as traitUpdate; }
     use \Backpack\CRUD\app\Http\Controllers\Operations\CloneOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\BulkDeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\BulkCloneOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\InlineCreateOperation;
+    public function store()
+    {
+        $this->crud->unsetValidation(); // validation has already been run
+        $form = backpack_form_input();
+        $response = $this->traitStore();
+        \Alert::add('success', '<strong>'.trans('admin.Message is sent').'</strong>');
+        return $response;
+    }
+    public function update()
+    {
+        $this->crud->setRequest($this->crud->validateRequest());
+        $this->crud->unsetValidation(); // validation has already been run
+        \Alert::add('success', '<strong>'.trans('admin.Message is sent').'</strong>');
+        $response = $this->traitUpdate();
+        return $response;
+
+    }
 
     public function setup()
     {
@@ -34,10 +51,7 @@ class ContactCrudController extends CrudController
             'name'=>'name',
             'label'=>trans('admin.Name')
         ]);
-        $this->crud->addColumn([
-            'name'=>'email',
-            'label'=>trans('admin.email')
-        ]);
+
         $this->crud->addColumn([
             'name'=>'mobile',
             'label'=>trans('admin.phone')
@@ -46,12 +60,30 @@ class ContactCrudController extends CrudController
             'name'=>'subject',
             'label'=>trans('admin.Subject')
         ]);
+        $this->crud->addColumn([
+            'name'=>'admin',
+            'label'=>trans('admin.Replied by')
+        ]);
         $this->crud->addColumn([ // Text
             'name' => 'reply',
             'label' => trans('admin.Is Replied'),
             'type'     => 'closure',
             'function' => function($entry) {
                 if($entry->isreply)
+                {
+                    return '<span style="background-color: green;border-radius: 11px;" > '.trans('admin.Replied').' </span>';
+                }
+                return '<span style="background-color: red;border-radius: 11px;" > '.trans('admin.Not Replied').'</span>';
+
+            }
+        ]);
+        $this->crud->addColumn([ // Text
+            'name' => 'faulty',
+            'label' => trans('admin.Faculty'),
+            'type'     => 'closure',
+            'function' => function($entry) {
+            return $entry->user ;
+                if($entry->user)
                 {
                     return '<span style="background-color: green;border-radius: 11px;" > '.trans('admin.Replied').' </span>';
                 }
@@ -109,6 +141,14 @@ class ContactCrudController extends CrudController
             'label' => trans('admin.Reply'),
             'type'  => 'text',
             'tab'   => 'Texts',
+
+        ]);
+
+        CRUD::addField([ // Text
+            'name'  => 'admin_user',
+            'type'  => 'hidden',
+            'tab'   => 'Texts',
+            'default'=>backpack_user()->id
 
         ]);
 

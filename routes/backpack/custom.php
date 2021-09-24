@@ -37,6 +37,7 @@ Route::group([
     Route::crud('notifications', 'NotificationsCrudController');
     Route::crud('polls', 'PollsCrudController');
     Route::crud('events', 'EventsCrudController');
+    Route::crud('expiredevents', 'ExpiredEventsCrudController');
     Route::crud('customers', 'CustomersCrudController');
     Route::get('dashboard', 'AdminController@dashboard')->name('backpack.dashboard');
     Route::get('/', 'AdminController@redirect')->name('backpack');

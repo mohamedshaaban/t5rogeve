@@ -9,10 +9,11 @@ use App\Models\Customer;
 use App\Models\Faculty;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 
-class EventsCrudController extends CrudController
+class ExpiredEventsCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -34,11 +35,12 @@ class EventsCrudController extends CrudController
 
     protected function setupListOperation()
     {
+        $this->crud->addClause('where', 'date',' > ',Carbon::today()->format('Y-m-d'));
+
         if(backpack_user()->faculty_id!=0)
         {
 
             $this->crud->addClause('where', 'faculty',backpack_user()->faculty_id);
-
         }
         $dataCustomers = [];
         $customers = Faculty::all();
@@ -76,9 +78,9 @@ class EventsCrudController extends CrudController
         $this->crud->addButtonFromModelFunction('line', 'statustext ', 'openStatus', 'beginning');
         $this->crud->enableExportButtons();
         $this->crud->disableDetailsRow();
+        $this->crud->removeAllButtons();
 
         $this->crud->disableResponsiveTable();
-//        $this->crud->disablePersistentTable();
 
     }
 
@@ -100,12 +102,12 @@ class EventsCrudController extends CrudController
             'tab'   => 'Texts',
         ]);
 
-//        CRUD::addField([ // Text
-//            'name'  => 'description',
-//            'label' => trans('admin.Event Description'),
-//            'type'  => 'text',
-//            'tab'   => 'Texts',
-//        ]);
+        CRUD::addField([ // Text
+            'name'  => 'description',
+            'label' => trans('admin.Event Description'),
+            'type'  => 'text',
+            'tab'   => 'Texts',
+        ]);
         CRUD::addField([ // Text
             'name'  => 'address',
             'label' => trans('admin.Event address'),
@@ -320,7 +322,7 @@ class EventsCrudController extends CrudController
             'crop' => true, // set to true to allow cropping, false to disable
             'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
         ]);
-/*
+
         $this->crud->addField([
             'label' => trans("admin.Description"),
             'name' => "amenities",
@@ -340,7 +342,7 @@ class EventsCrudController extends CrudController
                 return $query->orderBy('name', 'ASC')->get();
             }), // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
         ]);
-*/
+
 
         $this->crud->addField([
             'label' => trans("admin.Event Term Image"),

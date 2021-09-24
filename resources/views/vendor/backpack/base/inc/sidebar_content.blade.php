@@ -16,6 +16,7 @@
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('polls') }}"><i class="nav-icon la la-cog"></i> <span>{{ trans('admin.Polls')}}</span></a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('amenities') }}"><i class="nav-icon la la-cog"></i> <span>{{ trans('admin.amenities')}}</span></a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('events') }}"><i class="nav-icon la la-cog"></i> <span>{{ trans('admin.Events')}}</span></a></li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('expiredevents') }}"><i class="nav-icon la la-cog"></i> <span>{{ trans('admin.ExpiredEvents')}}</span></a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('booking') }}"><i class="nav-icon la la-cog"></i> <span>{{ trans('admin.Bookings')}}</span></a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('customers') }}"><i class="nav-icon la la-cog"></i> <span>{{ trans('admin.Students')}}</span></a></li>
 <li class="nav-item nav-dropdown">

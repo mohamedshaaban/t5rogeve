@@ -71,7 +71,8 @@ class Ceremony extends Model
 		'ceremony_for' => 'int'
 	];
 
-	protected $appends = ['nameexdate','robeexdate'];
+	protected $appends = ['nameexdate','robeexdate','statustext'];
+
 
 	protected $fillable = [
 		'name',
@@ -394,5 +395,15 @@ class Ceremony extends Model
     public function amenities()
     {
         return $this->belongsToMany(Amenities::class, 'event_amenities','event_id');
+    }
+
+    public function openStatus($crud = false)
+    {
+        if($this->status)
+        {
+            return '<span class="badge badge-success">'.trans('admin.active').'</span>';
+        }
+        return '<span class="badge badge-danger">'.trans('admin.not_active').'</span>';
+
     }
 }

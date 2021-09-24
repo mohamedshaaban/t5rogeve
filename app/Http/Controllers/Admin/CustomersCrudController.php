@@ -39,7 +39,7 @@ class CustomersCrudController extends CrudController
             'name'        => 'id',
             'type'        => 'select2_ajax',
             'label'       => trans('admin.Student'),
-            'placeholder' => 'Name Or Phone'
+            'placeholder' => 'Name , Phone Or Civil Id'
         ],
             url('admin/fetch/bookingfilteruser'), // the ajax route
             function($value) { // if the filter is active
@@ -219,7 +219,8 @@ class CustomersCrudController extends CrudController
             ->orWhere('full_name','like','%'.$term.'%')
             ->orWhere('grandfather_name','like','%'.$term.'%')
             ->orWhere('father_name','like','%'.$term.'%')
-            ->orWhere('family_name','like','%'.$term.'%')->get();
+            ->orWhere('family_name','like','%'.$term.'%')
+            ->orWhere('civil_id','like','%'.$term.'%')->get();
         $data = [];
         foreach ($options as $option)
         {

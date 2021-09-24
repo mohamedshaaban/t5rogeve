@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use App\User;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -41,10 +42,14 @@ class ContactU extends Model
 		'email',
 		'subject',
 		'reply',
-		'mobile'
+		'mobile',
+        'admin_user'
 	];
     public function user() {
         return $this->belongsTo(Customer::class,'user_id');
+    }
+    public function admin() {
+        return $this->belongsTo(User::class,'admin_user');
     }
     public function getIsreplyAttribute()
     {

@@ -85,7 +85,7 @@ return [
     'Event for'=>'Event for',
     'Event date'=>'Event date',
     'hide Date'=>'hide Date',
-    'Event total seats'=>'',
+    'Event total seats'=>'Total seats',
     ' Maximum number of Students'=>'Maximum number of Students',
     ' Minimum DownPayment Amount'=>'Minimum DownPayment Amount',
     ' Payment Amount 2'=>'Payment Amount 2',
@@ -94,7 +94,7 @@ return [
     'Free Seats'=>'Free Seats',
     'hashtag'=>'hashtag',
     ' Hide Seats'=>'Hide Seats',
-    ' Hide Users & Seats Number'=>'Hide Users & Seats Number',
+    ' Hide Users & Seats Number'=>'Hide Students',
     ' Name amendment expiration date'=>'Name amendment expiration date',
     ' The expiry date of resize the robe'=>'The expiry date of resize the robe ',
     ' Faculty'=>'Faculty',
@@ -220,7 +220,11 @@ return [
     'active'=>'Active',
     'not_active'=>'Not Active',
 'reason'=>'Reason',
-''=>'',
+    'ExpiredEvents'=>'Expired Events',
+    'Replied by'=>'Replied by',
+    'Message is sent'=>'Message is sent',
+
+    ''=>'',
 ''=>'',
 
 
