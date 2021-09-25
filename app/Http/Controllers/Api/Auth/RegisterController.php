@@ -15,6 +15,24 @@ use Illuminate\Support\Str;
 use Auth;
 class RegisterController extends Controller
 {
+    public static function updateToken(Request $request)
+    {
+        $customer = Auth::guard('customers_api')->user();
+
+        $device_info =array(
+            'user_id'    	 => $customer->id,
+            'device_id'      => $request->device_id,
+            'device_type'    => $request->device_type,
+            'device_token'   => $request->device_token,
+        );
+        DeviceInfo::create($device_info);
+        $response	=	array(
+            'status' 	=> 1,
+            'message'	=> 'تم التعديل',
+         );
+        return $response;
+
+    }
     public static function customerRegister(Request $request)
     {
         $validator = Validator::make(
