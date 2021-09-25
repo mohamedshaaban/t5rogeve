@@ -252,7 +252,7 @@ class CeremonyController extends Controller
 
         if($seats > $value->remaining_seats){
             $response =	array(
-                'status'=> 0,
+                'status'=> 1,
                 'message'=>'seats are not available.',
             );
             return Response::json($response);
