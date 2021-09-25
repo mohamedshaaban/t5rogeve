@@ -940,5 +940,33 @@ class EventsController extends Controller
         return Response::json($response);
 
     }
+    public function checkSeatAvailabilityForEvent($eventid,$seats){
+        $ceremonies = Ceremony::with('booking')->where('id',$eventid)
+            ->select('id','total_seats')->get();
+
+        foreach ($ceremonies as $key => $value) {
+
+            if(!empty($value->booking)){
+                $sum = array_sum(array_column($value->booking->toArray(), 'no_of_seats'));
+
+                $rms = $value->total_seats - $sum;
+
+                $value->remaining_seats = $rms < 0 ? 0 : $rms;
+
+            }else{
+                $value->remaining_seats = 0;
+            }
+        }
+        //	dd($value->remaining_seats);
+
+        if($seats > $value->remaining_seats){
+            return false;
+
+        }else{
+            return true;
+
+        }
+
+    }
 
 }
