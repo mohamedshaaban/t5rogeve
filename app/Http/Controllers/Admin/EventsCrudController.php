@@ -271,6 +271,7 @@ class EventsCrudController extends CrudController
         $this->crud->addField([
             'label' => trans("admin.Link Store Image"),
             'name' => "link_store_image",
+            'hint'=>'1078 ْX 275',
             'type' => 'image',
             'tab'   => 'Texts',
             'crop' => true, // set to true to allow cropping, false to disable
@@ -300,6 +301,7 @@ class EventsCrudController extends CrudController
             'label' => trans("admin.Event Logo"),
             'name' => "image",
             'type' => 'image',
+            'hint'=>'900 X 900',
             'tab'   => 'Texts',
             'crop' => true, // set to true to allow cropping, false to disable
             'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
@@ -309,6 +311,7 @@ class EventsCrudController extends CrudController
             'label' => trans("admin.Event Image"),
             'name' => "imagemain",
             'type' => 'image',
+            'hint'=>'900 ْX 650',
             'tab'   => 'Texts',
             'crop' => true, // set to true to allow cropping, false to disable
             'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
@@ -318,7 +321,8 @@ class EventsCrudController extends CrudController
         $this->crud->addField([
             'label' => trans("admin.Terms"),
             'name' => "imageterm",
-            'type' => 'easymde',
+            'type' => 'hidden',
+            'hint'=>'',
             'tab'   => 'Texts',
             'crop' => true, // set to true to allow cropping, false to disable
             'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
@@ -349,6 +353,8 @@ class EventsCrudController extends CrudController
             'label' => trans("admin.Event Term Image"),
             'name' => "imageterm2",
             'type' => 'image',
+            'hint'=>'734 X 44000',
+
             'tab'   => 'Texts',
             'crop' => true, // set to true to allow cropping, false to disable
             'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
@@ -358,6 +364,8 @@ class EventsCrudController extends CrudController
             'label' => trans("admin.Event details"),
             'name' => "imagedes",
             'type' => 'image',
+            'hint'=>'660 X 660',
+
             'tab'   => 'Texts',
             'crop' => true, // set to true to allow cropping, false to disable
             'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
