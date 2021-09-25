@@ -35,6 +35,7 @@ Route::post('/addcontactus','OtherController@Addcontactus');
 Route::post('/TermsCondition','OtherController@TermsCondition');
 
 
+
 Route::group(['middleware' => 'auth:customers_api'], function() {
 
     Route::post('userProfile', 'Auth\RegisterController@customerProfile');

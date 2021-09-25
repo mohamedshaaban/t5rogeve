@@ -830,11 +830,11 @@ class EventsController extends Controller
                 {
                     if(empty($robe_size))
                     {
-                        $results=Booking::where('id',$booking_id)->update(['no_of_seats' => $total_seats,'amount'=>$total_price]);
+                        $results=Booking::where('id',$booking_id)->update(['no_of_seats' => $total_seats,'amount'=>$total_price,'full_name'=>$request->full_name,'father_name'=>$request->father_name,'grandfather_name'=>$request->grandfather_name,'family_name'=>$request->family_name]);
                     }
                     else
                     {
-                        $results=Booking::where('id',$booking_id)->update(['no_of_seats' => $total_seats,'amount'=>$total_price,'robe_size'=>$robe_size]);
+                        $results=Booking::where('id',$booking_id)->update(['no_of_seats' => $total_seats,'amount'=>$total_price,'robe_size'=>$robe_size,'full_name'=>$request->full_name,'father_name'=>$request->father_name,'grandfather_name'=>$request->grandfather_name,'family_name'=>$request->family_name]);
                     }
 
 
