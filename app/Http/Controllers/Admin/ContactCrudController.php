@@ -66,7 +66,7 @@ class ContactCrudController extends CrudController
         ]);
         $this->crud->addColumn([
             'name'=>'events',
-            'limit' => 2000,
+            'limit' => 200,
             'label'=>trans('admin.Events')
         ]);
         $this->crud->addColumn([ // Text
@@ -93,7 +93,11 @@ class ContactCrudController extends CrudController
             }
         ]);
         $this->crud->enableExportButtons();
-        $this->crud->enableResponsiveTable();
+        $this->crud->disableDetailsRow();
+
+
+        $this->crud->disableResponsiveTable();
+
         $this->crud->enablePersistentTable();
     }
 
