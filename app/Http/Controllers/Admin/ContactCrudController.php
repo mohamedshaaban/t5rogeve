@@ -64,6 +64,10 @@ class ContactCrudController extends CrudController
             'name'=>'admin',
             'label'=>trans('admin.Replied by')
         ]);
+        $this->crud->addColumn([
+            'name'=>'events',
+            'label'=>trans('admin.Events')
+        ]);
         $this->crud->addColumn([ // Text
             'name' => 'reply',
             'label' => trans('admin.Is Replied'),

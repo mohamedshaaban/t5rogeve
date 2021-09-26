@@ -31,7 +31,7 @@ class ContactU extends Model
     use CrudTrait;
 	protected $table = 'contact_us';
 
-	protected $appends = ['isreply'];
+	protected $appends = ['isreply','events'];
 	protected $casts = [
 		'user_id' => 'int'
 	];
@@ -50,6 +50,17 @@ class ContactU extends Model
     }
     public function admin() {
         return $this->belongsTo(User::class,'admin_user');
+    }
+    public function getEventsAttribute()
+    {
+        $text = '';
+        $eventIds = Booking::where('user_id',$this->user_id)->pluck('event_id')->toArray();
+         $events = Ceremony::whereIn('id',$eventIds)->pluck('name')->toArray();
+         foreach($events as $event)
+         {
+             $text.=$event;
+         }
+        return $text;
     }
     public function getIsreplyAttribute()
     {

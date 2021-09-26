@@ -78,7 +78,7 @@ class ExpiredEventsCrudController extends CrudController
         $this->crud->addButtonFromModelFunction('line', 'statustext ', 'openStatus', 'beginning');
         $this->crud->enableExportButtons();
         $this->crud->disableDetailsRow();
-        $this->crud->removeAllButtons();
+
 
         $this->crud->disableResponsiveTable();
 
