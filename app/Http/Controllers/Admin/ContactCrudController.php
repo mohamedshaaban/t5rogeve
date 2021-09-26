@@ -60,15 +60,24 @@ class ContactCrudController extends CrudController
             'name'=>'subject',
             'label'=>trans('admin.Subject')
         ]);
-        $this->crud->addColumn([
-            'name'=>'admin',
-            'label'=>trans('admin.Replied by')
+        $this->crud->addColumn([ // Text
+            'name' => 'faulty',
+            'label' => trans('admin.Faculty'),
+            'type'     => 'closure',
+            'function' => function($entry) {
+                return @$entry->user->faculty->full_name ;
+            }
         ]);
         $this->crud->addColumn([
             'name'=>'events',
             'limit' => 200,
             'label'=>trans('admin.Events')
         ]);
+        $this->crud->addColumn([
+            'name'=>'admin',
+            'label'=>trans('admin.Replied by')
+        ]);
+
         $this->crud->addColumn([ // Text
             'name' => 'reply',
             'label' => trans('admin.Is Replied'),
@@ -82,16 +91,7 @@ class ContactCrudController extends CrudController
 
             }
         ]);
-        $this->crud->addColumn([ // Text
-            'name' => 'faulty',
-            'label' => trans('admin.Faculty'),
-            'type'     => 'closure',
-            'function' => function($entry) {
-            return @$entry->user->faculty->full_name ;
 
-
-            }
-        ]);
         $this->crud->enableExportButtons();
         $this->crud->disableDetailsRow();
 
