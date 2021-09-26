@@ -53,15 +53,9 @@ class ContactU extends Model
     }
     public function getEventsAttribute()
     {
-        $text = '';
         $eventIds = Booking::where('user_id',$this->user_id)->pluck('event_id')->toArray();
          $events = Ceremony::whereIn('id',$eventIds)->pluck('name')->toArray();
-         foreach($events as $event)
-         {
-             $text.=$event.' , ';
-         }
-
-        return $text;
+        return implode(',',$events);
     }
     public function getIsreplyAttribute()
     {
