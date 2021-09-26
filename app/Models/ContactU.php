@@ -58,8 +58,9 @@ class ContactU extends Model
          $events = Ceremony::whereIn('id',$eventIds)->pluck('name')->toArray();
          foreach($events as $event)
          {
-             $text.=$event;
+             $text.=$event.',';
          }
+
         return $text;
     }
     public function getIsreplyAttribute()

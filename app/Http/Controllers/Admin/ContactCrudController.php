@@ -66,6 +66,7 @@ class ContactCrudController extends CrudController
         ]);
         $this->crud->addColumn([
             'name'=>'events',
+            'limit' => 20000,
             'label'=>trans('admin.Events')
         ]);
         $this->crud->addColumn([ // Text
