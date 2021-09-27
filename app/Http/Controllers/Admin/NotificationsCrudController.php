@@ -36,6 +36,7 @@ class NotificationsCrudController extends CrudController
 
     protected function setupListOperation()
     {
+        $this->crud->removeButton('update');
         CRUD::addColumn([
             'name'           => 'notification',
             'type'           => 'text',
@@ -82,23 +83,7 @@ class NotificationsCrudController extends CrudController
                 2 => "Both"
             ],
         ]);
-        CRUD::addField([   // repeatable
-            'name'  => 'reason',
-            'label' => trans('admin.reason'),
-            'type'  => 'repeatable',
-            'tab'   => 'Texts',
-            'fields' => [
-                [
-                    'name'    => 'reason',
-                    'type'    => 'text',
-                    'label'   => trans('admin.reason'),
-                    'wrapper' => ['class' => 'form-group col-md-12'],
-                ],
-            ],
-            // optional
-            'new_item_label'  => 'Add Reason', // customize the text of the button
 
-        ],);
 
         CRUD::addField([
             'name'           => 'sent_to', // the column that contains the ID of that connected entity;
@@ -108,12 +93,14 @@ class NotificationsCrudController extends CrudController
             'type'  => 'select_from_array',
             'tab'   => 'Texts',
             'allows_null' => false,
-            'default'=>2,
+            'default'=>0,
+            'inline'=>true,
             'attributes' => [
             'class'       => 'form-control notificationfor-class'],
             'options'     => [
                 // the key will be stored in the db, the value will be shown as label;
                 0 => "All",
+                1 => "Events",
                 2 => "User"
             ],
 
@@ -126,14 +113,20 @@ class NotificationsCrudController extends CrudController
                 'type'      => 'select2_multiple',
                 'name'      => 'events', // the method that defines the relationship in your Model
                 'tab'   => 'Texts',
-                // optional
                 'entity'    => 'events', // the method that defines the relationship in your Model
                 'model'     => "App\Models\ceremony", // foreign key model
                 'attribute' => 'name', // foreign key attribute that is shown to user
                 'pivot'     => true, // on create&update, do you need to add/delete pivot table entries?
-                // 'select_all' => true, // show Select All and Clear buttons?
-
+                 'select_all' => true, // show Select All and Clear buttons?
+                'attributes' => [
+                    'style' =>'display:none',
+                    'class'       => 'form-control notificationevent-class'],
                 // optional
+                "visibility" => [
+                    'field_name' => 'sent_to',
+                    'value'      => 1,
+                    'add_disabled' => true, // if you need to disable this field value to not be send through create/update request set it to true, otherwise set it to true
+                ],
                 'options'   => (function ($query) {
                     if(backpack_user()->faculty_id!=0)
                     {
@@ -154,8 +147,13 @@ class NotificationsCrudController extends CrudController
             'entity' => 'user', // the method that defines the relationship in your Model
              'tab' => 'Texts',
             // optional
+            "visibility" => [
+                'field_name' => 'sent_to',
+                'value'      => '2',
+                'add_disabled' => true, // if you need to disable this field value to not be send through create/update request set it to true, otherwise set it to true
+            ],
              'model'     => Customer::class, // foreign key model
-            'attribute' => 'phone', // foreign key attribute that is shown to user
+            'attribute' => 'all_name', // foreign key attribute that is shown to user
             'attributes' => [
                 'style' =>'display:none',
                 'class'       => 'form-control notificationuser-class'],
@@ -199,7 +197,7 @@ class NotificationsCrudController extends CrudController
 
         CRUD::addField([
             'name'           => 'notification',
-            'type'           => 'text',
+            'type'           => 'ckeditor',
             'label'          => trans('admin.notification'),
             'tab' => 'Texts'
         ]);

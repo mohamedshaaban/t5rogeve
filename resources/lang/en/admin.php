@@ -225,7 +225,7 @@ return [
     'Message is sent'=>'Message is sent',
     'Hide Additional Seats'=>'Hide Additional Seats',
 
-    ''=>'',
+    'Sent To'=>'Sent To',
 ''=>'',
 
 

@@ -17,8 +17,14 @@ $( ".payment-class" ).change(function() {
 });
 $(function(){
 
-
+    $('.notificationevent-class').parent().fadeOut();
+    $('.notificationuser-class').parent().fadeOut();
+    $('.notificationfamily_name-class').parent().fadeOut();
+    $('.notificationfather_name').parent().fadeOut();
+    $('.notificationgrandfather_name').parent().fadeOut();
+    $('.notificationfull_name-class').parent().fadeOut();
     $('.notificationfor-class').on('change', function() {
+
         if($( this ).val()==0)
         {
             $('.notificationevent-class').parent().fadeOut();
