@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\ContactRequest as StoreRequest;
 // VALIDATION: change the requests to match your own file names if you need form validation
+use App\Models\Customer;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Facades\App;
@@ -47,6 +48,13 @@ class ContactCrudController extends CrudController
 
     protected function setupListOperation()
     {
+        if(backpack_user()->faculty_id!=0)
+        {
+            $userIds = Customer::where('faculty',backpack_user()->faculty_id)->pluck('id')->toArray();
+
+            $this->crud->addClause('whereIn', 'user_id',$userIds);
+
+        }
         $this->crud->addColumn([
             'name'=>'name',
             'label'=>trans('admin.Name')
