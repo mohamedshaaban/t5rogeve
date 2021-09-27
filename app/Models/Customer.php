@@ -64,6 +64,7 @@ use Asciisd\Knet\HasKnet;
  */
 class Customer extends Authenticatable
 {
+    use HasKnet;
     use CrudTrait;
     use HasApiTokens, Notifiable;
     use HasKnet;

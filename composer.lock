@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "37af01283e0b27693e8ea6bcbb833d39",
+    "content-hash": "0d356592d9a4bca251e9fd21861ac876",
     "packages": [
         {
             "name": "apility/laravel-fcm",
@@ -2890,6 +2890,57 @@
                 "source": "https://github.com/Intervention/image/tree/2.6.1"
             },
             "time": "2021-07-22T14:31:53+00:00"
+        },
+        {
+            "name": "izal/knet-payment-php",
+            "version": "3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/iZaL/knet-payment-php.git",
+                "reference": "2c088485ab6db2d1590719d00bad2b144f0ccbea"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/iZaL/knet-payment-php/zipball/2c088485ab6db2d1590719d00bad2b144f0ccbea",
+                "reference": "2c088485ab6db2d1590719d00bad2b144f0ccbea",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": ">=6.0",
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "IZaL\\Knet\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Afzal Abbas",
+                    "email": "z4ls@live.com"
+                }
+            ],
+            "description": "Php SDK for Knet Payment Gateway",
+            "keywords": [
+                "knet",
+                "knet client",
+                "knet payment",
+                "knet php",
+                "knet sdk"
+            ],
+            "support": {
+                "issues": "https://github.com/iZaL/knet-payment-php/issues",
+                "source": "https://github.com/iZaL/knet-payment-php/tree/3.1"
+            },
+            "time": "2020-09-19T02:38:46+00:00"
         },
         {
             "name": "laravel/framework",

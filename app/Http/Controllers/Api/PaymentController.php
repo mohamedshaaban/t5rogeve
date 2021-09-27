@@ -406,7 +406,25 @@ class PaymentController extends Controller
   	     $amount  = $request->amount ;
 
 	          $event_id  = $request->event_id ;
-	          
+	          dump($event_id);
+             $knetGateway = new KnetBilling([
+                 'alias'        => 'knet',
+                 'resourcePath' => '/pay/' //Absolute Path to where the resource.cgn file is located
+             ]);
+             $knetGateway->setResponseURL('http://mywebapp.com/payment/response.php');
+             $knetGateway->setErrorURL('http://mywebapp.com/payment/error.php');
+$knetGateway->setAmt(100);
+$knetGateway->setTrackId('123456'); // unique string
+             $knetGateway->requestPayment();
+             $paymentURL = $knetGateway->getPaymentURL();
+             dd($paymentURL);
+             try{
+                 $user = Customer::find(10754);
+                 $payment = $user->pay(10);
+                 dd($payment->url); // this will return payment link
+             } catch(\Asciisd\Knet\Exceptions\PaymentActionRequired $exception) {
+                 return redirect($exception->payment->actionUrl());
+             }
 	          
     $knet = KPayManager::make($amount, [
         'user_id' => $request->user_id, 
