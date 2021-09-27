@@ -457,6 +457,8 @@ class CeremonyController extends Controller
                 else{
                     $ceremony_status = 1;
                 }
+        $user = Auth::guard('customers_api')->user();
+        $user_id = $user->id;
                 $ceremony[0]->ceremony_status = $ceremony_status;
                 $ceremony[0]->id = (int)$ceremony[0]->id;
                 $ceremony[0]->price = (int)$ceremony[0]->price;
@@ -468,6 +470,8 @@ class CeremonyController extends Controller
                 $ceremony[0]->total_seats = (int)$ceremony[0]->total_seats;
                 $ceremony[0]->poll = $ceremony[0]->poll;
                 $ceremony[0]->number_of_booking_students = (int)sizeof($bookinglist);
+                $ceremony[0]->booking = Booking::where('event_id',$event_id)->where('user_id',$user_id)->get();
+
                 if(!empty($bookinglist)){
                     $sum = array_sum(array_column($bookinglist->toArray(), 'no_of_seats'));
                     $rms = $ceremony[0]->total_seats - $sum;
