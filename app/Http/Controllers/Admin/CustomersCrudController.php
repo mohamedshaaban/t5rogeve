@@ -215,12 +215,12 @@ class CustomersCrudController extends CrudController
     }
     public function studentOptions(Request $request) {
         $term = $request->input('term');
-        $options =  Customer::where('phone','like',"'%".$term."%'")
-            ->orWhere('full_name','like',"'%".$term."%'")
-            ->orWhere('grandfather_name','like',"'%".$term."%'")
-            ->orWhere('father_name','like',"'%".$term."%'")
-            ->orWhere('family_name','like',"'%".$term."%'")
-            ->orWhere('civil_id','like',"'%".$term."%'")->get();
+        $options =  Customer::where('phone','like',"%".$term."%")
+            ->orWhere('full_name','like',"'%".$term."%")
+            ->orWhere('grandfather_name','like',"%".$term."%")
+            ->orWhere('father_name','like',"%".$term."%")
+            ->orWhere('family_name','like',"%".$term."%")
+            ->orWhere('civil_id','like',"%".$term."%")->get();
         $data = [];
         foreach ($options as $option)
         {
