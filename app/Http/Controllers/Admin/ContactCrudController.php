@@ -50,7 +50,7 @@ class ContactCrudController extends CrudController
     {
         if(backpack_user()->faculty_id!=0)
         {
-            $userIds = Customer::where('faculty',backpack_user()->faculty_id)->pluck('id')->toArray();
+            $userIds = Customer::where('faulty',backpack_user()->faculty_id)->pluck('id')->toArray();
 
             $this->crud->addClause('whereIn', 'user_id',$userIds);
 
