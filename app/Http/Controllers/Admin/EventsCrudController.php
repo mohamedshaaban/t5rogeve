@@ -75,7 +75,7 @@ class EventsCrudController extends CrudController
         $this->crud->addColumn(['name'  => 'address', 'label' => trans('admin.Event address')]);
 
 
-        $this->crud->addColumn(['name'=>'number_of_students','label'=>trans('admin.number_of_students')]);
+        $this->crud->addColumn(['name'=>'numstudents','label'=>trans('admin.number_of_students')]);
         $this->crud->addButtonFromModelFunction('line', 'statustext ', 'openStatus', 'beginning');
         $this->crud->enableExportButtons();
         $this->crud->disableDetailsRow();
@@ -246,6 +246,21 @@ class EventsCrudController extends CrudController
                 0 => "No",
                 1 => "Yes"
             ],
+            'default'=>'0',
+            'inline'      => true,
+        ]);
+        CRUD::addField([ // Text
+            'name'  => 'hide_additional_seats',
+            'label' => trans('admin.Hide Additional Seats'),
+            'type'  => 'radio',
+            'tab'   => 'Texts',
+            'options'     => [
+                // the key will be stored in the db, the value will be shown as label;
+                0 => "No",
+                1 => "Yes"
+            ],
+            'default'=>'0',
+            'inline'      => true,
         ]);
 
         CRUD::addField([ // Text
@@ -258,6 +273,8 @@ class EventsCrudController extends CrudController
                 0 => "No",
                 1 => "Yes"
             ],
+            'default'=>'0',
+            'inline'      => true,
         ]);
         $this->crud->addField([
             'label' => trans("admin.link_store"),
@@ -281,20 +298,18 @@ class EventsCrudController extends CrudController
 
 
         CRUD::addField([ // Text
-            'name'  => 'NameExDate',
+            'name'  => 'Name_Ex_Date',
             'label' => trans('admin. Name amendment expiration date'),
-            'type'  => 'date',
-            'format'   => 'Y-m-d',
-            'tab'   => 'Texts',
-
+            'type'  => 'datetime_picker',
+            'format' => 'Y-m-d h:i',
+            'tab'   => 'Texts'
         ]);
         CRUD::addField([ // Text
-            'name'  => 'RobeExDate',
+            'name'  => 'RobSize_Ex_Date',
             'label' => trans('admin. The expiry date of resize the robe'),
-            'type'  => 'date',
-            'format'   => 'Y-m-d',
-            'tab'   => 'Texts',
-
+            'type'  => 'datetime_picker',
+            'format' => 'Y-m-d h:i',
+            'tab'   => 'Texts'
         ]);
 
         $this->crud->addField([
@@ -321,7 +336,7 @@ class EventsCrudController extends CrudController
         $this->crud->addField([
             'label' => trans("admin.Terms"),
             'name' => "imageterm",
-            'type' => 'hidden',
+            'type' => 'ckeditor',
             'hint'=>'',
             'tab'   => 'Texts',
             'crop' => true, // set to true to allow cropping, false to disable

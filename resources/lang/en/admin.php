@@ -223,6 +223,7 @@ return [
     'ExpiredEvents'=>'Expired Events',
     'Replied by'=>'Replied by',
     'Message is sent'=>'Message is sent',
+    'Hide Additional Seats'=>'Hide Additional Seats',
 
     ''=>'',
 ''=>'',

@@ -57,6 +57,7 @@ class Ceremony extends Model
 	protected $casts = [
 		'total_seats' => 'int',
 		'hide_seats' => 'int',
+		'hide_additional_seats' => 'int',
 		'hide_UsersSeatsN' => 'int',
 		'number_of_students' => 'int',
 		'remaining_seats' => 'int',
@@ -71,7 +72,7 @@ class Ceremony extends Model
 		'ceremony_for' => 'int'
 	];
 
-	protected $appends = ['nameexdate','robeexdate','statustext'];
+	protected $appends = ['nameexdate','robeexdate','statustext','numstudents'];
 
 
 	protected $fillable = [
@@ -82,6 +83,7 @@ class Ceremony extends Model
 		'description',
 		'total_seats',
 		'hide_seats',
+		'hide_additional_seats',
 		'hide_UsersSeatsN',
 		'number_of_students',
 		'remaining_seats',
@@ -110,7 +112,17 @@ class Ceremony extends Model
     {
         return $this->belongsTo(Faculty::class, 'faculty2');
     }
-
+    public function setrobeExDateAttribute($value) {
+        $this->attributes['RobSize_Ex_Date'] = \Carbon\Carbon::parse($value)->format('Y-m-d H:i:s');
+    }
+    public function setnameExDateAttribute($value) {
+        $this->attributes['Name_Ex_Date'] = \Carbon\Carbon::parse($value)->format('Y-m-d H:i:s');
+    }
+//    public function setNameExDateAttribute($value) {
+//
+//        dd(\Carbon\Carbon::parse($value));
+//        $this->attributes['NameExDate'] = \Carbon\Carbon::parse($value);
+//    }
     public function setImageAttribute($value)
     {
         $attribute_name = "image";
@@ -362,6 +374,12 @@ class Ceremony extends Model
         }
 
         return asset('uploads/folder_1/folder_2/' . $value);
+    }
+    public function getNumstudentsAttribute()
+    {
+
+
+        return $this->booking()->count('id').'/'.$this->number_of_students;
     }
     public function getLinkStoreImageAttribute($value)
     {

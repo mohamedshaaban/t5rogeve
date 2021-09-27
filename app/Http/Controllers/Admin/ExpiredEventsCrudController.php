@@ -13,10 +13,12 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 
-class ExpiredEventsCrudController extends CrudController
+class ExpiredEventsCrudController  extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation {
+        store as traitStore;
+    }
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CloneOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
@@ -29,19 +31,20 @@ class ExpiredEventsCrudController extends CrudController
         App::setLocale(session('locale'));
 
         CRUD::setModel(\App\Models\Ceremony::class);
-        CRUD::setRoute(config('backpack.base.route_prefix').'/events');
+        CRUD::setRoute(config('backpack.base.route_prefix').'/expiredevents');
         CRUD::setEntityNameStrings(trans('admin.event'), trans('admin.events'));
     }
 
     protected function setupListOperation()
     {
-        $this->crud->addClause('where', 'date',' < ',Carbon::today()->format('Y-m-d'));
-
-        if(backpack_user()->faculty_id!=0)
-        {
-
-            $this->crud->addClause('where', 'faculty',backpack_user()->faculty_id);
-        }
+//        $this->crud->addClause('where', 'date',' >= ',Carbon::today()->format('Y-m-d'));
+        $this->crud->addClause('whereDate', 'date',' < ',Carbon::today()->format('Y-m-d'));
+//        if(backpack_user()->faculty_id!=0)
+//        {
+//
+//            $this->crud->addClause('where', 'faculty',backpack_user()->faculty_id);
+//
+//        }
         $dataCustomers = [];
         $customers = Faculty::all();
         foreach ($customers as $customer)
@@ -74,13 +77,15 @@ class ExpiredEventsCrudController extends CrudController
         $this->crud->addColumn(['name'  => 'address', 'label' => trans('admin.Event address')]);
 
 
-        $this->crud->addColumn(['name'=>'number_of_students','label'=>trans('admin.number_of_students')]);
+        $this->crud->addColumn(['name'=>'numstudents','label'=>trans('admin.number_of_students')]);
         $this->crud->addButtonFromModelFunction('line', 'statustext ', 'openStatus', 'beginning');
         $this->crud->enableExportButtons();
         $this->crud->disableDetailsRow();
 
+        $this->crud->removeButton('create');
 
         $this->crud->disableResponsiveTable();
+//        $this->crud->disablePersistentTable();
 
     }
 
@@ -102,12 +107,12 @@ class ExpiredEventsCrudController extends CrudController
             'tab'   => 'Texts',
         ]);
 
-        CRUD::addField([ // Text
-            'name'  => 'description',
-            'label' => trans('admin.Event Description'),
-            'type'  => 'text',
-            'tab'   => 'Texts',
-        ]);
+//        CRUD::addField([ // Text
+//            'name'  => 'description',
+//            'label' => trans('admin.Event Description'),
+//            'type'  => 'text',
+//            'tab'   => 'Texts',
+//        ]);
         CRUD::addField([ // Text
             'name'  => 'address',
             'label' => trans('admin.Event address'),
@@ -116,7 +121,7 @@ class ExpiredEventsCrudController extends CrudController
         ]);
 
 
-         CRUD::addField([ // Text
+        CRUD::addField([ // Text
             'name'  => 'latitude',
             'label' => trans('admin.Event latitude'),
             'type'  => 'text',
@@ -124,7 +129,7 @@ class ExpiredEventsCrudController extends CrudController
         ]);
 
 
-         CRUD::addField([ // Text
+        CRUD::addField([ // Text
             'name'  => 'longitude',
             'label' => trans('admin.Event longitude'),
             'type'  => 'text',
@@ -245,6 +250,9 @@ class ExpiredEventsCrudController extends CrudController
                 0 => "No",
                 1 => "Yes"
             ],
+            'default'=>'0',
+            'inline'      => true,
+
         ]);
 
         CRUD::addField([ // Text
@@ -257,7 +265,23 @@ class ExpiredEventsCrudController extends CrudController
                 0 => "No",
                 1 => "Yes"
             ],
+            'default'=>'0',
+            'inline'      => true,
         ]);
+        CRUD::addField([ // Text
+            'name'  => 'hide_additional_seats',
+            'label' => trans('admin.Hide Additional Seats'),
+            'type'  => 'radio',
+            'tab'   => 'Texts',
+            'options'     => [
+                // the key will be stored in the db, the value will be shown as label;
+                0 => "No",
+                1 => "Yes"
+            ],
+            'default'=>'0',
+            'inline'      => true,
+        ]);
+
         $this->crud->addField([
             'label' => trans("admin.link_store"),
             'name' => "link_store",
@@ -270,6 +294,7 @@ class ExpiredEventsCrudController extends CrudController
         $this->crud->addField([
             'label' => trans("admin.Link Store Image"),
             'name' => "link_store_image",
+            'hint'=>'1078 ْX 275',
             'type' => 'image',
             'tab'   => 'Texts',
             'crop' => true, // set to true to allow cropping, false to disable
@@ -279,26 +304,25 @@ class ExpiredEventsCrudController extends CrudController
 
 
         CRUD::addField([ // Text
-            'name'  => 'NameExDate',
+            'name'  => 'Name_Ex_Date',
             'label' => trans('admin. Name amendment expiration date'),
-            'type'  => 'date',
-            'format'   => 'Y-m-d',
-            'tab'   => 'Texts',
-
+            'type'  => 'datetime_picker',
+            'format' => 'Y-m-d h:i',
+            'tab'   => 'Texts'
         ]);
         CRUD::addField([ // Text
-            'name'  => 'RobeExDate',
+            'name'  => 'RobSize_Ex_Date',
             'label' => trans('admin. The expiry date of resize the robe'),
-            'type'  => 'date',
-            'format'   => 'Y-m-d',
-            'tab'   => 'Texts',
-
+            'type'  => 'datetime_picker',
+            'format' => 'Y-m-d h:i',
+            'tab'   => 'Texts'
         ]);
 
         $this->crud->addField([
             'label' => trans("admin.Event Logo"),
             'name' => "image",
             'type' => 'image',
+            'hint'=>'900 X 900',
             'tab'   => 'Texts',
             'crop' => true, // set to true to allow cropping, false to disable
             'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
@@ -308,6 +332,7 @@ class ExpiredEventsCrudController extends CrudController
             'label' => trans("admin.Event Image"),
             'name' => "imagemain",
             'type' => 'image',
+            'hint'=>'900 ْX 650',
             'tab'   => 'Texts',
             'crop' => true, // set to true to allow cropping, false to disable
             'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
@@ -317,37 +342,40 @@ class ExpiredEventsCrudController extends CrudController
         $this->crud->addField([
             'label' => trans("admin.Terms"),
             'name' => "imageterm",
-            'type' => 'easymde',
+            'type' => 'ckeditor',
+            'hint'=>'',
             'tab'   => 'Texts',
             'crop' => true, // set to true to allow cropping, false to disable
             'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
         ]);
+        /*
+                $this->crud->addField([
+                    'label' => trans("admin.Description"),
+                    'name' => "amenities",
+                    'type' => 'relationship',
+                    'tab'   => 'Texts',
+                    'crop' => true, // set to true to allow cropping, false to disable
+                    'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
 
-        $this->crud->addField([
-            'label' => trans("admin.Description"),
-            'name' => "amenities",
-            'type' => 'relationship',
-            'tab'   => 'Texts',
-            'crop' => true, // set to true to allow cropping, false to disable
-            'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
+                    // optional
+                    'entity'    => 'amenities', // the method that defines the relationship in your Model
+                    'model'     => "App\Models\amenities", // foreign key model
+                    'attribute' => 'name', // foreign key attribute that is shown to user
+                    'pivot'     => true, // on create&update, do you need to add/delete pivot table entries?
 
-            // optional
-            'entity'    => 'amenities', // the method that defines the relationship in your Model
-            'model'     => "App\Models\amenities", // foreign key model
-            'attribute' => 'name', // foreign key attribute that is shown to user
-            'pivot'     => true, // on create&update, do you need to add/delete pivot table entries?
-
-            // also optional
-            'options'   => (function ($query) {
-                return $query->orderBy('name', 'ASC')->get();
-            }), // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
-        ]);
-
+                    // also optional
+                    'options'   => (function ($query) {
+                        return $query->orderBy('name', 'ASC')->get();
+                    }), // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
+                ]);
+        */
 
         $this->crud->addField([
             'label' => trans("admin.Event Term Image"),
             'name' => "imageterm2",
             'type' => 'image',
+            'hint'=>'734 X 44000',
+
             'tab'   => 'Texts',
             'crop' => true, // set to true to allow cropping, false to disable
             'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
@@ -357,6 +385,8 @@ class ExpiredEventsCrudController extends CrudController
             'label' => trans("admin.Event details"),
             'name' => "imagedes",
             'type' => 'image',
+            'hint'=>'660 X 660',
+
             'tab'   => 'Texts',
             'crop' => true, // set to true to allow cropping, false to disable
             'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
@@ -369,68 +399,17 @@ class ExpiredEventsCrudController extends CrudController
     {
         $this->setupCreateOperation();
     }
-    public static function fetch(\Illuminate\Http\Request  $request)
+
+    public function update()
     {
-        $events = Ceremony::where('name','like','%'.$request->q.'%')->get(['id','name']);
+        $this->crud->setRequest($this->crud->validateRequest());
+        $this->crud->unsetValidation(); // validation has already been run
 
-        if(backpack_user()->faculty_id!=0)
-        {
-            $events = Ceremony::where('name','like','%'.$request->q.'%')->where('faculty',backpack_user()->faculty_id)->get(['id','name']);
+        $response = $this->traitStore();
+        \Alert::add('success', '<strong>Event Created </strong>');
 
-        }
-        $data = [] ;
-        foreach ($events as $event)
-        {
-            $data[] = ['id'=>$event->id , 'name'=>$event->name];
-        }
+        return redirect('/admin/events');
+        return $response;
 
-        return $data;
-
-    }
-    public static function fetchEventDetails(\Illuminate\Http\Request  $request)
-    {
-        $event = Ceremony::find($request->id);
-        return ($event);
-    }
-    public static function fetchDashEventDetails(\Illuminate\Http\Request  $request)
-    {
-        $event = Ceremony::find($request->id);
-        return ([
-             'eveDetBookSeats'=>$event->total_seats.'/'.$event->remaining_seats,
-            'eveDetAmtFull'=>$event->booking()->where('payment_type','full')->sum('amount'),
-            'eveDetAmtDwnPay'=>$event->booking()->where('payment_type','down')->sum('amount'),
-            'eveDetAmtRem'=>$event->booking()->where('payment_type','down')->sum('remaining_amount'),
-            'eveDetRegUser'=>$event->booking()->count('id')
-        ]);
-    }
-
-    public static function fetchuser(\Illuminate\Http\Request  $request)
-    {
-        $users = Customer::where('phone','like','%'.$request->q.'%')
-            ->orWhere('full_name','like','%'.$request->q.'%')
-            ->orWhere('grandfather_name','like','%'.$request->q.'%')
-            ->orWhere('father_name','like','%'.$request->q.'%')
-            ->orWhere('family_name','like','%'.$request->q.'%')
-            ->get();
-        $data = [] ;
-        foreach ($users as $user)
-        {
-            $data[] = ['id'=>$user->id , 'all_name'=>$user->full_name.' '.$user->grandfather_name.' '.$user->father_name.' - '.$user->phone];
-        }
-
-        return $data;
-
-    }
-    public function eventOptions(Request $request) {
-        $term = $request->input('term');
-        $options =  Ceremony::where('name','like','%'.$term.'%')
-            ->get();
-        $data = [];
-        foreach ($options as $option)
-        {
-            $data [$option->id] = $option->name;
-
-        }
-        return $data;
     }
 }

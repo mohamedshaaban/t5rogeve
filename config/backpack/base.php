@@ -11,8 +11,8 @@
     */
 
     // Date & Datetime Format Syntax: https://carbon.nesbot.com/docs/#api-localization
-    'default_date_format'     => 'Y/m/d',
-    'default_datetime_format' => 'Y/m/d, HH:mm',
+    'default_date_format'     => 'Y-M-d',
+    'default_datetime_format' => 'Y-m-d h:i:s',
 
     // Direction, according to language
     // (left-to-right vs right-to-left)
