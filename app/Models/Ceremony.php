@@ -372,7 +372,7 @@ class Ceremony extends Model
 
         }
 
-        return $value;
+        return asset('uploads/folder_1/folder_2/' . $value);
     }
     public function getImageterm2Attribute($value)
     {
