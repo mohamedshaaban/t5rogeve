@@ -27,6 +27,9 @@ return [
     */
 
     'debug' => env('APP_DEBUG', false),
+    'KENT_TRANSPORT_ID' => env('KENT_TRANSPORT_ID', '109301'),
+    'KENT_TRANSPORT_PASSWORD' => env('KENT_TRANSPORT_PASSWORD', '109301pg'),
+    'KENT_RESOURCE_KEY' => env('KENT_RESOURCE_KEY', '68U60D7ETXH30FJ1'),
 
     /*
     |--------------------------------------------------------------------------

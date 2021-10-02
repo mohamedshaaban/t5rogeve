@@ -406,44 +406,60 @@ class PaymentController extends Controller
   	     $amount  = $request->amount ;
 
 	          $event_id  = $request->event_id ;
-	          dump($event_id);
-             $knetGateway = new KnetBilling([
-                 'alias'        => 'knet',
-                 'resourcePath' => '/pay/' //Absolute Path to where the resource.cgn file is located
-             ]);
-             $knetGateway->setResponseURL('http://mywebapp.com/payment/response.php');
-             $knetGateway->setErrorURL('http://mywebapp.com/payment/error.php');
-$knetGateway->setAmt(100);
-$knetGateway->setTrackId('123456'); // unique string
-             $knetGateway->requestPayment();
-             $paymentURL = $knetGateway->getPaymentURL();
-             dd($paymentURL);
-             try{
-                 $user = Customer::find(10754);
-                 $payment = $user->pay(10);
-                 dd($payment->url); // this will return payment link
-             } catch(\Asciisd\Knet\Exceptions\PaymentActionRequired $exception) {
-                 return redirect($exception->payment->actionUrl());
-             }
-	          
-    $knet = KPayManager::make($amount, [
-        'user_id' => $request->user_id, 
-        'udf1' => $request->first_name,
-        'udf2' => $request->family,
-        'udf3' => $request->phone,
-        'udf4' => $request->user_id,
-        'udf5' => $event_id
-    ]);
-// make KnetTransaction record in your database
-$payment = new Payment(
-            KnetTransaction::create($knet->toArray())
-        );
-        
+//	          dump($event_id);
+//             $knetGateway = new KnetBilling([
+//                 'alias'        => 'knet',
+//                 'resourcePath' => '/pay/' //Absolute Path to where the resource.cgn file is located
+//             ]);
+//             $knetGateway->setResponseURL('http://mywebapp.com/payment/response.php');
+//             $knetGateway->setErrorURL('http://mywebapp.com/payment/error.php');
+//$knetGateway->setAmt(100);
+//$knetGateway->setTrackId('123456'); // unique string
+//             $knetGateway->requestPayment();
+//             $paymentURL = $knetGateway->getPaymentURL();
+//             dd($paymentURL);
+//             try{
+//                 $user = Customer::find(10754);
+//                 $payment = $user->pay(10);
+//                 dd($payment->url); // this will return payment link
+//             } catch(\Asciisd\Knet\Exceptions\PaymentActionRequired $exception) {
+//                 return redirect($exception->payment->actionUrl());
+//             }
 
-$payment->actionUrl(); // redirect user to pay with url generated
+
+             //Knet Documentation
+             $TranAmount = number_format((float)$amount, 2, '.', '');
+             $TranportalId=config('app.KENT_TRANSPORT_ID');
+             $ReqTranportalId="id=".$TranportalId;
+             $TranportalPassword=config('app.KENT_TRANSPORT_PASSWORD');
+             $ReqTranportalPassword="password=".$TranportalPassword;
+             $ReqAmount="amt=".$TranAmount;
+             $TranTrackid=$this->generateRandomString(10);
+             $ReqTrackId="trackid=".$TranTrackid;
+             $ReqCurrency="currencycode=414";
+             $ReqLangid="langid=USA";
+             $ReqAction="action=1";
+             $ResponseUrl=route('knetsuccess');
+             $ReqResponseUrl="responseURL=".$ResponseUrl;
+             $ErrorUrl=route('kneterror');
+             $ReqErrorUrl="errorURL=".$ErrorUrl;
+             $ReqUdf1="udf1=".$request->first_name;
+             $ReqUdf2="udf2=".$request->family;
+             $ReqUdf3="udf3=".$request->phone;
+             $ReqUdf4="udf4=".$request->user_id;
+             $ReqUdf5="udf5=".$event_id;
+             $param=$ReqTranportalId."&".$ReqTranportalPassword."&".$ReqAction."&".$ReqLangid."&".$ReqCurrency."&".$ReqAmount."&".$ReqResponseUrl."&".$ReqErrorUrl."&".$ReqTrackId."&".$ReqUdf1."&".$ReqUdf2."&".$ReqUdf3."&".$ReqUdf4."&".$ReqUdf5;
+
+
+
+
+             $termResourceKey=config('app.KENT_RESOURCE_KEY');
+             $param=$this->encryptAES($param,$termResourceKey)."&tranportalId=".$TranportalId."&responseURL=".$ResponseUrl."&errorURL=".$ErrorUrl;
+             $param = "https://kpaytest.com.kw/kpg/PaymentHTTP.htm?param=paymentInit"."&trandata=".$param;
+
  $response =array(
 				'status'=> 1,
-				'paymenturl'=> $payment->actionUrl()
+				'paymenturl'=> $param
 				);	
 				
 				return Response::json($response);die; 
@@ -457,7 +473,46 @@ $payment->actionUrl(); // redirect user to pay with url generated
 		
 	 }
 
+	 public function knetsuccess(Request $request)
+     {
+         
+     }
+     
+	 public function kneterror(Request $request)
+     {
+         
+     }
 
+    //AES Encryption Method Starts
+    function encryptAES($str,$key) {
+        $str = $this->pkcs5_pad($str);
+        $encrypted = openssl_encrypt($str, 'AES-128-CBC', $key, OPENSSL_ZERO_PADDING, $key);
+        $encrypted = base64_decode($encrypted);
+        $encrypted=unpack('C*', ($encrypted));
+        $encrypted=$this->byteArray2Hex($encrypted);
+        $encrypted = urlencode($encrypted);
+        return $encrypted;
+    }
+    function generateRandomString($length = 10) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
+
+    function pkcs5_pad ($text) {
+        $blocksize = 16;
+        $pad = $blocksize - (strlen($text) % $blocksize);
+        return $text . str_repeat(chr($pad), $pad);
+    }
+    function byteArray2Hex($byteArray) {
+        $chars = array_map("chr", $byteArray);
+        $bin = join($chars);
+        return bin2hex($bin);
+    }
 	 	 function payknetremining(Request $request) {
 	     
             ///
@@ -538,24 +593,6 @@ $payment->actionUrl(); // redirect user to pay with url generated
 				}
 
 	}
-    function encryptAES($str,$key) {
-        $str = $this->pkcs5_pad($str);
-        $encrypted = openssl_encrypt($str, 'AES-128-CBC', $key, OPENSSL_ZERO_PADDING, $key);
-        $encrypted = base64_decode($encrypted);
-        $encrypted=unpack('C*', ($encrypted));
-        $encrypted=$this->byteArray2Hex($encrypted);
-        $encrypted = urlencode($encrypted);
-        return $encrypted;
-    }
 
-    function pkcs5_pad ($text) {
-        $blocksize = 16;
-        $pad = $blocksize - (strlen($text) % $blocksize);
-        return $text . str_repeat(chr($pad), $pad);
-    }
-    function byteArray2Hex($byteArray) {
-        $chars = array_map("chr", $byteArray);
-        $bin = join($chars);
-        return bin2hex($bin);
-    }
+
 }
