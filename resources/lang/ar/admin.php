@@ -226,6 +226,7 @@ return [
     'Replied by'=>'تم الرد بواسطة',
     'Message is sent'=>'تم ارسال الرسالة',
     'Hide Additional Seats'=>'اجمالي عدد مقاعد الحضور',
+    'Hide Link to Store'=>'اخفاء رابط شراء الروب ',
 
 
 

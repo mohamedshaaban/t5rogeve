@@ -84,6 +84,7 @@ class Ceremony extends Model
 		'total_seats',
 		'hide_seats',
 		'hide_additional_seats',
+		'hide_ad_events',
 		'hide_UsersSeatsN',
 		'number_of_students',
 		'remaining_seats',
@@ -289,6 +290,20 @@ class Ceremony extends Model
         } else {
             return $this->attributes[$attribute_name] = $value;
         }
+    }
+    public function getLinkStoreImageAttribute()
+    {
+        if($this->attributes['hide_ad_events']){
+            return '' ;
+        }
+        return  $this->attributes['link_store_image'];
+    }
+    public function getLinkStoreAttribute()
+    {
+        if($this->attributes['hide_ad_events']){
+            return '' ;
+        }
+        return  $this->attributes['link_store'];
     }
     public function getRobeexdateAttribute()
     {

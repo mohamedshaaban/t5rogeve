@@ -14,6 +14,7 @@ use Auth,Response,DB,Hash,Session,Redirect,Validator;
 use Asciisd\Knet\KPayManager;
 use Asciisd\Knet\Payment;
 use Asciisd\Knet\KnetTransaction;
+use IZaL\Knet\KnetBilling;
 
 class PaymentController extends Controller
 {
@@ -407,20 +408,10 @@ class PaymentController extends Controller
 
 	          $event_id  = $request->event_id ;
 	          dump($event_id);
-             $knetGateway = new KnetBilling([
-                 'alias'        => 'knet',
-                 'resourcePath' => '/pay/' //Absolute Path to where the resource.cgn file is located
-             ]);
-             $knetGateway->setResponseURL('http://mywebapp.com/payment/response.php');
-             $knetGateway->setErrorURL('http://mywebapp.com/payment/error.php');
-$knetGateway->setAmt(100);
-$knetGateway->setTrackId('123456'); // unique string
-             $knetGateway->requestPayment();
-             $paymentURL = $knetGateway->getPaymentURL();
-             dd($paymentURL);
+
              try{
-                 $user = Customer::find(10754);
-                 $payment = $user->pay(10);
+                 $user = Customer::find(10725);
+                 $payment = $user->pay(.100);
                  dd($payment->url); // this will return payment link
              } catch(\Asciisd\Knet\Exceptions\PaymentActionRequired $exception) {
                  return redirect($exception->payment->actionUrl());

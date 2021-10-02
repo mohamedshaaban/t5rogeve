@@ -249,6 +249,7 @@ class EventsCrudController extends CrudController
             'default'=>'0',
             'inline'      => true,
         ]);
+
         CRUD::addField([ // Text
             'name'  => 'hide_additional_seats',
             'label' => trans('admin.Hide Additional Seats'),
@@ -266,6 +267,19 @@ class EventsCrudController extends CrudController
         CRUD::addField([ // Text
             'name'  => 'hide_UsersSeatsN',
             'label' => trans('admin. Hide Users & Seats Number'),
+            'type'  => 'radio',
+            'tab'   => 'Texts',
+            'options'     => [
+                // the key will be stored in the db, the value will be shown as label;
+                0 => "No",
+                1 => "Yes"
+            ],
+            'default'=>'0',
+            'inline'      => true,
+        ]);
+        CRUD::addField([ // Text
+            'name'  => 'hide_ad_events',
+            'label' => trans('admin.Hide Link to Store'),
             'type'  => 'radio',
             'tab'   => 'Texts',
             'options'     => [

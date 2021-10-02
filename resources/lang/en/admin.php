@@ -226,7 +226,7 @@ return [
     'Hide Additional Seats'=>'Hide Additional Seats',
 
     'Sent To'=>'Sent To',
-''=>'',
+'Hide Link to Store'=>'Hide Link to Store',
 
 
 
