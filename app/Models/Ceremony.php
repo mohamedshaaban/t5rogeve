@@ -296,7 +296,7 @@ class Ceremony extends Model
         if($this->attributes['hide_ad_events']){
             return '' ;
         }
-        return  $this->attributes['link_store_image'];
+        return  asset('uploads/folder_1/folder_2/' . $this->attributes['link_store_image']);
     }
     public function getLinkStoreAttribute()
     {
@@ -395,17 +395,6 @@ class Ceremony extends Model
 
 
         return $this->booking()->count('id').'/'.$this->number_of_students;
-    }
-    public function getLinkStoreImageAttribute($value)
-    {
-        if (strpos($value, 'http') !== false) {
-            return (  $value);
-        }
-        if (strpos($value, 'uploads') !== false) {
-            return asset($value);
-
-        }
-        return asset('uploads/folder_1/folder_2/' . $value);
     }
 
     public function getStatustextAttribute()
