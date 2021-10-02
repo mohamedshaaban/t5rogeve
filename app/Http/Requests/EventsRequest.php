@@ -25,7 +25,9 @@ class EventsRequest extends \Backpack\CRUD\app\Http\Requests\CrudRequest
         return [
             'name'        => 'required|min:3|max:255',
             'code'        => 'required|min:3|max:255',
-//            'description'        => 'required|min:3|max:255',
+            'image'        => 'required',
+            'imagemain'        => 'required',
+            'imagedes'        => 'required',
             'address'        => 'required|min:3|max:255',
             'latitude'        => 'required',
             'longitude'        => 'required',

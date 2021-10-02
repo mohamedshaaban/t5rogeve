@@ -53,7 +53,23 @@ class CustomersCrudController extends CrudController
             'name'  => 'phone',
             'label' => trans('admin.Phone'),
          ]);
+        $this->crud->addColumn([ // Text
+            'name'  => 'civil_id',
+            'label' => trans('admin.civil_id'),
+         ]);
+        $this->crud->addColumn([ // Text
+            'name' => 'active',
+            'label' => trans('admin.active'),
+            'type'     => 'closure',
+            'function' => function($entry) {
+                if($entry->active)
+                {
+                    return '<button id="userActBtn'.$entry->id.'" onclick="chngStudentActive('.$entry->id.')" style="display:block;background-color: green;border-radius: 11px;" > '.trans('admin.active').' </button><button id="userNActBtn'.$entry->id.'" onclick="chngStudentActive('.$entry->id.')" style="display:none;background-color: red;border-radius: 11px;" > '.trans('admin.not_active').'</button>';
+                }
+                return '<button id="userActBtn'.$entry->id.'" onclick="chngStudentActive('.$entry->id.')" style="display:none;background-color: green;border-radius: 11px;" > '.trans('admin.active').' </button><button id="userNActBtn'.$entry->id.'" onclick="chngStudentActive('.$entry->id.')" style="display:block;background-color: red;border-radius: 11px;" > '.trans('admin.not_active').'</button>';
 
+            }
+        ]);
         $this->crud->enableExportButtons();
         $this->crud->enableResponsiveTable();
         $this->crud->enablePersistentTable();
@@ -128,31 +144,7 @@ class CustomersCrudController extends CrudController
     {
         CRUD::setValidation(StoreRequest::class);
 
-        CRUD::addField([ // Text
-            'name'  => 'first_name',
-            'label' => trans('admin.first name'),
-            'type'  => 'text',
-            'tab'   => 'Texts',
-        ]);
-        CRUD::addField([ // Text
-            'name'  => 'father_name',
-            'label' => trans('admin.father name'),
-            'type'  => 'text',
-            'tab'   => 'Texts',
-        ]);
 
-        CRUD::addField([ // Text
-            'name'  => 'grandfather_name',
-            'label' => trans('admin.grandfather name'),
-            'type'  => 'text',
-            'tab'   => 'Texts',
-        ]);
-        CRUD::addField([ // Text
-            'name'  => 'family_name',
-            'label' => trans('admin.family name'),
-            'type'  => 'text',
-            'tab'   => 'Texts',
-        ]);
         CRUD::addField([ // Text
             'name'  => 'email',
             'label' => trans('admin.email'),
@@ -228,5 +220,22 @@ class CustomersCrudController extends CrudController
 
         }
         return $data;
+    }
+    public function chngUserStatus(Request $request)
+    {
+        $customer = Customer::find($request->id);
+        if($customer->active)
+        {
+            $isactive =  0;
+            $customer->active = 0 ;
+        }
+        else
+        {
+            $isactive =  1;
+            $customer->active = 1 ;
+        }
+        $customer->save();
+        return $isactive;
+
     }
 }

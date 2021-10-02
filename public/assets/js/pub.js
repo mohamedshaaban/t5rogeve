@@ -1,4 +1,22 @@
-
+function chngStudentActive(id)
+{
+    $.ajax({
+        type: "GET",
+        url: "/admin/fetch/chnguseractive/"+id,
+        success: function(response) {
+            if(response == 0 )
+            {
+                $('#userActBtn'+id).hide();
+                $('#userNActBtn'+id).show();
+            }
+            else
+            {
+                $('#userActBtn'+id).show();
+                $('#userNActBtn'+id).hide();
+            }
+        }
+        });
+}
 $( ".payment-class" ).change(function() {
     if($( this ).val()=='full')
     {

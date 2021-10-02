@@ -24,10 +24,8 @@
     <ul class="nav-dropdown-items">
  <li class="nav-item"><a class="nav-link" href="{{ backpack_url('faq') }}"><i class="nav-icon la la-cog"></i> <span>{{ trans('admin.Faqs')}}</span></a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('whoweare') }}"><i class="nav-icon la la-cog"></i> <span>{{ trans('admin.WhoWeAre')}}</span></a></li>
-<li class="nav-item"><a class="nav-link" href="{{ backpack_url('wayuse') }}"><i class="nav-icon la la-cog"></i> <span>{{ trans('admin.Way use')}}</span></a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('siteaddress') }}"><i class="nav-icon la la-cog"></i> <span>{{ trans('admin.Site Address')}}</span></a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('termsconditions') }}"><i class="nav-icon la la-cog"></i> <span>{{ trans('admin.Terms & Conditions')}}</span></a></li>
-<li class="nav-item"><a class="nav-link" href="{{ backpack_url('canceleventsub') }}"><i class="nav-icon la la-cog"></i> <span>{{ trans('admin.Cacncel Subscriptions')}}</span></a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('contact') }}"><i class="nav-icon la la-cog"></i> <span>{{ trans('admin.Contact Us')}}</span></a></li>
 
     </ul>

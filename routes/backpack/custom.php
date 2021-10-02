@@ -50,6 +50,7 @@ Route::group([
     Route::get('fetch/studentdetails/{id}', 'CustomersCrudController@fetchStudentDetails');
     Route::get('fetch/bookingfilteruser', 'CustomersCrudController@studentOptions');
     Route::get('fetch/eventfilteruser', 'EventsCrudController@eventOptions');
+    Route::get('fetch/chnguseractive/{id}', 'CustomersCrudController@chngUserStatus');
 
     // ------------------
     // AJAX Chart Widgets
