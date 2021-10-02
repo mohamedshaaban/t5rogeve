@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::post('/knetsuccess', 'PaymentController@knetsuccess')->name('knetsuccess');
+Route::post('/kneterror', 'PaymentController@kneterror')->name('kneterror');
+
 
 Route::post('userRegister', 'Auth\RegisterController@customerRegister');
 Route::post('verifyOtp', 'Auth\RegisterController@customerVerifiy');
