@@ -95,7 +95,6 @@ class PaymentController extends Controller
 		'event_id.required' 	 => "Please Enter Event Id.",
 		'enroll_amt.required' 	 => "Please Enter Enroll Amount.",
 		'payment_id.required'	 => 'Please Enter Payment Id'
-		
 		);
 
 		$validator = Validator::make(
@@ -126,11 +125,12 @@ class PaymentController extends Controller
 				$user_id    = $request->user_id;
 				$enroll_amt    = $request->enroll_amt;
 				$session_token    = $request->session_token;
-				$payment_id 	= $formData['payment_id'];
+				$payment_id 	= $request->trans_id;
 				$date       = date("Y-m-d H:i:s");
 				
 
-				$payment_details=PaymentLog::where('paymentid',$payment_id)->first();
+				$payment_details=PaymentLog::whereId($payment_id)->first();
+				dd($payment_details);
 				if(empty($payment_details) || $payment_details->result!='CAPTURED')
 				{
 					$response	=	array(
@@ -447,14 +447,70 @@ class PaymentController extends Controller
 
 	 public function knetsuccess(Request $request)
      {
-         
+         $DecrptedData = ($this->decrypt($request->trandata,config('app.KENT_RESOURCE_KEY')));
+         parse_str($DecrptedData, $get_array);
+
+         $paymentlog = PaymentLog::create([
+             'user_id'=>$get_array['udf4'],
+             'event_id'=>$get_array['udf5'],
+//             'booking_no'=>$get_array[''],
+             'paymentid'=>$get_array['paymentid'],
+             'result'=>$get_array['result'],
+             'auth'=>$get_array['auth'],
+             'avr'=>$get_array['avr'],
+             'ref'=>$get_array['ref'],
+             'tranid'=>$get_array['tranid'],
+             'postdate'=>$get_array['postdate'],
+             'trackid'=>$get_array['trackid'],
+             'amt'=>$get_array['amt'],
+             'authRespCode'=>$get_array['authRespCode'],
+//             'marchant_id'=>$get_array[''],
+             'card_type'=>'knet',
+//             'invoic_id'=>$get_array[''],
+             'phone'=>$get_array['udf3']
+         ]);
+         return redirect(route('getKnetsuccess',['trans_id'=>$paymentlog->id]));
+
      }
      
+	 public function getknetsuccess(Request $request)
+     {
+      return PaymentLog::find($request->trans_id);
+     }
 	 public function kneterror(Request $request)
      {
-         
-     }
 
+     }
+    function decrypt($code,$key) {
+
+        $code = $this->hex2ByteArray(trim($code));
+        $code=$this->byteArray2String($code);
+        $iv = $key;
+        $code = base64_encode($code);
+        $decrypted = openssl_decrypt($code, 'AES-128-CBC', $key, OPENSSL_ZERO_PADDING, $iv);
+        return $this->pkcs5_unpad($decrypted);
+    }
+
+    function byteArray2String($byteArray) {
+        $chars = array_map("chr", $byteArray);
+        return join($chars);
+    }
+
+    function pkcs5_unpad($text) {
+        $pad = ord($text[strlen($text)-1]);
+        if ($pad > strlen($text)) {
+            return false;
+        }
+        if (strspn($text, chr($pad), strlen($text) - $pad) != $pad) {
+            return false;
+        }
+        return substr($text, 0, -1 * $pad);
+    }
+
+    function hex2ByteArray($hexString) {
+        $string = hex2bin($hexString);
+        return unpack('C*', $string);
+    }
     //AES Encryption Method Starts
     function encryptAES($str,$key) {
         $str = $this->pkcs5_pad($str);

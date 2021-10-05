@@ -91,7 +91,7 @@ class EventsController extends Controller
                 }
 
 
-                $payment_details=PaymentLog::where('tranid',$trans_id)->first();
+                $payment_details=PaymentLog::where('id',$trans_id)->first();
 
                 if(!$payment_details||$payment_details->result!='CAPTURED')
                 {
@@ -254,7 +254,6 @@ class EventsController extends Controller
         $messages = array(
             'event_id.required' => "Please Enter Event ID",
             'user_id.required'  => "Please Enter User ID",
-            'session_token.required'	=> "Please Enter Session ID",
             'no_of_seats.required'	=> "Please Enter No. of Seats",
             'payment_type.required'	=> "Please Enter Payment Type",
             'amount.required' => "Please Enter Amount",
@@ -268,7 +267,6 @@ class EventsController extends Controller
             array(
                 'event_id' => 'required',
                 'user_id'  => 'required',
-                'session_token'	=> 'required',
                 'no_of_seats'	=> 'required|min:1|integer',
                 'payment_type'	=> 'required',
                 'amount' => 'required',
@@ -301,15 +299,11 @@ class EventsController extends Controller
             $user_id = $formData['user_id'];
             $event_id = $formData['event_id'];
             $seats = $formData['no_of_seats'];
-            $session_token =  $formData['session_token'];
             $trans_id = $formData['trans_id'];
 
-            $checkUserSession = $this->verifyUserSession($user_id, $session_token);
-            if(is_array($checkUserSession)){
-                return  Response::json($checkUserSession);
-            }
 
-            $checkseat_detail = DB::table('ceremony')->select('*')->where('id',$event_id)->first();
+
+            $checkseat_detail = Ceremony::where('id',$event_id)->first();
 
             $isSeatAvailable = $this->checkSeatAvailabilityForEvent($event_id, $seats);
             //::where('id',$event_id)->select('remaining_seats')->first();
@@ -328,7 +322,6 @@ class EventsController extends Controller
 
                 $event_id=$request->event_id;
                 $user_id=$request->user_id;
-                $session_token=$request->session_token;
                 $no_of_seats=$request->no_of_seats;
                 $payment_type=$request->payment_type;
                 $amount=$request->amount;
@@ -410,8 +403,7 @@ class EventsController extends Controller
                     ->first();
 
                 if(!empty($onebooking)){
-                    $onebooking->session_token		=  $session_token;
-                    $onebooking->no_of_seats		=  $total_booking_seats;
+                     $onebooking->no_of_seats		=  $total_booking_seats;
                     $onebooking->payment_type		=  $payment_type;
                     $onebooking->remaining_amount	=  $remaining_amount;
                     $onebooking->robe_size			=  $robe_size;
@@ -458,6 +450,7 @@ class EventsController extends Controller
                         $pay_res = $pay_obj->save();
 
 
+                        $payment_details = PaymentLog::find($request->trans_id);
                         $response	=	array(
                             'status' 	=> 1,
                             'message'	=> 'Event Seat Book Successfully.',
@@ -816,7 +809,7 @@ class EventsController extends Controller
                 $total_seats=$pri_no_of_seats+$seats;
                 $total_price=$prive_amount+$new_amout;
 
-                $payment_details=PaymentLog::where('tranid',$trans_id)->first();
+                $payment_details=PaymentLog::where('id',$trans_id)->first();
 
                 if($payment_details->result!='CAPTURED' || $payment_details->amt!=$new_amout)
                 {
