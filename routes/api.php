@@ -19,6 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::post('/knetsuccess', 'PaymentController@knetsuccess')->name('knetsuccess');
 Route::get('/knetsuccess', 'PaymentController@getknetsuccess')->name('getKnetsuccess');
+Route::get('/kneterror', 'PaymentController@getkneterror')->name('getKneterror');
 Route::post('/kneterror', 'PaymentController@kneterror')->name('kneterror');
 
 

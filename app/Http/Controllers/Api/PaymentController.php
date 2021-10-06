@@ -130,8 +130,7 @@ class PaymentController extends Controller
 				
 
 				$payment_details=PaymentLog::whereId($payment_id)->first();
-				dd($payment_details);
-				if(empty($payment_details) || $payment_details->result!='CAPTURED')
+ 				if(empty($payment_details) || $payment_details->result!='CAPTURED')
 				{
 					$response	=	array(
 					'status' 	=> 0,
@@ -469,11 +468,18 @@ class PaymentController extends Controller
 //             'invoic_id'=>$get_array[''],
              'phone'=>$get_array['udf3']
          ]);
-         return redirect(route('getKnetsuccess',['trans_id'=>$paymentlog->id]));
-
+         if($get_array['result'] == 'CAPTURED')
+         {
+             return redirect(route('getKnetsuccess',['trans_id'=>$paymentlog->id]));
+         }
+         return redirect(route('getKneterror',['trans_id'=>$paymentlog->id]));
      }
      
 	 public function getknetsuccess(Request $request)
+     {
+      return PaymentLog::find($request->trans_id);
+     }
+	 public function getkneterror(Request $request)
      {
       return PaymentLog::find($request->trans_id);
      }
