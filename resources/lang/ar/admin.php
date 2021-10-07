@@ -47,6 +47,7 @@ return [
     ' Payment Type'=>'طريقة الدفع',
     ' Minimum DownPayment Amount'=>'دفعة اولى',
     'Payment Amount 2'=>'دفعة ثانية',
+    'Payment Amount 3'=>'دفعة ثالثة',
     'Event name'=>'اسم الفعالية',
     'Student name'=>'اسم الطالب',
     'Canceled'=>'ملغي',
@@ -81,7 +82,7 @@ return [
     'Event for'=>'الفعالية متاحة الى',
     'Event date'=>'تاريخ الفعالية',
     'hide Date'=>'اخفاء تاريخ الفعالية',
-    'Event total seats'=>'اجمالي عدد مقاعد الحضور',
+    'Event total seats'=>'إخفاء المقاعد المحجوزه',
     ' Maximum number of Students'=>'اقصى عدد للطلاب',
     ' Minimum DownPayment Amount'=>'دفعة اولى',
     ' Payment Amount 2'=>'دفعة ثانية',
@@ -89,7 +90,7 @@ return [
     'Event Price'=>'سعر الفعالية',
     'Free Seats'=>'عدد المقاعد المجانية',
     'hashtag'=>'هاشتاج الفعالية',
-    ' Hide Seats'=>'اخفاء المقاعد المحجوزة',
+    ' Hide Seats'=>'إخفاء بيع المقاعد',
     ' Hide Users & Seats Number'=>'إخفاء عدد الطلبة المسجلين في الفعالية',
     ' Name amendment expiration date'=>'تاريخ انتهاء تعديل الاسم',
     ' The expiry date of resize the robe'=>'تاريخ انتهاء تغيير حجم الروب ',
@@ -171,6 +172,7 @@ return [
     'remaining_seats'=>'المقاعد المتاحة',
     'ceremony_price'=>'سعر الفعالية',
     'number_of_students'=>'عدد الطلاب',
+    'number_of_students_label'=>'# الطلاب',
     'event'=>'فعالية',
     'events'=>'فعاليات',
     'faq'=>'الأسئلة المتكررة',
@@ -226,7 +228,7 @@ return [
     'Replied by'=>'تم الرد بواسطة',
     'Message is sent'=>'تم ارسال الرسالة',
     'Hide Additional Seats'=>'اجمالي عدد مقاعد الحضور',
-    'Hide Link to Store'=>'اخفاء رابط شراء الروب ',
+    'Hide Link to Store'=>'إخفاء صفحه الستور',
 
 
 

@@ -67,6 +67,7 @@ class Ceremony extends Model
 		'status' => 'int',
 		'minimum_downpayment_amount' => 'float',
 		'downpayment_amount2' => 'float',
+		'downpayment_amount3' => 'float',
 		'latitude' => 'float',
 		'longitude' => 'float',
 		'ceremony_for' => 'int'
@@ -82,6 +83,7 @@ class Ceremony extends Model
 		'code',
 		'description',
 		'total_seats',
+		'hideDate',
 		'hide_seats',
 		'hide_additional_seats',
 		'hide_ad_events',
@@ -99,6 +101,7 @@ class Ceremony extends Model
 		'hashtag',
 		'minimum_downpayment_amount',
 		'downpayment_amount2',
+		'downpayment_amount3',
 		'Name_Ex_Date',
 		'RobSize_Ex_Date',
 		'date',
@@ -312,6 +315,14 @@ class Ceremony extends Model
             return $this->attributes['date'];
         }
         return $this->attributes['RobSize_Ex_Date'];
+    }
+    public function getDateAttribute()
+    {
+        if(!$this->attributes['hideDate'])
+        {
+            return $this->attributes['date'];
+        }
+        return '';
     }
 
     public function getNameexdateAttribute()

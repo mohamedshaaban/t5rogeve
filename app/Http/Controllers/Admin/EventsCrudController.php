@@ -72,13 +72,16 @@ class EventsCrudController extends CrudController
         $this->crud->addColumn(['name'=>'ceremony_price','label'=>trans('admin.ceremony_price')]);
 
         $this->crud->addColumn(['name'=>'remaining_seats','label'=>trans('admin.remaining_seats')]);
-        $this->crud->addColumn(['name'  => 'address', 'label' => trans('admin.Event address')]);
+        $this->crud->addColumn([ // Text
+            'name'  => 'code',
+            'label' => trans('admin.Event Code')
+        ]);
 
-
-        $this->crud->addColumn(['name'=>'numstudents','label'=>trans('admin.number_of_students')]);
+        $this->crud->addColumn(['name'=>'numstudents','label'=>trans('admin.number_of_students_label')]);
         $this->crud->addButtonFromModelFunction('line', 'statustext ', 'openStatus', 'beginning');
         $this->crud->enableExportButtons();
         $this->crud->disableDetailsRow();
+
 
         $this->crud->disableResponsiveTable();
 //        $this->crud->disablePersistentTable();
@@ -144,6 +147,8 @@ class EventsCrudController extends CrudController
                 1 => "Male",
                 2 => "Both"
             ],
+            'inline'      => true,
+
         ]);
 
         CRUD::addField([ // Text
@@ -157,12 +162,16 @@ class EventsCrudController extends CrudController
         CRUD::addField([ // Text
             'name'  => 'hideDate',
             'label' => trans('admin.hide Date'),
-            'type'  => 'checkbox',
+            'type'  => 'radio',
             'tab'   => 'Texts',
             'options'     => [
                 // the key will be stored in the db, the value will be shown as label;
-                "hide" => "hide"
+                0 => "No",
+                1 => "Yes"
             ],
+            'default'=>'0',
+            'inline'      => true,
+
         ]);
 
         CRUD::addField([ // Text
@@ -189,6 +198,12 @@ class EventsCrudController extends CrudController
         CRUD::addField([ // Text
             'name'  => 'downpayment_amount2',
             'label' => trans('admin. Payment Amount 2'),
+            'type'  => 'text',
+            'tab'   => 'Texts',
+        ]);
+        CRUD::addField([ // Text
+            'name'  => 'downpayment_amount3',
+            'label' => trans('admin.Payment Amount 3'),
             'type'  => 'text',
             'tab'   => 'Texts',
         ]);
