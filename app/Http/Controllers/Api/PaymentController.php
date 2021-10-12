@@ -547,7 +547,7 @@ class PaymentController extends Controller
         $bin = join($chars);
         return bin2hex($bin);
     }
-	 	 function payknetremining(Request $request) {
+	 	 /*function payknetremining(Request $request) {
 	     
             ///
              
@@ -559,10 +559,7 @@ class PaymentController extends Controller
 			if (Auth::attempt($userdata)) {
              $user = Auth::user();
   	     $amount  = $request->amount ;
-
 	          $event_id  = $request->event_id ;
-	          
-	          
     $knet = KPayManager::make($amount, [
         'user_id' => $request->user_id, 
         'udf1' => $request->first_name,
@@ -592,8 +589,88 @@ $payment->actionUrl(); // redirect user to pay with url generated
 				return Response::json($response);die; 
             }
 		
+	 }*/
+	 	 function payknetremining(Request $request) {
+
+  	     $amount  = $request->amount ;
+	          $event_id  = $request->event_id ;
+                //Knet Documentation
+                $TranAmount = number_format((float)$amount, 2, '.', '');
+                $TranportalId=config('app.KENT_TRANSPORT_ID');
+                $ReqTranportalId="id=".$TranportalId;
+                $TranportalPassword=config('app.KENT_TRANSPORT_PASSWORD');
+                $ReqTranportalPassword="password=".$TranportalPassword;
+                $ReqAmount="amt=".$TranAmount;
+                $TranTrackid=$this->generateRandomString(10);
+                $ReqTrackId="trackid=".$TranTrackid;
+                $ReqCurrency="currencycode=414";
+                $ReqLangid="langid=USA";
+                $ReqAction="action=1";
+                $ResponseUrl=route('knetsuccess');
+                $ReqResponseUrl="responseURL=".$ResponseUrl;
+                $ErrorUrl=route('kneterror');
+                $ReqErrorUrl="errorURL=".$ErrorUrl;
+                $ReqUdf1="udf1=".$request->first_name;
+                $ReqUdf2="udf2=".$request->family;
+                $ReqUdf3="udf3=".$request->phone;
+                $ReqUdf4="udf4=".$request->user_id;
+                $ReqUdf5="udf5=".$event_id;
+                $ReqUdf5="udf6=down";
+                $param=$ReqTranportalId."&".$ReqTranportalPassword."&".$ReqAction."&".$ReqLangid."&".$ReqCurrency."&".$ReqAmount."&".$ReqResponseUrl."&".$ReqErrorUrl."&".$ReqTrackId."&".$ReqUdf1."&".$ReqUdf2."&".$ReqUdf3."&".$ReqUdf4."&".$ReqUdf5;
+                $termResourceKey=config('app.KENT_RESOURCE_KEY');
+                $param=$this->encryptAES($param,$termResourceKey)."&tranportalId=".$TranportalId."&responseURL=".$ResponseUrl."&errorURL=".$ErrorUrl;
+                $param = "https://kpaytest.com.kw/kpg/PaymentHTTP.htm?param=paymentInit"."&trandata=".$param;
+
+                $response =array(
+                    'status'=> 1,
+                    'paymenturl'=> $param
+                );
+
+                return Response::json($response);die;
+
+
 	 }
-	 
+	 	 function payknetreminingthree(Request $request) {
+
+  	     $amount  = $request->amount ;
+	          $event_id  = $request->event_id ;
+                //Knet Documentation
+                $TranAmount = number_format((float)$amount, 2, '.', '');
+                $TranportalId=config('app.KENT_TRANSPORT_ID');
+                $ReqTranportalId="id=".$TranportalId;
+                $TranportalPassword=config('app.KENT_TRANSPORT_PASSWORD');
+                $ReqTranportalPassword="password=".$TranportalPassword;
+                $ReqAmount="amt=".$TranAmount;
+                $TranTrackid=$this->generateRandomString(10);
+                $ReqTrackId="trackid=".$TranTrackid;
+                $ReqCurrency="currencycode=414";
+                $ReqLangid="langid=USA";
+                $ReqAction="action=1";
+                $ResponseUrl=route('knetsuccess');
+                $ReqResponseUrl="responseURL=".$ResponseUrl;
+                $ErrorUrl=route('kneterror');
+                $ReqErrorUrl="errorURL=".$ErrorUrl;
+                $ReqUdf1="udf1=".$request->first_name;
+                $ReqUdf2="udf2=".$request->family;
+                $ReqUdf3="udf3=".$request->phone;
+                $ReqUdf4="udf4=".$request->user_id;
+                $ReqUdf5="udf5=".$event_id;
+                $ReqUdf5="udf6=down3";
+                $param=$ReqTranportalId."&".$ReqTranportalPassword."&".$ReqAction."&".$ReqLangid."&".$ReqCurrency."&".$ReqAmount."&".$ReqResponseUrl."&".$ReqErrorUrl."&".$ReqTrackId."&".$ReqUdf1."&".$ReqUdf2."&".$ReqUdf3."&".$ReqUdf4."&".$ReqUdf5;
+                $termResourceKey=config('app.KENT_RESOURCE_KEY');
+                $param=$this->encryptAES($param,$termResourceKey)."&tranportalId=".$TranportalId."&responseURL=".$ResponseUrl."&errorURL=".$ErrorUrl;
+                $param = "https://kpaytest.com.kw/kpg/PaymentHTTP.htm?param=paymentInit"."&trandata=".$param;
+
+                $response =array(
+                    'status'=> 1,
+                    'paymenturl'=> $param
+                );
+
+                return Response::json($response);die;
+
+
+	 }
+
 	 ////
 	 		private function verifyUserSession($user_id, $session_token){
 
