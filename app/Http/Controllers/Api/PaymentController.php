@@ -592,7 +592,7 @@ $payment->actionUrl(); // redirect user to pay with url generated
 	 }*/
 	 	 function payknetremining(Request $request) {
 
-  	     $amount  = $request->amount ;
+  	        $amount  = $request->amount ;
 	          $event_id  = $request->event_id ;
                 //Knet Documentation
                 $TranAmount = number_format((float)$amount, 2, '.', '');

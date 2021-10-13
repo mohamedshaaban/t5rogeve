@@ -304,7 +304,7 @@ class AuthController extends Controller
             if ($results) {
                 $response = array(
                     'status' => 1,
-                    'message' => "Password Changed Successfully",
+                    'message' => "تم تغيير كلمة المرور بنجاح",
 
                 );
             } else {
