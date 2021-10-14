@@ -216,7 +216,7 @@ class EventsCrudController extends CrudController
         ]);
 
         CRUD::addField([ // Text
-            'name'  => 'event_price',
+            'name'  => 'ceremony_price',
             'label' => trans('admin.Event Price'),
             'type'  => 'number',
             'tab'   => 'Texts',

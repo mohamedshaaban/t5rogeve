@@ -39,12 +39,6 @@ class PaymentLog extends Model
 {
 	protected $table = 'payment_log';
 
-	protected $casts = [
-		'user_id' => 'int',
-		'event_id' => 'int',
-		'marchant_id' => 'int',
-		'invoic_id' => 'int'
-	];
 
 	protected $fillable = [
 		'user_id',
@@ -63,6 +57,7 @@ class PaymentLog extends Model
 		'marchant_id',
 		'card_type',
 		'invoic_id',
-		'phone'
+		'phone',
+        'payment_type'
 	];
 }

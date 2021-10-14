@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\Booking;
+use App\Models\Ceremony;
 use App\Models\Customer;
 use App\Models\PaymentLog;
 use App\User;
@@ -394,15 +395,30 @@ class PaymentController extends Controller
 	}
     	///////
 	 function payknet(Request $request) {
-	            
 
 
-         $user = Auth::guard('customers')->user();
 
-  	     $amount  = $request->amount ;
+         $user = Auth::guard('customers_api')->user();
+
+         $amount  = $request->amount ;
 
 	          $event_id  = $request->event_id ;
+	          $event = Ceremony::find($event_id);
+ if($request->payment_type == 'full'){
+    $amount +=$event->ceremony_price;
+}
+else if($request->payment_type == 'down'){
+    $amount +=$event->minimum_downpayment_amount;
 
+}
+else if($request->payment_type == 'down2'){
+    $amount +=$event->downpayment_amount2;
+
+}
+else if($request->payment_type == 'down3'){
+    $amount +=$event->downpayment_amount3;
+
+}
 
              //Knet Documentation
              $TranAmount = number_format((float)$amount, 2, '.', '');
@@ -421,12 +437,12 @@ class PaymentController extends Controller
              $ErrorUrl=route('kneterror');
              $ReqErrorUrl="errorURL=".$ErrorUrl;
              $ReqUdf1="udf1=".$request->first_name;
-             $ReqUdf2="udf2=".$request->family;
+             $ReqUdf2="udf2=".$request->payment_type;
              $ReqUdf3="udf3=".$request->phone;
-             $ReqUdf4="udf4=".$request->user_id;
+             $ReqUdf4="udf4=".$user->id;
              $ReqUdf5="udf5=".$event_id;
-             $param=$ReqTranportalId."&".$ReqTranportalPassword."&".$ReqAction."&".$ReqLangid."&".$ReqCurrency."&".$ReqAmount."&".$ReqResponseUrl."&".$ReqErrorUrl."&".$ReqTrackId."&".$ReqUdf1."&".$ReqUdf2."&".$ReqUdf3."&".$ReqUdf4."&".$ReqUdf5;
-
+             $ReqUdf6="udf6=".$request->payment_type;
+             $param=$ReqTranportalId."&".$ReqTranportalPassword."&".$ReqAction."&".$ReqLangid."&".$ReqCurrency."&".$ReqAmount."&".$ReqResponseUrl."&".$ReqErrorUrl."&".$ReqTrackId."&".$ReqUdf1."&".$ReqUdf2."&".$ReqUdf3."&".$ReqUdf4."&".$ReqUdf5."&".$ReqUdf6;
 
 
 
@@ -448,8 +464,7 @@ class PaymentController extends Controller
      {
          $DecrptedData = ($this->decrypt($request->trandata,config('app.KENT_RESOURCE_KEY')));
          parse_str($DecrptedData, $get_array);
-
-         $paymentlog = PaymentLog::create([
+          $paymentlog = PaymentLog::create([
              'user_id'=>$get_array['udf4'],
              'event_id'=>$get_array['udf5'],
 //             'booking_no'=>$get_array[''],
@@ -466,7 +481,8 @@ class PaymentController extends Controller
 //             'marchant_id'=>$get_array[''],
              'card_type'=>'knet',
 //             'invoic_id'=>$get_array[''],
-             'phone'=>$get_array['udf3']
+             'phone'=>$get_array['udf3'],
+             'payment_type'=>$get_array['udf2']
          ]);
          if($get_array['result'] == 'CAPTURED')
          {

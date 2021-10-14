@@ -471,6 +471,7 @@ class CeremonyController extends Controller
                 $ceremony[0]->poll = $ceremony[0]->poll;
                 $ceremony[0]->number_of_booking_students = (int)sizeof($bookinglist);
                 $ceremony[0]->booking = Booking::where('event_id',$event_id)->where('user_id',$user_id)->get();
+                $ceremony[0]->payment = PaymentLog::where('event_id',$event_id)->where('user_id',$user_id)->get();
 
                 if(!empty($bookinglist)){
                     $sum = array_sum(array_column($bookinglist->toArray(), 'no_of_seats'));
