@@ -486,7 +486,7 @@ else if($request->payment_type == 'down3'){
          ]);
          if($get_array['result'] == 'CAPTURED')
          {
-             return redirect(route('getKnetsuccess',['trans_id'=>$paymentlog->id]));
+             return redirect(route('getKnetsuccess',['trans_id'=>$paymentlog->id,'CAPTURED'=>'CAPTURED']));
          }
          return redirect(route('getKneterror',['trans_id'=>$paymentlog->id]));
      }

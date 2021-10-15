@@ -52,12 +52,12 @@ class AuthController extends Controller
             $user_id = Auth::guard('customers_api')->user();
             $user_id = $user_id->id;
 
-            $results = User::where('id',$user_id)->update(['password' => $password]);
+            $results = Customer::where('id',$user_id)->update(['password' => $password]);
 
                 if($results){
                     $response	=	array(
                         'status' 	=> 1,
-                        'message'	=> "Password Updated Successfully",
+                        'message'	=> "تم تغيير كلمة المرور بنجاح",
 
                     );
                 }else{
@@ -232,8 +232,17 @@ class AuthController extends Controller
                 'message' => $allErrors,
             );
         } else {
-            $user_id = Auth::guard('customers_api')->user();
             $phone = $formData['phone'];
+            $chkphone = Customer::where('phone' , $phone)->first();
+            if($chkphone)
+            {
+                $response = array(
+                    'status' => 0,
+                    'message' => 'الهاتف مستخدم'
+                );
+                return $response;
+            }
+            $user_id = Auth::guard('customers_api')->user();
             $user = Auth::guard('customers_api')->user();
             if ($user->otp == $request->otp) {
                 $results = $user->update(['phone' => $phone]);
