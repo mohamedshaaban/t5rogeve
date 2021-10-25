@@ -84,6 +84,7 @@ class AuthController extends Controller
             'grandfather_name.required' 	=> "Please Enter GrandFather Name",
             'gender.required' 		=> "Please Enter Gender",
             'faulty.required' 		=> "Please Enter Faulty",
+            'birthDate.required' 		=> "Please Enter Date OF Birth",
         );
 
         $validator = Validator::make(
@@ -126,6 +127,7 @@ class AuthController extends Controller
                 $gender = $formData['gender'];
                  $civil_id = $formData['civil_id'];
                 $faulty = $formData['faulty'];
+                $birthDate = $formData['birthDate'];
                  $imageArr = array();
 
 
@@ -136,6 +138,7 @@ class AuthController extends Controller
                         'civil_id' => $civil_id,
                         'faulty' => $faulty,
                         'gender' => $gender,
+                        'date_of_birth' => $birthDate,
                         // 'image' => $filename ,
 //                        'father_name' => $father_name,
 //                        'family_name' => $family_name,
@@ -446,7 +449,7 @@ class AuthController extends Controller
 
         $url_address = "http://www.kwtsms.com/API/send/?";
         $username = "academy";
-        $password = "A55656637a";
+        $password = "rR99156852$";
         $sender = "ACADEMY";
         $lang = "2";
         $digits = 4;
@@ -596,7 +599,7 @@ class AuthController extends Controller
 
             $url_address = "http://www.kwtsms.com/API/send/?";
             $username = "academy";
-            $password = "A55656637a";
+            $password = "rR99156852$";
             $sender = "ACADEMY";
             $lang = "2";
             $digits = 4;

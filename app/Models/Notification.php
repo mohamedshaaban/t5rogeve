@@ -52,6 +52,10 @@ class Notification extends Model
         'reason'
 	];
 
+    public function getCreatedAtAttribute()
+    {
+        return  Carbon::parse($this->attributes['created_at'])->format('Y-m-d H:i:s');
+    }
     public function user() {
         return $this->belongsTo(Customer::class,'userid');
     }

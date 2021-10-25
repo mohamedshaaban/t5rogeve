@@ -320,7 +320,7 @@ class EventsCrudController extends CrudController
             'hint'=>'1078 ْX 275',
             'type' => 'image',
             'tab'   => 'Texts',
-            'crop' => true, // set to true to allow cropping, false to disable
+            'crop' => false, // set to true to allow cropping, false to disable
             'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
 
         ]);
@@ -347,7 +347,7 @@ class EventsCrudController extends CrudController
             'type' => 'image',
             'hint'=>'900 X 900',
             'tab'   => 'Texts',
-            'crop' => true, // set to true to allow cropping, false to disable
+            'crop' => false, // set to true to allow cropping, false to disable
             'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
         ]);
 
@@ -357,7 +357,7 @@ class EventsCrudController extends CrudController
             'type' => 'image',
             'hint'=>'900 ْX 650',
             'tab'   => 'Texts',
-            'crop' => true, // set to true to allow cropping, false to disable
+            'crop' => false, // set to true to allow cropping, false to disable
             'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
         ]);
 
@@ -368,7 +368,7 @@ class EventsCrudController extends CrudController
             'type' => 'ckeditor',
             'hint'=>'',
             'tab'   => 'Texts',
-            'crop' => true, // set to true to allow cropping, false to disable
+            'crop' => false, // set to true to allow cropping, false to disable
             'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
         ]);
 /*
@@ -400,7 +400,7 @@ class EventsCrudController extends CrudController
             'hint'=>'734 X 44000',
 
             'tab'   => 'Texts',
-            'crop' => true, // set to true to allow cropping, false to disable
+            'crop' => false, // set to true to allow cropping, false to disable
             'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
 
         ]);
@@ -411,7 +411,7 @@ class EventsCrudController extends CrudController
             'hint'=>'660 X 660',
 
             'tab'   => 'Texts',
-            'crop' => true, // set to true to allow cropping, false to disable
+            'crop' => false, // set to true to allow cropping, false to disable
             'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
 
         ]);

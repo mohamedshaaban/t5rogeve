@@ -27,6 +27,7 @@ Route::post('userRegister', 'Auth\RegisterController@customerRegister');
 Route::post('verifyOtp', 'Auth\RegisterController@customerVerifiy');
 Route::post('userLogin', 'Auth\RegisterController@customerLogin');
 Route::get('sliders', 'Sliders\SlidersController@index');
+Route::get('settings', 'Sliders\SlidersController@settings');
 
 Route::post('forgetPasswordOtpVerify','Auth\AuthController@forgetPasswordOtpVerify');
 Route::post('forgetPassword','Auth\AuthController@userForgetPassword');

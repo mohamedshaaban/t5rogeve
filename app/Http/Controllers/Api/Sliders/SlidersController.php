@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Sliders;
 use App\Http\Controllers\Controller;
 use Backpack\NewsCRUD\app\Models\Article;
 use Illuminate\Http\Request;
+use App\Models\Socials;
 
 class SlidersController extends Controller
 {
@@ -35,5 +36,9 @@ class SlidersController extends Controller
         $options = Article::where('title', 'like', '%'.$term.'%')->get()->pluck('title', 'id');
 
         return $options;
+    }
+    public function settings(Request $request)
+    {
+        return Socials::first();
     }
 }

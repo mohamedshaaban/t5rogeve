@@ -107,7 +107,7 @@ class RegisterController extends Controller
             );
             $url_address = "http://www.kwtsms.com/API/send/?";
             $username = "academy";
-            $password = "A55656637a";
+            $password = "rR99156852$";
             $sender = "ACADEMY";
             $lang = "2";
             $digits = 4;

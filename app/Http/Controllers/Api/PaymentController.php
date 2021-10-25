@@ -404,18 +404,18 @@ class PaymentController extends Controller
 
 	          $event_id  = $request->event_id ;
 	          $event = Ceremony::find($event_id);
- if($request->payment_type == 'full'){
+ if($request->payment_type == 'full'||$request->payment_type == 'Full'){
     $amount +=$event->ceremony_price;
 }
-else if($request->payment_type == 'down'){
+else if($request->payment_type == 'down'||$request->payment_type == 'Down'){
     $amount +=$event->minimum_downpayment_amount;
 
 }
-else if($request->payment_type == 'down2'){
+else if($request->payment_type == 'down2'||$request->payment_type == 'Down2'){
     $amount +=$event->downpayment_amount2;
 
 }
-else if($request->payment_type == 'down3'){
+else if($request->payment_type == 'down3'||$request->payment_type == 'Down3'){
     $amount +=$event->downpayment_amount3;
 
 }
@@ -493,11 +493,11 @@ else if($request->payment_type == 'down3'){
      
 	 public function getknetsuccess(Request $request)
      {
-      return PaymentLog::find($request->trans_id);
+      return '';
      }
 	 public function getkneterror(Request $request)
      {
-      return PaymentLog::find($request->trans_id);
+      return '';
      }
 	 public function kneterror(Request $request)
      {

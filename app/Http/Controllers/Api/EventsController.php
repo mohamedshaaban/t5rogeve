@@ -104,7 +104,6 @@ class EventsController extends Controller
                 else
                 {
                     $event_id=$request->event_id;
-                    $user_id=$user_id;
 
                     $no_of_seats=$request->no_of_seats;
                     $payment_type=$request->payment_type;
@@ -119,12 +118,174 @@ class EventsController extends Controller
                     $first_booking=Booking::select('ceremony_price')->where('user_id',$user_id)->where('event_id',$event_id)->first();
 
                     if($first_booking!=''){
-                        $response	=	array(
-                            'status' 	=> 0,
-                            'message'	=> 'لا يمكن الحجز أكثر من مره',
-                        );
 
-                        return Response::json($response);
+                        $response = [] ;
+
+                            $event_id = $formData['event_id'];
+                            $seats = $formData['no_of_seats'];
+                            $trans_id = $formData['trans_id'];
+                            $checkseat_detail = Ceremony::where('id',$event_id)->first();
+
+                            $isSeatAvailable = $this->checkSeatAvailabilityForEvent($event_id, $seats);
+                             //::where('id',$event_id)->select('remaining_seats')->first();
+                            if(!empty($checkseat_detail)){
+
+                                if(!$isSeatAvailable){
+                                    $response	=	array(
+                                        'status' 	=>  0,
+                                        'message'	=> 'Seats are not available.',
+                                        'data'    => $detail
+                                    );
+                                    return Response::json($response);
+                                }
+
+
+
+                                $event_id=$request->event_id;
+                                $no_of_seats=$request->no_of_seats;
+                                $payment_type=$request->payment_type;
+                                $amount=$request->amount;
+                                $remaining_amount=$request->remaining_amount;
+                                $robe_size=$request->robe_size;
+
+                                $free_seats=$checkseat_detail->free_seats;
+                                $seat_price=$checkseat_detail->price;
+                                $ceremony_price=$checkseat_detail->ceremony_price;
+
+
+                                if($payment_type=='Full' || $payment_type=='full')
+                                {
+
+                                    if($no_of_seats==$free_seats)
+                                    {
+                                        $total_booking_seats= $no_of_seats;
+                                        $amount=$ceremony_price;
+                                    }
+                                    else if($no_of_seats>$free_seats)
+                                    {
+                                        $total_booking_seats= $no_of_seats;
+                                        /*$new_seat=$no_of_seats-$free_seats;
+                                        $amount=$seat_price*$new_seat+$ceremony_price;*/
+                                    }
+
+                                    else if($no_of_seats<$free_seats)
+                                    {
+
+                                        $response	=	array(
+                                            'status' 	=> 0,
+                                            'message'	=> 'You need to book minimum '.$free_seats.' seats.',
+                                        );
+
+                                        return Response::json($response);
+                                    }
+                                    else
+                                    {
+                                        $total_booking_seats= $no_of_seats;
+                                        $amount=$seat_price*$no_of_seats;
+                                    }
+
+
+                                }
+                                else
+                                {
+                                    if($no_of_seats==$free_seats)
+                                    {
+                                        $total_booking_seats= $no_of_seats;
+
+                                    }
+                                    else if($no_of_seats>$free_seats)
+                                    {
+                                        $total_booking_seats= $no_of_seats;
+
+                                    }
+
+                                    else if($no_of_seats<$free_seats)
+                                    {
+
+                                        $response	=	array(
+                                            'status' 	=> 0,
+                                            'message'	=> 'You need to book minimum '.$free_seats.' seats.',
+                                        );
+
+                                        return Response::json($response);
+                                    }
+                                    else
+                                    {
+                                        $total_booking_seats= $no_of_seats;
+                                    }
+
+                                }
+
+
+                                $onebooking = Booking::where('user_id',$user_id)
+                                    ->where('event_id',$event_id)
+                                    ->first();
+                                if(!empty($onebooking)){
+                                    $onebooking->no_of_seats		=  $total_booking_seats;
+                                    $onebooking->payment_type		=  $payment_type;
+                                    $onebooking->remaining_amount	=  $remaining_amount;
+                                    $onebooking->robe_size			=  $robe_size;
+                                    $onebooking->ceremony_price	=  $ceremony_price;
+                                    $onebooking->save();
+                                    $b_id	=	$onebooking->id;
+
+
+                                    ///
+
+                                    $booking_seat= DB::table('booking')
+                                        ->select(DB::raw('SUM(no_of_seats) as no_of_seats'))
+                                        ->where('event_id',$event_id)
+                                        ->get();
+
+                                    $booking_val= DB::table('ceremony')
+                                        ->select('*')
+                                        ->where('id', $event_id)
+                                        ->first();
+
+                                    $totalseat= $booking_val->total_seats;
+                                    $remainseat=$totalseat-$booking_seat[0]->no_of_seats;
+                                    DB::table('ceremony')->where('id',$event_id)->update(['remaining_seats' => $remainseat]);
+
+
+                                    if(!empty($b_id))
+                                    {
+
+                                        $payment_arr = [
+                                            'user_id' => $onebooking->user_id,
+                                            'ceremony_id' => $onebooking->event_id,
+                                            'booking_id' => $b_id,
+                                            'price' => $onebooking->amount,
+                                            'payment_method'=>$onebooking->payment_type,
+                                            'status'=>'1',
+                                        ];
+
+                                        $pay_obj = new Payment();
+
+                                        foreach($payment_arr as $key => $value){
+                                            $pay_obj->$key = $value;
+                                        }
+
+                                        $pay_res = $pay_obj->save();
+
+
+                                        $payment_details = PaymentLog::find($request->trans_id);
+                                        $response	=	array(
+                                            'status' 	=> 1,
+                                            'message'	=> 'Event Seat Book Successfully.',
+                                            'transationid'=>$payment_details->tranid,
+                                            'paymentID'=>$payment_details->paymentid,
+                                            'amount'=>$payment_details->amt,
+                                            'created_at'=>$payment_details->created_at
+                                            /*'data'    => $detail*/
+                                        );
+                                                                        return Response::json($response);
+
+                                    }
+                                }
+
+//                                return Response::json($response);
+
+                        }
                     }
 
                     if($payment_type=='Full' || $payment_type=='full')
@@ -158,7 +319,7 @@ class EventsController extends Controller
 
 
                     }
-                    else if($payment_type=='Down' || $payment_type=='down')
+                    else if($payment_type=='Down' || $payment_type=='Down2' || $payment_type=='Down3' || $payment_type=='down'|| $payment_type=='down2'|| $payment_type=='down3')
                     {
                         if($first_booking=='' && $no_of_seats==$free_seats)
                         {

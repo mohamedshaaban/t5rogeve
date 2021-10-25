@@ -299,7 +299,11 @@ class Ceremony extends Model
         if($this->attributes['hide_ad_events']){
             return '' ;
         }
-        return  asset('uploads/folder_1/folder_2/' . $this->attributes['link_store_image']);
+        if(isset($this->attributes['link_store_image']))
+        {
+            return  asset('uploads/folder_1/folder_2/' . $this->attributes['link_store_image']);
+        }
+        return  '';
     }
     public function getLinkStoreAttribute()
     {
