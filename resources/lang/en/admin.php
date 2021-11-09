@@ -227,9 +227,12 @@ return [
     'Replied by'=>'Replied by',
     'Message is sent'=>'Message is sent',
     'Hide Additional Seats'=>'Hide Additional Seats',
-
+'Re calculate'=>'Re calculate',
     'Sent To'=>'Sent To',
 'Hide Link to Store'=>'Hide Link to Store',
+    'total_amount'=>'Total amount',
+    'Seats Book To Buy'=>'Seats Book To Buy',
+
 
 
 

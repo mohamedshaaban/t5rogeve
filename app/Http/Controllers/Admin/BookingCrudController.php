@@ -13,6 +13,7 @@ use App\Models\PaymentLog;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Facades\App;
+use Illuminate\Http\Request;
 
 class BookingCrudController extends CrudController
 {
@@ -585,5 +586,35 @@ class BookingCrudController extends CrudController
         } else {
             return true;
         }
+    }
+    public function recalcBooking(Request $request)
+    {
+        $booking = Booking::where('id',$request->id)->first();
+        $event =  Ceremony::where('id',$booking->event_id)
+            ->first();
+        $totalseats = Booking::where('event_id',$booking->event_id)->sum('no_of_seats');
+        if($totalseats + $booking->seats >= $event->total_seats)
+        {
+            return 'false' ;
+        }
+        else
+        {
+            $total_amount=$event->ceremony_price + ($booking->seats)*$event->price;
+            return $total_amount ;
+        }
+        if($booking->amount != $event->minimum_downpayment_amount){
+            $booking->amount = $event->minimum_downpayment_amount;
+        }
+        if($booking->downpayment_amount2 != $event->downpayment_amount2){
+            $booking->downpayment_amount2 = $event->downpayment_amount2;
+        }
+        if($booking->downpayment_amount3 != $event->downpayment_amount3){
+            $booking->downpayment_amount3 = $event->downpayment_amount3;
+        }
+        if($booking->ceremony_price != $event->ceremony_price){
+            $booking->ceremony_price = $event->ceremony_price;
+        }
+        $booking->total_amount = $total_amount ;
+        $booking->save();
     }
 }

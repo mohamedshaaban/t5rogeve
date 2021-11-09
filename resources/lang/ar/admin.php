@@ -230,6 +230,9 @@ return [
     'Message is sent'=>'تم ارسال الرسالة',
     'Hide Additional Seats'=>'اجمالي عدد مقاعد الحضور',
     'Hide Link to Store'=>'إخفاء صفحه الستور',
+    'Re calculate'=>'اعادة حساب المبلغ',
+'Seats Book To Buy'=>'شراء عدد المقاعد',
+    'total_amount'=>'الاجمالي'
 
 
 

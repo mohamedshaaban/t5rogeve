@@ -54,6 +54,7 @@ Route::group([
     Route::get('fetch/eventfilteruser', 'EventsCrudController@eventOptions');
     Route::get('fetch/chckeventseats/{seats}', 'EventsCrudController@chckeventseats');
     Route::get('fetch/chnguseractive/{id}', 'CustomersCrudController@chngUserStatus');
+    Route::get('fetch/recalcbooking/{id}', 'BookingCrudController@recalcBooking');
 
     // ------------------
     // AJAX Chart Widgets

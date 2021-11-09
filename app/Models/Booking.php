@@ -145,6 +145,6 @@ class Booking extends Model
     }
     public function openGoogle($crud = false)
     {
-        return  '<a class="btn btn-sm btn-link" target="_blank" href="#"  >'.trans('admin.Re calculate').'</a>';
+        return  '<a class="btn btn-sm btn-link"  href="#" onclick="recalc('.$this->id.')" >'.trans('admin.Re calculate').'</a>';
     }
 }
