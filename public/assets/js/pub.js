@@ -152,9 +152,12 @@ $(function(){
                 //if request if made successfully then the response represent the data
                 $('.freeseats-class').val(response.free_seats);
                 $('.eventprice-class').val(response.ceremony_price);
+                $('.amt3').val(response.ceremony_price);
+                
                 $('.downpayment-class').val(response.minimum_downpayment_amount);
                 $('.payment-class2').val(response.downpayment_amount2);
                 $('.payment-class3').val(response.downpayment_amount3);
+                 $('.noseats-class').val(0);
 
             }
         });
