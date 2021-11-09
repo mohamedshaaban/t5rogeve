@@ -12,12 +12,13 @@ use App\Models\Customer;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Hash;
 
 class CustomersCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation { store as traitStore; }
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation { update as traitUpdate; }
     use \Backpack\CRUD\app\Http\Controllers\Operations\CloneOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\BulkDeleteOperation;
@@ -59,7 +60,7 @@ class CustomersCrudController extends CrudController
          ]);
         $this->crud->addColumn([ // Text
             'name' => 'active',
-            'label' => trans('admin.active'),
+            'label' => trans('admin.Active'),
             'type'     => 'closure',
             'function' => function($entry) {
                 if($entry->active)
@@ -145,16 +146,16 @@ class CustomersCrudController extends CrudController
         CRUD::setValidation(StoreRequest::class);
 
 
-        CRUD::addField([ // Text
-            'name'  => 'email',
-            'label' => trans('admin.email'),
-            'type'  => 'email',
-            'tab'   => 'Texts',
-        ]);
+//        CRUD::addField([ // Text
+//            'name'  => 'email',
+//            'label' => trans('admin.email'),
+//            'type'  => 'email',
+//            'tab'   => 'Texts',
+//        ]);
 
 
         CRUD::addField([ // Text
-            'name'  => 'phone_number',
+            'name'  => 'phone',
             'label' => trans('admin.phone_number'),
             'type'  => 'text',
             'tab'   => 'Texts',
@@ -181,9 +182,22 @@ class CustomersCrudController extends CrudController
             // 'disk'      => 's3_bucket', // in case you need to show images from a different disk
             // 'prefix'    => 'uploads/images/profile_pictures/' // in case your db value is only the file name (no path), you can use this to prepend your path to the image src (in HTML), before it's shown to the user;
         ]);
+        $this->crud->addField([
+            'name' => "is_verified",
+            'type' => 'hidden',
+            'value' => 1, // omit or set to 0 to allow any aspect ratio
+        ]);
+        $this->crud->addField(
+            [
+                'name'  => 'password',
+                'label' => trans('backpack::permissionmanager.password'),
+                'type'  => 'password',
+                'tab'   => 'Texts',
+
+            ]);
         CRUD::addField([ // Text
-            'name'  => 'faulty',
-            'label' => trans('admin.faculty'),
+            'name'  => 'active',
+            'label' => trans('admin.active'),
             'type'  => 'radio',
             'tab'   => 'Texts',
             'options'     => [
@@ -195,8 +209,25 @@ class CustomersCrudController extends CrudController
         ]);
         $this->crud->setOperationSetting('contentClass', 'col-md-12');
     }
+    public function update()
+    {
+        $this->crud->setRequest($this->crud->validateRequest());
+        $this->crud->setRequest($this->handlePasswordInput($this->crud->getRequest()));
+        $this->crud->unsetValidation(); // validation has already been run
+        $response = $this->traitUpdate();
+        return $response;
+    }
+    public function store()
+    {
 
-    protected function setupUpdateOperation()
+        $this->crud->setRequest($this->crud->validateRequest());
+        $this->crud->setRequest($this->handlePasswordInput($this->crud->getRequest()));
+        $this->crud->unsetValidation(); // validation has already been run
+
+        $response = $this->traitStore();
+        return $response;
+    }
+        protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
     }
@@ -216,7 +247,7 @@ class CustomersCrudController extends CrudController
         $data = [];
         foreach ($options as $option)
         {
-            $data [$option->id] = $option->full_name .' '.$option->grandfather_name .' '.$option->father_name .' '.$option->family_name;
+            $data [$option->id] = $option->phone .' '.$option->civil_id;
 
         }
         return $data;
@@ -237,5 +268,21 @@ class CustomersCrudController extends CrudController
         $customer->save();
         return $isactive;
 
+    }
+    protected function handlePasswordInput($request)
+    {
+        // Remove fields not present on the user.
+        $request->request->remove('password_confirmation');
+        $request->request->remove('roles_show');
+        $request->request->remove('permissions_show');
+
+        // Encrypt password if specified.
+        if ($request->input('password')) {
+            $request->request->set('password', Hash::make($request->input('password')));
+        } else {
+            $request->request->remove('password');
+        }
+
+        return $request;
     }
 }

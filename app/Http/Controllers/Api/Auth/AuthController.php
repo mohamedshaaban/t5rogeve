@@ -79,9 +79,7 @@ class AuthController extends Controller
 
         $response	= array();
         $messages = array(
-            'full_name.required' 	=> "Please Enter Name",
-            'father_name.required' 	=> "Please Enter Father Name",
-            'grandfather_name.required' 	=> "Please Enter GrandFather Name",
+
             'gender.required' 		=> "Please Enter Gender",
             'faulty.required' 		=> "Please Enter Faulty",
             'birthDate.required' 		=> "Please Enter Date OF Birth",
@@ -179,9 +177,12 @@ class AuthController extends Controller
 
 
                 }else{
-                    $results = Customer::where('id',$user_id)->update(['civil_id' => $civil_id, 'faulty' => $faulty,'gender' => $gender]);
+                    $results = Customer::where('id',$user_id)->update(['civil_id' => $civil_id,
+                        
+                        'date_of_birth' => $birthDate,
+                        'faulty' => $faulty,'gender' => $gender]);
 
-                    $data = Customer::where('id',$user_id)->select('id','full_name','grandfather_name','father_name','gender','family_name','civil_id','faulty','phone','image')
+                    $data = Customer::where('id',$user_id)->select('id','full_name','grandfather_name','father_name','gender','date_of_birth','family_name','civil_id','faulty','phone','image')
                         ->first();
 
                     if($results){
@@ -459,18 +460,19 @@ class AuthController extends Controller
         $otp = $userInfo->otp;
         $text = "Your OTP is " . $otp;
 
-        $status = "";
-        $query = "username=" . $username . "&password=" . $password . "&sender=" . $sender . "&mobile=" . $to . "&lang=" . $lang . "&message=" . $text;
-        $Curl_Session = curl_init($url_address);
-        curl_setopt($Curl_Session, CURLOPT_POST, 1);
-        curl_setopt($Curl_Session, CURLOPT_POSTFIELDS, $query);
-        curl_setopt($Curl_Session, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt($Curl_Session, CURLOPT_RETURNTRANSFER, 1);
-        $result = curl_exec($Curl_Session);
+        $sid = "AC864a8c46538e280eea45cc3f6671131f"; // Your Account SID from www.twilio.com/console
+        $token = "a9005a751dd72d1a6aeb518f20660a5a"; // Your Auth Token from www.twilio.com/console
 
+        $client = new \Twilio\Rest\Client($sid, $token);
+        $message = $client->messages->create(
+            $to, // Text this number
+            [
+                "messagingServiceSid" => "MG15326fbb117dfdefc5abb1b7e7e4a14d",
+                'body' => $text
+            ]
+        );
         /* Print_r($result);
          die;*/
-        curl_close($Curl_Session);
         return ($response);
 
     }
@@ -495,7 +497,7 @@ class AuthController extends Controller
         {
             $allErrors =  '';
             foreach ($validator->errors()->all() as $message){
-                $allErrors[] =  $message;
+                $allErrors =  $message;
                 break;
             }
 
@@ -608,18 +610,17 @@ class AuthController extends Controller
 
             $text = "Your OTP is " . $otp;
 
-            $status = "";
-            $query = "username=" . $username . "&password=" . $password . "&sender=" . $sender . "&mobile=" . $to . "&lang=" . $lang . "&message=" . $text;
-            $Curl_Session = curl_init($url_address);
-            curl_setopt($Curl_Session, CURLOPT_POST, 1);
-            curl_setopt($Curl_Session, CURLOPT_POSTFIELDS, $query);
-            curl_setopt($Curl_Session, CURLOPT_FOLLOWLOCATION, 1);
-            curl_setopt($Curl_Session, CURLOPT_RETURNTRANSFER, 1);
-            $result = curl_exec($Curl_Session);
+            $sid = "AC864a8c46538e280eea45cc3f6671131f"; // Your Account SID from www.twilio.com/console
+            $token = "a9005a751dd72d1a6aeb518f20660a5a"; // Your Auth Token from www.twilio.com/console
 
-            //Print($result);
-            curl_close($Curl_Session);
-
+            $client = new \Twilio\Rest\Client($sid, $token);
+            $message = $client->messages->create(
+                $to, // Text this number
+                [
+                    "messagingServiceSid" => "MG15326fbb117dfdefc5abb1b7e7e4a14d",
+                    'body' => $text
+                ]
+            );
 
             $response = array(
                 'status' => 1,
@@ -641,6 +642,7 @@ class AuthController extends Controller
                 $results = Customer::find($user_id)->update(['is_login' => 0, 'is_temp_login' => 0]);
                 if($results)
                 {
+                    DeviceInfo::where('user_id',$user_id)->delete();
                     $response	=	array(
                         'status' 	=> 1,
                         'detail'	=> '',

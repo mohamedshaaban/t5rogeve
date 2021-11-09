@@ -138,6 +138,23 @@ class NotificationsCrudController extends CrudController
                     }
                 }), // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
             ]);
+        CRUD::addField(
+            [    // Select2Multiple = n-n relationship (with pivot table)
+                'label'     => trans('admin.Payment_Type'),
+                'type'      => 'select_from_array',
+                'name'      => 'payment_type', // the method that defines the relationship in your Model
+                'tab'   => 'Texts',
+                'attributes' => [
+//                    'style' =>'display:none',
+
+                    'class'       => 'form-control notificationeventpayment-class'],
+                // optional
+                'options'   => [
+                    1=>'Full',
+                    0=>'Down',
+                    2=>'Both'
+                ], // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
+            ]);
 
 
         CRUD::addField([  // Select2
@@ -197,7 +214,7 @@ class NotificationsCrudController extends CrudController
 
         CRUD::addField([
             'name'           => 'notification',
-            'type'           => 'ckeditor',
+            'type'           => 'textarea',
             'label'          => trans('admin.notification'),
             'tab' => 'Texts'
         ]);
@@ -264,12 +281,12 @@ class NotificationsCrudController extends CrudController
                      }
 
 
-
+//IOS
                      $data = [
                          "to" => implode(',',$token),
                          "notification" =>
                              [
-                                 "title" => "",
+                                 "title" => "اشعار جديد",
                                  "body" => $notification,
                                  'sound' => 'default',
                                  'badge' => '1',
@@ -290,9 +307,9 @@ class NotificationsCrudController extends CrudController
                      curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
                      curl_setopt($ch, CURLOPT_POST, true);
                      curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-                     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+//                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//                     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+//                     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                      curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
 
                      $result = curl_exec($ch);
@@ -301,6 +318,47 @@ class NotificationsCrudController extends CrudController
                          die('Oops! FCM Send Error: ' . curl_error($ch));
                      }
                      curl_close($ch);
+
+                     //IOS
+
+                     //Android
+                     $data = [
+                         "to" => implode(',',$token),
+                         "data" =>
+                             [
+                                 "title" => "اشعار جديد",
+                                 "notif_text" => $notification,
+                                 'sound' => 'default',
+                                 'badge' => '1',
+                                 "icon" => url('/logo.png')
+                             ],
+                     ];
+                     $dataString = json_encode($data);
+
+                     $server_key = 'AAAAcboXqwo:APA91bGdDymdgWGQk07orQFVRTbzHbyZvJ4CSKXIbbpWpFphjnqYVOVJu3pmVBfalzNeXVBWrljrazmPRJe79cY1KjeAtkyg3FQrZAhIRXbe-xtOd0LN7FaxNxqdy_IylOm-sbbj0LV8';
+
+                     $headers = [
+                         'Authorization: key=' . $server_key,
+                         'Content-Type: application/json',
+                     ];
+
+                     $ch = curl_init();
+
+                     curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+                     curl_setopt($ch, CURLOPT_POST, true);
+                     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+//                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//                     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+//                     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                     curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+                     $result = curl_exec($ch);
+
+                     if ($result === FALSE) {
+                         die('Oops! FCM Send Error: ' . curl_error($ch));
+                     }
+                     curl_close($ch);
+                     //Android
                      //	return $result;
                      $obj 	= 	new Notification;
                      $obj->alluser 		    = 1;
@@ -360,39 +418,65 @@ class NotificationsCrudController extends CrudController
                     $token[] = $users_device[$key]->device_token;
                 }
                 $tokenString = json_encode($token);
-
+//IOS
                 $notificationArray = array(
                     'title' =>"" ,
                     'body' => $body,
                     'sound' => 'default',
                     'badge' => '1');
-
                 $arrayToSend = array(
                     'registration_ids' => $token, 'notification' => $notificationArray,'priority'=>'high');
                 $data = json_encode($arrayToSend);
                 $server_key = 'AAAAcboXqwo:APA91bGdDymdgWGQk07orQFVRTbzHbyZvJ4CSKXIbbpWpFphjnqYVOVJu3pmVBfalzNeXVBWrljrazmPRJe79cY1KjeAtkyg3FQrZAhIRXbe-xtOd0LN7FaxNxqdy_IylOm-sbbj0LV8';
-
                 $headers = [
                     'Authorization: key=' . $server_key,
                     'Content-Type: application/json',
                 ];
-
                 $ch = curl_init();
-
                 curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
                 curl_setopt($ch, CURLOPT_POST, true);
                 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+//                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+//                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-
                 $result = curl_exec($ch);
 
                 if ($result === FALSE) {
                     die('Oops! FCM Send Error: ' . curl_error($ch));
                 }
                 curl_close($ch);
+                //IOS
+
+           //Android
+           $notificationArray = array(
+               'title' =>"" ,
+               'notif_text' => $body,
+               'sound' => 'default',
+               'badge' => '1');
+           $arrayToSend = array(
+               'registration_ids' => $token, 'data' => $notificationArray,'priority'=>'high');
+           $data = json_encode($arrayToSend);
+           $server_key = 'AAAAcboXqwo:APA91bGdDymdgWGQk07orQFVRTbzHbyZvJ4CSKXIbbpWpFphjnqYVOVJu3pmVBfalzNeXVBWrljrazmPRJe79cY1KjeAtkyg3FQrZAhIRXbe-xtOd0LN7FaxNxqdy_IylOm-sbbj0LV8';
+           $headers = [
+               'Authorization: key=' . $server_key,
+               'Content-Type: application/json',
+           ];
+           $ch = curl_init();
+           curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+           curl_setopt($ch, CURLOPT_POST, true);
+           curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+//           curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//           curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+//           curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+           curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+           $result = curl_exec($ch);
+
+           if ($result === FALSE) {
+               die('Oops! FCM Send Error: ' . curl_error($ch));
+           }
+           curl_close($ch);
+           //Android
 
                 /// save
                 foreach($request->event_id as $key => $value) {
@@ -408,49 +492,80 @@ class NotificationsCrudController extends CrudController
                     $obj->save();
                 }
         }
-        else{
+        else {
 
-                $notification = $request->notification;
-                $userid = $request->user_id;
-                $users_device =  DeviceInfo::whereIn('user_id',$userid)->get();
-                $token = $users_device[0]->device_token;
-                ///
+            $notification = $request->notification;
+            $userid = $request->user_id;
+            $users_device = DeviceInfo::where('user_id', $userid)->get();
+            $token = $users_device[0]->device_token;
+            /// IOS
+            if ($users_device[0]->device_type != 'android'){
                 $data = [
                     "to" => $token,
                     "notification" =>
                         [
-                            "title" => "",
+                            "title" => "اشعار جديد",
                             "body" => $notification,
                             'sound' => 'default',
                             'badge' => '1',
                             "icon" => url('/logo.png')
                         ],
                 ];
-                $dataString = json_encode($data);
-
-                $server_key = 'AAAAcboXqwo:APA91bGdDymdgWGQk07orQFVRTbzHbyZvJ4CSKXIbbpWpFphjnqYVOVJu3pmVBfalzNeXVBWrljrazmPRJe79cY1KjeAtkyg3FQrZAhIRXbe-xtOd0LN7FaxNxqdy_IylOm-sbbj0LV8';
-
-                $headers = [
-                    'Authorization: key=' . $server_key,
-                    'Content-Type: application/json',
-                ];
-
-                $ch = curl_init();
-
-                curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
-                curl_setopt($ch, CURLOPT_POST, true);
-                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
-
-                $result = curl_exec($ch);
-
-                if ($result === FALSE) {
-                    die('Oops! FCM Send Error: ' . curl_error($ch));
-                }
-                curl_close($ch);
+            $dataString = json_encode($data);
+            $server_key = 'AAAAcboXqwo:APA91bGdDymdgWGQk07orQFVRTbzHbyZvJ4CSKXIbbpWpFphjnqYVOVJu3pmVBfalzNeXVBWrljrazmPRJe79cY1KjeAtkyg3FQrZAhIRXbe-xtOd0LN7FaxNxqdy_IylOm-sbbj0LV8';
+            $headers = [
+                'Authorization: key=' . $server_key,
+                'Content-Type: application/json',
+            ];
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+//            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+//            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            $result = curl_exec($ch);
+            if ($result === FALSE) {
+                die('Oops! FCM Send Error: ' . curl_error($ch));
+            }
+            curl_close($ch);
+            //IOS
+        }else {
+        //Andoird
+        $dataandroid = [
+            "to" => $token,
+            "content_available" => true,
+            "data" =>
+                [
+                    "title" => "اشعار جديد",
+                    "notif_text" => $notification,
+                    'sound' => 'default',
+                    'badge' => '1',
+                    "icon" => url('/logo.png')
+                ],
+        ];
+        $dataString = json_encode($dataandroid);
+        $server_key = 'AAAAcboXqwo:APA91bGdDymdgWGQk07orQFVRTbzHbyZvJ4CSKXIbbpWpFphjnqYVOVJu3pmVBfalzNeXVBWrljrazmPRJe79cY1KjeAtkyg3FQrZAhIRXbe-xtOd0LN7FaxNxqdy_IylOm-sbbj0LV8';
+        $headers = [
+            'Authorization: key=' . $server_key,
+            'Content-Type: application/json',
+        ];
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+//        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+        $result = curl_exec($ch);
+         if ($result === FALSE) {
+            die('Oops! FCM Send Error: ' . curl_error($ch));
+        }
+        curl_close($ch);
+        //Andoird
+    }
 
 
                 ////

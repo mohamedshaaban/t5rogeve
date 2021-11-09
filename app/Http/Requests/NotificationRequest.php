@@ -26,9 +26,8 @@ class NotificationRequest extends FormRequest
     public function rules()
     {
         return [
-            'notification'        => 'required|min:5|max:255',
+            'notification'        => 'required',
             'sent_to'        => 'required|min:5|max:255',
-
 
         ];
     }

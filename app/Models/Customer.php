@@ -68,7 +68,7 @@ class Customer extends Authenticatable
     use CrudTrait;
     use HasApiTokens, Notifiable;
     use HasKnet;
-    use SoftDeletes;
+//    use SoftDeletes;
 	protected $table = 'customers';
 
 	protected $casts = [
@@ -83,7 +83,7 @@ class Customer extends Authenticatable
 		'otp' => 'int',
 		'active' => 'bool',
 		'role_id' => 'int',
-		'is_deleted' => 'int'
+//		'is_deleted' => 'int'
 	];
 
 	protected $hidden = [
@@ -124,7 +124,6 @@ class Customer extends Authenticatable
 		'active',
 		'admin',
 		'role_id',
-		'is_deleted',
 		'validate_string',
 		'forgot_password_validate_string',
 		'password_temp',
@@ -136,6 +135,22 @@ class Customer extends Authenticatable
 	{
 		return $this->hasMany(KnetTransactions2::class, 'user_id');
 	}
+    public function getFatherNameAttribute()
+    {
+        return '';
+
+    }    public function getFullNameAttribute()
+    {
+        return '';
+
+    }    public function getGrandfatherNameAttribute()
+    {
+        return '';
+
+    }    public function getFamilyNameAttribute()
+    {
+        return '';
+    }
     public function getAllNameAttribute()
     {
             return $this->full_name.' ' .$this->father_name.' '.$this->grandfather_name.' '.$this->family_name;

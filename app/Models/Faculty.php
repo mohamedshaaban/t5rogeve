@@ -32,6 +32,14 @@ class Faculty extends Model
 	];
 	protected $appends = ['statustext'];
 
+	public function getStatustextAttribute($crud = false)
+    {
+        if(isset($this->attributes['status'])&&$this->attributes['status']==1)
+        {
+            return '<span class="badge badge-success">'.trans('admin.active').'</span>';
+        }
+        return '<span class="badge badge-danger">'.trans('admin.not_active').'</span>';
+    }
 	public function openStatus($crud = false)
     {
         if($this->status)
@@ -39,6 +47,5 @@ class Faculty extends Model
             return '<span class="badge badge-success">'.trans('admin.active').'</span>';
         }
         return '<span class="badge badge-danger">'.trans('admin.not_active').'</span>';
-
     }
 }

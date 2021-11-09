@@ -35,6 +35,7 @@ $( ".payment-class" ).change(function() {
 });
 $(function(){
 
+    $('.notificationeventpayment-class').parent().fadeOut();
     $('.notificationevent-class').parent().fadeOut();
     $('.notificationuser-class').parent().fadeOut();
     $('.notificationfamily_name-class').parent().fadeOut();
@@ -46,6 +47,7 @@ $(function(){
         if($( this ).val()==0)
         {
             $('.notificationevent-class').parent().fadeOut();
+            $('.notificationeventpayment-class').parent().fadeOut();
             $('.notificationuser-class').parent().fadeOut();
             $('.notificationfamily_name-class').parent().fadeOut();
             $('.notificationfather_name').parent().fadeOut();
@@ -56,6 +58,7 @@ $(function(){
         else if($( this ).val()==1)
         {
             $('.notificationevent-class').parent().fadeIn();
+            $('.notificationeventpayment-class').parent().fadeIn();
             $('.notificationuser-class').parent().fadeOut();
             $('.notificationfamily_name-class').parent().fadeOut();
             $('.notificationfather_name').parent().fadeOut();
@@ -66,6 +69,7 @@ $(function(){
         else
         {
             $('.notificationevent-class').parent().fadeOut();
+            $('.notificationeventpayment-class').parent().fadeOut();
             $('.notificationuser-class').parent().fadeIn();
             $('.notificationfamily_name-class').parent().fadeIn();
             $('.notificationfather_name').parent().fadeIn();
@@ -76,12 +80,36 @@ $(function(){
     });
 
 
+    $('.noseats-class').on('change', function() {
+        var data =$( this ).val();
+
+        $.ajax({
+            type: "GET",
+            url: "/admin/fetch/chckeventseats/"+data,
+            success: function(response) {
+                if(response=='false')
+                {
+                    alert('المقاعد غير متاحة برجاء زيادة المقاعد الخاصة بالفاعلية');
+                }
+                else
+                {
+                    $('.amt3').val(response);
+                }
+            }
+
+
+    });
+
+
+    });
     $('.event-class').on('change', function() {
 
     });
 
     $('.filterevent-class').on('change', function() {
         var data = $(".filterevent-class option:selected").text();
+
+        console.log($(".hideevent-class").val($( this ).val()));
         $.ajax({
             type: "GET",
             url: "/admin/fetch/eventdashdetails/"+$( this ).val(),
@@ -110,6 +138,23 @@ $(function(){
                 $('.booking-father_name').val(response.father_name);
                 $('.booking-grandfather_name').val(response.grandfather_name);
                 $('.booking-family_name').val(response.family_name);
+
+            }
+        });
+
+    })
+    $('.event-class').on('change', function() {
+        var data = $(".event-class option:selected").text();
+         $.ajax({
+            type: "GET",
+            url: "/admin/fetch/eventbookingdetails/"+$( this ).val(),
+            success: function(response){
+                //if request if made successfully then the response represent the data
+                $('.freeseats-class').val(response.free_seats);
+                $('.eventprice-class').val(response.ceremony_price);
+                $('.downpayment-class').val(response.minimum_downpayment_amount);
+                $('.payment-class2').val(response.downpayment_amount2);
+                $('.payment-class3').val(response.downpayment_amount3);
 
             }
         });

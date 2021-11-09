@@ -23,8 +23,9 @@ class CustomersRequest extends \Backpack\CRUD\app\Http\Requests\CrudRequest
     public function rules()
     {
         return [
-            'title'        => 'required|min:3|max:255',
-            'link'        => 'required|min:3|max:255',
+            'phone'    => 'required|unique:customers,phone',
+            'active'    => 'required',
+            'civil_id'    => 'required',
 
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Events\Event;
 use App\Models\Bookings;
 use App\Models\Customer;
 use App\Models\EmailAction;
@@ -25,6 +26,7 @@ class EventsController extends Controller
 
     public function booking(Request $request){
         $formData	= $request->all();
+
 
         $messages = array(
             'event_id.required' => "Please Enter Event ID",
@@ -53,7 +55,7 @@ class EventsController extends Controller
         {
             $allErrors =  '';
             foreach ($validator->errors()->all() as $message){
-                $allErrors[] =  $message;
+                $allErrors =  $message;
                 break;
             }
 
@@ -80,14 +82,16 @@ class EventsController extends Controller
             $isSeatAvailable = $this->checkSeatAvailabilityForEvent($event_id, $seats);
             //::where('id',$event_id)->select('remaining_seats')->first();
             if(!empty($checkseat_detail)){
+                if($request->payment_type!='down' && $request->payment_type!='down2' && $request->payment_type!='down3' && $request->payment_type!='remaining') {
 
-                if(!$isSeatAvailable){
-                    $response	=	array(
-                        'status' 	=>  0,
-                        'message'	=> 'Seats are not available.',
-                        'data'    => ''
-                    );
-                    return Response::json($response);
+                    if (!$isSeatAvailable) {
+                        $response = array(
+                            'status' => 0,
+                            'message' => 'المقاعد غير متاحة.',
+                            'data' => ''
+                        );
+                        return Response::json($response);
+                    }
                 }
 
 
@@ -129,16 +133,17 @@ class EventsController extends Controller
                             $isSeatAvailable = $this->checkSeatAvailabilityForEvent($event_id, $seats);
                              //::where('id',$event_id)->select('remaining_seats')->first();
                             if(!empty($checkseat_detail)){
+                                if($request->payment_type!='down' && $request->payment_type!='down2' && $request->payment_type!='down3' && $request->payment_type!='remaining') {
 
-                                if(!$isSeatAvailable){
-                                    $response	=	array(
-                                        'status' 	=>  0,
-                                        'message'	=> 'Seats are not available.',
-                                        'data'    => $detail
-                                    );
-                                    return Response::json($response);
+                                    if (!$isSeatAvailable) {
+                                        $response = array(
+                                            'status' => 0,
+                                            'message' => 'المقاعد غير متاحة.',
+                                            'data' => ''
+                                        );
+                                        return Response::json($response);
+                                    }
                                 }
-
 
 
                                 $event_id=$request->event_id;
@@ -173,7 +178,7 @@ class EventsController extends Controller
 
                                         $response	=	array(
                                             'status' 	=> 0,
-                                            'message'	=> 'You need to book minimum '.$free_seats.' seats.',
+                                            'message'	=> ' مقعد.'.$free_seats.'تحتاج إلى حجز الحد الأدنى ',
                                         );
 
                                         return Response::json($response);
@@ -204,7 +209,7 @@ class EventsController extends Controller
 
                                         $response	=	array(
                                             'status' 	=> 0,
-                                            'message'	=> 'You need to book minimum '.$free_seats.' seats.',
+                                            'message'	=> ' مقعد.'.$free_seats.'تحتاج إلى حجز الحد الأدنى ',
                                         );
 
                                         return Response::json($response);
@@ -226,6 +231,10 @@ class EventsController extends Controller
                                     $onebooking->remaining_amount	=  $remaining_amount;
                                     $onebooking->robe_size			=  $robe_size;
                                     $onebooking->ceremony_price	=  $ceremony_price;
+                                    $onebooking->full_name=$request->full_name;
+                                    $onebooking->father_name=$request->father_name;
+                                    $onebooking->grandfather_name=$request->grandfather_name;
+                                    $onebooking->family_name=$request->family_name;
                                     $onebooking->save();
                                     $b_id	=	$onebooking->id;
 
@@ -271,7 +280,7 @@ class EventsController extends Controller
                                         $payment_details = PaymentLog::find($request->trans_id);
                                         $response	=	array(
                                             'status' 	=> 1,
-                                            'message'	=> 'Event Seat Book Successfully.',
+                                            'message'	=> 'تم حجز مقعد الفاعلية بنجاح.',
                                             'transationid'=>$payment_details->tranid,
                                             'paymentID'=>$payment_details->paymentid,
                                             'amount'=>$payment_details->amt,
@@ -306,7 +315,7 @@ class EventsController extends Controller
 
                             $response	=	array(
                                 'status' 	=> 0,
-                                'message'	=> 'You need to book minimum '.$free_seats.' seats.',
+                                'message'	=> ' مقعد.'.$free_seats.'تحتاج إلى حجز الحد الأدنى ',
                             );
 
                             return ($response);
@@ -334,7 +343,7 @@ class EventsController extends Controller
 
                             $response	=	array(
                                 'status' 	=> 0,
-                                'message'	=> 'You need to book minimum '.$free_seats.' seats.',
+                                'message'	=> ' مقعد.'.$free_seats.'تحتاج إلى حجز الحد الأدنى ',
                             );
 
                             return ($response);
@@ -345,17 +354,21 @@ class EventsController extends Controller
                         }
                     }
 
-
+                    $event = Ceremony::find($event_id);
                     $obj 					=  new Booking;
                     $obj->event_id			=  $event_id;
                     $obj->user_id			=  $user_id;
                     $obj->session_token		=  '';
                     $obj->no_of_seats		=  $total_booking_seats;
                     $obj->payment_type		=  $payment_type;
-                    $obj->amount			=  $amount;
+                    $obj->amount			=  $event->ceremony_price+$amount;
                     $obj->remaining_amount	=  $remaining_amount;
                     $obj->robe_size			=  $robe_size;
                     $obj->ceremony_price	=  $ceremony_price;
+                    $obj->full_name=$request->full_name;
+                    $obj->father_name=$request->father_name;
+                    $obj->grandfather_name=$request->grandfather_name;
+                    $obj->family_name=$request->family_name;
                     $obj->save();
                     $b_id	=	$obj->id;
                     $booking_seat= DB::table('booking')
@@ -391,7 +404,7 @@ class EventsController extends Controller
                         $pay_res = $pay_obj->save();
                         $response	=	array(
                             'status' 	=> 1,
-                            'message'	=> 'Event Seat Book Successfully.',
+                            'message'	=> 'تم حجز مقعد الفاعلية بنجاح.',
                             'transationid'=>$payment_details->tranid,
                             'paymentID'=>$payment_details->paymentid,
                             'amount'=>$payment_details->amt,
@@ -471,9 +484,10 @@ class EventsController extends Controller
             if(!empty($checkseat_detail)){
 
                 if(!$isSeatAvailable){
+                    dd(1);
                     $response	=	array(
                         'status' 	=>  0,
-                        'message'	=> 'Seats are not available.',
+                        'message'	=> 'المفاعد غير متاحة',
                         'data'    => $detail
                     );
                     return Response::json($response);
@@ -514,7 +528,7 @@ class EventsController extends Controller
 
                         $response	=	array(
                             'status' 	=> 0,
-                            'message'	=> 'You need to book minimum '.$free_seats.' seats.',
+                            'message'	=> ' مقعد.'.$free_seats.'تحتاج إلى حجز الحد الأدنى ',
                         );
 
                         return Response::json($response);
@@ -545,7 +559,7 @@ class EventsController extends Controller
 
                         $response	=	array(
                             'status' 	=> 0,
-                            'message'	=> 'You need to book minimum '.$free_seats.' seats.',
+                            'message'	=> ' مقعد.'.$free_seats.'تحتاج إلى حجز الحد الأدنى ',
                         );
 
                         return Response::json($response);
@@ -614,7 +628,7 @@ class EventsController extends Controller
                         $payment_details = PaymentLog::find($request->trans_id);
                         $response	=	array(
                             'status' 	=> 1,
-                            'message'	=> 'Event Seat Book Successfully.',
+                            'message'	=> 'تم حجز مقعد الفاعلية بنجاح.',
                             'transationid'=>$payment_details->tranid,
                             'paymentID'=>$payment_details->paymentid,
                             'amount'=>$payment_details->amt,
@@ -703,7 +717,7 @@ class EventsController extends Controller
                 if(!$isSeatAvailable){
                     $response	=	array(
                         'status' 	=>  0,
-                        'message'	=> 'Seats are not available.',
+                        'message'	=> 'المقاعد غير متاحة',
                         'data'    => $detail
                     );
                     return Response::json($response);
@@ -771,7 +785,7 @@ class EventsController extends Controller
 
                         $response	=	array(
                             'status' 	=> 0,
-                            'message'	=> 'You need to book minimum '.$free_seats.' seats.',
+                            'message'	=> ' مقعد.'.$free_seats.'تحتاج إلى حجز الحد الأدنى ',
                         );
 
                         return Response::json($response);
@@ -816,7 +830,7 @@ class EventsController extends Controller
 
                         $response	=	array(
                             'status' 	=> 0,
-                            'message'	=> 'You need to book minimum '.$free_seats.' seats.',
+                            'message'	=> ' مقعد.'.$free_seats.'تحتاج إلى حجز الحد الأدنى ',
                         );
 
                         return Response::json($response);
@@ -865,7 +879,7 @@ class EventsController extends Controller
                 $date = date('m/d/Y h:i:s a', time());
                 $response	=	array(
                     'status' 	=> 1,
-                    'message'	=> 'Event Seat Book Successfully.',
+                    'message'	=> 'تم حجز مقعد الحدث بنجاح.',
                     'amount' => $amount,
                     'created_at'=> $date
                 );
@@ -936,7 +950,7 @@ class EventsController extends Controller
                 if(!$isSeatAvailable){
                     $response	=	array(
                         'status' 	=>  0,
-                        'message'	=> 'Seats are not available.',
+                        'message'	=> 'المقاعد غير متاحة',
                         'data'    => $detail
                     );
                     return Response::json($response);
@@ -948,7 +962,7 @@ class EventsController extends Controller
 
                     $response	=	array(
                         'status' 	=> 1,
-                        'message'	=> "Booking Updated Successfully",
+                        'message'	=> "ـم تعديل الحجز بنجاح",
                         /*'data'   => $data,*/
 
                     );
@@ -971,8 +985,8 @@ class EventsController extends Controller
                 $total_price=$prive_amount+$new_amout;
 
                 $payment_details=PaymentLog::where('id',$trans_id)->first();
-
-                if($payment_details->result!='CAPTURED' || $payment_details->amt!=$new_amout)
+//dd($payment_details);
+                if($payment_details->result!='CAPTURED' )
                 {
                     $response	=	array(
                         'status' 	=> 0,
@@ -982,7 +996,7 @@ class EventsController extends Controller
                 }
                 else
                 {
-                    if(empty($robe_size))
+                     if(empty($robe_size))
                     {
                         $results=Booking::where('id',$booking_id)->update(['no_of_seats' => $total_seats,'amount'=>$total_price,'full_name'=>$request->full_name,'father_name'=>$request->father_name,'grandfather_name'=>$request->grandfather_name,'family_name'=>$request->family_name]);
                     }
@@ -1006,7 +1020,7 @@ class EventsController extends Controller
 
                     $response	=	array(
                         'status' 	=> 1,
-                        'message'	=> "Booking Updated Successfully",
+                        'message'	=> "تم تعديل الحجز بنجاح",
                         'transationid'=>$payment_details->tranid,
                         'paymentID'=>$payment_details->paymentid,
                         'amount'=>$payment_details->amt,
@@ -1075,7 +1089,7 @@ class EventsController extends Controller
                 $booking->delete();
                 $response	=	array(
                     'status' 	=> 1,
-                    'message'	=> "Booking Deleted Successfully",
+                    'message'	=> "تم حذف الحجز بنجاح",
                     /*'data'   => $data,*/
 
                 );
@@ -1084,7 +1098,7 @@ class EventsController extends Controller
             {
                 $response	=	array(
                     'status' 	=> 0,
-                    'message'	=> 'Unsuccessful',
+                    'message'	=> 'خطا',
                     /*'data'	=> $detail*/
                 );
             }
@@ -1112,6 +1126,7 @@ class EventsController extends Controller
             }
         }
         //	dd($value->remaining_seats);
+//        return true;
 
         if($seats > $value->remaining_seats){
             return false;

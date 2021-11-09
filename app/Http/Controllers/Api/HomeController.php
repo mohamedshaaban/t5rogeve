@@ -113,6 +113,7 @@ class HomeController extends Controller
                 ->Leftjoin('ceremony as c', 'c.id', '=', 'pl.event_id')
                 ->where('pl.user_id',Auth::guard('customers_api')->user()->id)
                 ->select('pl.*','u.full_name','c.name as event_name')
+                ->orderBy('pl.id', 'desc')
                 ->get();
 
 

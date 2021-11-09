@@ -399,13 +399,17 @@ class PaymentController extends Controller
 
 
          $user = Auth::guard('customers_api')->user();
-
+         $user_id = $user->id;
          $amount  = $request->amount ;
 
 	          $event_id  = $request->event_id ;
 	          $event = Ceremony::find($event_id);
- if($request->payment_type == 'full'||$request->payment_type == 'Full'){
-    $amount +=$event->ceremony_price;
+ if($request->payment_type == 'full'||$request->payment_type == 'Full'||$request->payment_type == 'remaining'||$request->payment_type == 'Remaining'){
+     $paymentLogAmt = PaymentLog::where(
+         'user_id',$user_id)->where(
+         'event_id',$event_id)->where('result','CAPTURED')->sum('amt');
+
+    $amount +=($event->ceremony_price-$paymentLogAmt);
 }
 else if($request->payment_type == 'down'||$request->payment_type == 'Down'){
     $amount +=$event->minimum_downpayment_amount;
@@ -482,7 +486,7 @@ else if($request->payment_type == 'down3'||$request->payment_type == 'Down3'){
              'card_type'=>'knet',
 //             'invoic_id'=>$get_array[''],
              'phone'=>$get_array['udf3'],
-             'payment_type'=>$get_array['udf2']
+              'payment_type'=>($get_array['udf2']=='Remaining'||$get_array['udf2']=='remaining')?'full':$get_array['udf2']
          ]);
          if($get_array['result'] == 'CAPTURED')
          {

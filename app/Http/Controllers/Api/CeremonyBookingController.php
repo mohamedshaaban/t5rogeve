@@ -193,8 +193,16 @@ class CeremonyBookingController extends Controller
                     }
                      $id = (int)$value['id'];
                     $user_id = (int)$value['user_id'];
-
                     $event_id = (int)$value['event_id'];
+                    $event = Ceremony::find($event_id);
+
+                    $paymentLogAmt = PaymentLog::where(
+                        'user_id',$user_id)->where(
+                        'event_id',$event_id)->where('result','CAPTURED')->sum('amt');
+
+                    $remainingamount =($event->ceremony_price-$paymentLogAmt);
+
+
                     $no_of_seats = (int)$value['no_of_seats'];
                     $amount = (int)$value['amount'];
                     $ceremony_price = $value['ceremony_price'];
@@ -253,6 +261,8 @@ class CeremonyBookingController extends Controller
                             "imagemain" => $ceremony_image,
                             "status" => $ceremony_status,
                             "hide_seats" => $hide_seats,
+                            "Name_Ex_Date" => $NameExDate,
+                            "Robe_Ex_Date" => $RobeExDate,
                             "NameExDate" => $NameExDate,
                             "RobeExDate" => $RobeExDate,
                             "imageterm" => $imageterm,
@@ -300,6 +310,8 @@ class CeremonyBookingController extends Controller
                         "event_id" => $event_id,
                         "no_of_seats" => $no_of_seats,
                         "amount" => $amount,
+                        "Name_Ex_Date" => $NameExDate,
+                        "Robe_Ex_Date" => $RobeExDate,
                         "NameExDate" => $NameExDate,
                         "RobeExDate" => $RobeExDate,
                         "imageterm" => $imageterm,
@@ -345,9 +357,10 @@ class CeremonyBookingController extends Controller
         $user_id   	= $request->user_id;
         $response	= array();
 
-        $onebooking = Booking::with("ceremony")->where('user_id',$user_id)
+        $onebooking = Booking::with("ceremony","ceremony_with_description")->where('user_id',$user_id)
             ->where('event_id',$eventid)
             ->get();
+
 
 
 
@@ -355,12 +368,12 @@ class CeremonyBookingController extends Controller
         if(empty($onebooking)){
             $response=array(
                 'status'=>0,
-                'message'=> 'Booking List',
+                'message'=> 'قائمة الحجوزات',
                 'data'=> $onebooking);
         }else{
             $response=array(
                 'status'=>1,
-                'message'=> 'Booking List',
+                'message'=> 'قائمة الحجوزات',
                 'data'=> $onebooking);
         }
 
@@ -507,7 +520,7 @@ class CeremonyBookingController extends Controller
 
                     $response	=	array(
                         'status' 	=> 1,
-                        'message'	=> 'Event Seat Book Successfully.',
+                        'message'	=> 'تم حجز مقعد ألفاعلية بنجاح.',
                         'transationid'=>$payment_details->tranid,
                         'paymentID'=>$payment_details->paymentid,
                         'amount'=>$payment_details->amt,
@@ -522,7 +535,7 @@ class CeremonyBookingController extends Controller
             {
                 $response	=	array(
                     'status' 	=>  0,
-                    'message'	=> 'The remaining amount cannot be greater than 0.',
+                    'message'	=> 'لا يمكن أن يكون المبلغ المتبقي أكبر من 0.',
 
                 );
                 return  ($response);

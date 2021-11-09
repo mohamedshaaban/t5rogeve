@@ -45,11 +45,14 @@ Route::group([
     Route::post('fetch/faculty', 'FacultyCrudController@fetch');
     Route::post('fetch/ceremony', 'EventsCrudController@fetch');
     Route::post('fetch/bookinguser', 'EventsCrudController@fetchuser');
+    Route::post('fetch/bookingphoneuser', 'EventsCrudController@fetchphoneuser');
     Route::get('fetch/eventdetails/{id}', 'EventsCrudController@fetchEventDetails');
     Route::get('fetch/eventdashdetails/{id}', 'EventsCrudController@fetchDashEventDetails');
+    Route::get('fetch/eventbookingdetails/{id}', 'EventsCrudController@fetchBookingEventDetails');
     Route::get('fetch/studentdetails/{id}', 'CustomersCrudController@fetchStudentDetails');
     Route::get('fetch/bookingfilteruser', 'CustomersCrudController@studentOptions');
     Route::get('fetch/eventfilteruser', 'EventsCrudController@eventOptions');
+    Route::get('fetch/chckeventseats/{seats}', 'EventsCrudController@chckeventseats');
     Route::get('fetch/chnguseractive/{id}', 'CustomersCrudController@chngUserStatus');
 
     // ------------------

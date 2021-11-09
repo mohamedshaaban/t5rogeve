@@ -152,7 +152,7 @@ class OtherController extends Controller
 		$detail 	= new \stdClass();
 		 $response	= array();
 		 $messages = array(
-					'name.required' 		=> "Please Enter Name.",
+//					'name.required' 		=> "Please Enter Name.",
 				//	'email.required' 		=> "Please Enter Email",
 					'subject.required' 		=> "Please Enter Subject",
 					'mobile.required' 		=> "Please Enter Mobile",
@@ -162,7 +162,7 @@ class OtherController extends Controller
 			$validator = Validator::make(
 					$request->all(),
 					array(
-						'name' 		=> 'required',
+//						'name' 		=> 'required',
 					//	'email'		=> 'required|email',
 						'subject'	=> 'required',
 						'mobile'	=> 'required',

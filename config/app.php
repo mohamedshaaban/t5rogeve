@@ -160,6 +160,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\KnetServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\TelescopeServiceProvider::class,
         LaravelFCM\FCMServiceProvider::class,
         App\Providers\HelperServiceProvider::class,
 

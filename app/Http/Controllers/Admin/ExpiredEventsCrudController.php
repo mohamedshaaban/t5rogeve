@@ -230,18 +230,20 @@ class ExpiredEventsCrudController  extends CrudController
         ]);
 
 
+
         CRUD::addField([  // Select2
             'label'     => trans('admin.Faculty'),
-            'type'      => 'select2',
+            'type'      => 'relationship',
             'name'      => 'faculty', // the db column for the foreign key
-            'entity'    => 'faculty', // the method that defines the relationship in your Model
-            'attribute' => 'full_name', // foreign key attribute that is shown to use
+            'entity'    => 'facultyrela', // the method that defines the relationship in your Model
+//            'attribute' => 'full_name', // foreign key attribute that is shown to use
             'tab' => 'Texts',
-            'default'=>backpack_user()->faculty_id
+//            'options' => ['1' => 'جامعة الكويت', '2' => 'ثانوية عامة','3'=>'التطبيقي','4'=>'فعاليات أخرى'],
+//            'default'=>backpack_user()->faculty_id
         ]);
 
         CRUD::addField([ // Text
-            'name'  => 'hideSeats',
+            'name'  => 'hide_UsersSeatsN',
             'label' => trans('admin. Hide Seats'),
             'type'  => 'radio',
             'tab'   => 'Texts',
@@ -287,7 +289,7 @@ class ExpiredEventsCrudController  extends CrudController
             'name' => "link_store",
             'type' => 'text',
             'tab'   => 'Texts',
-            'crop' => true, // set to true to allow cropping, false to disable
+            'crop' => false, // set to true to allow cropping, false to disable
             'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
         ]);
 
@@ -297,7 +299,7 @@ class ExpiredEventsCrudController  extends CrudController
             'hint'=>'1078 ْX 275',
             'type' => 'image',
             'tab'   => 'Texts',
-            'crop' => true, // set to true to allow cropping, false to disable
+            'crop' => false, // set to true to allow cropping, false to disable
             'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
 
         ]);
@@ -324,7 +326,7 @@ class ExpiredEventsCrudController  extends CrudController
             'type' => 'image',
             'hint'=>'900 X 900',
             'tab'   => 'Texts',
-            'crop' => true, // set to true to allow cropping, false to disable
+            'crop' => false, // set to true to allow cropping, false to disable
             'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
         ]);
 
@@ -334,7 +336,7 @@ class ExpiredEventsCrudController  extends CrudController
             'type' => 'image',
             'hint'=>'900 ْX 650',
             'tab'   => 'Texts',
-            'crop' => true, // set to true to allow cropping, false to disable
+            'crop' => false, // set to true to allow cropping, false to disable
             'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
         ]);
 
@@ -345,7 +347,7 @@ class ExpiredEventsCrudController  extends CrudController
             'type' => 'ckeditor',
             'hint'=>'',
             'tab'   => 'Texts',
-            'crop' => true, // set to true to allow cropping, false to disable
+            'crop' => false, // set to true to allow cropping, false to disable
             'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
         ]);
         /*
@@ -354,7 +356,7 @@ class ExpiredEventsCrudController  extends CrudController
                     'name' => "amenities",
                     'type' => 'relationship',
                     'tab'   => 'Texts',
-                    'crop' => true, // set to true to allow cropping, false to disable
+                    'crop' => false, // set to true to allow cropping, false to disable
                     'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
 
                     // optional
@@ -377,7 +379,7 @@ class ExpiredEventsCrudController  extends CrudController
             'hint'=>'734 X 44000',
 
             'tab'   => 'Texts',
-            'crop' => true, // set to true to allow cropping, false to disable
+            'crop' => false, // set to true to allow cropping, false to disable
             'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
 
         ]);
@@ -388,7 +390,7 @@ class ExpiredEventsCrudController  extends CrudController
             'hint'=>'660 X 660',
 
             'tab'   => 'Texts',
-            'crop' => true, // set to true to allow cropping, false to disable
+            'crop' => false, // set to true to allow cropping, false to disable
             'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
 
         ]);

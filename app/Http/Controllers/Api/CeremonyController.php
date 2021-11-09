@@ -43,7 +43,7 @@ class CeremonyController extends Controller
 
                     $response = array(
                         'status' 	=> 1,
-                        'message'	=> "Success",
+                        'message'	=> "قائمة الفاعليات",
                         'ceremonies' => $ceremonies->all(),
                     );
                 }else{
@@ -55,7 +55,7 @@ class CeremonyController extends Controller
 
                         $response = array(
                             'status' 	=> 1,
-                            'message'	=> "Success",
+                            'message'	=> "قائمة الفاعليات",
                             'ceremonies' => $ceremonies->all(),
                         );
 
@@ -69,7 +69,7 @@ class CeremonyController extends Controller
 
                         $response = array(
                             'status' 	=> 1,
-                            'message'	=> "Success",
+                            'message'	=> "قائمة الفاعليات",
                             'ceremonies' => $ceremonies->all(),
                         );
 
@@ -82,7 +82,7 @@ class CeremonyController extends Controller
                             })->orderBy($sort_by, $sort_type)->paginate(100);
                         $response = array(
                             'status' 	=> 1,
-                            'message'	=> "Success",
+                            'message'	=> "قائمة الفاعليات",
                             'ceremonies' => $ceremonies->all(),
                         );
                     }
@@ -228,9 +228,9 @@ class CeremonyController extends Controller
 
     public function checkSeatAvailability(Request $request){
         $eventid 	= $request->event_id;
-        $seats   	= $request->seat;
+        $seats   	= $request->seats;
 
-
+        $de = Ceremony::with('booking')->where('id',$eventid)->first();
         $ceremonies = Ceremony::with('booking')->where('id',$eventid)
             ->select('id','total_seats')->get();
 
@@ -249,17 +249,19 @@ class CeremonyController extends Controller
                 $value->remaining_seats = 0;
             }
         }
-
-        if($seats > $value->remaining_seats){
+         if($seats > $value->remaining_seats || $seats > $de->total_seats){
             $response =	array(
                 'status'=> 0,
-                'message'=>'seats are not available.',
+                'message'=>'المقاعد غير متاحة',
+
+
             );
             return Response::json($response);
         }else{
             $response =	array(
                 'status'=> 1,
-                'message'=>'seats are available.',
+                'message'=>'المقاعد متاحة',
+
             );
             return Response::json($response);
         }
@@ -381,7 +383,7 @@ class CeremonyController extends Controller
                     }
                     $response = array(
                         'status' 	=> 1,
-                        'message'	=> "Success",
+                        'message'	=> "قائمة الفاعليات",
                         'ceremonies' => $ceremonies->all(),
                     );
                 }else{
@@ -431,7 +433,7 @@ class CeremonyController extends Controller
 
                     $response = array(
                         'status' 	=> 1,
-                        'message'	=> "Success",
+                        'message'	=> "قائمة الفاعليات",
                         'ceremonies' => $ceremonies->all(),
                     );
 
@@ -492,7 +494,7 @@ class CeremonyController extends Controller
                 }
                 $response = array(
                     'status' 	=> 1,
-                    'message'	=> "Success",
+                    'message'	=> "قائمة الفاعليات",
                     'ceremony' => $ceremony->all(),
                 );
         return ($response);

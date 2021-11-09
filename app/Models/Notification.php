@@ -64,6 +64,10 @@ class Notification extends Model
 
         return $this->belongsToMany(Ceremony::class,'event_notification','notification_id','event_id');
     }
+    public function getNotificationAttribute()
+    {
+       return trim($this->attributes['notification']);
+    }
     public function getCeremonyforAttribute()
     {
         if(isset($this->attributes['ceremonyfor']))

@@ -10,6 +10,7 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Auth;
 
 /**
  * Class Ceremony
@@ -73,7 +74,11 @@ class Ceremony extends Model
 		'ceremony_for' => 'int'
 	];
 
-	protected $appends = ['nameexdate','robeexdate','statustext','numstudents'];
+	protected $appends = ['nameexdate','robeexdate','nameexdateand','robeexdateand','statustext','numstudents','payment_type','remaining',
+    'full_name',
+'father_name',
+'grandfather_name',
+'family_name'];
 
 
 	protected $fillable = [
@@ -112,9 +117,9 @@ class Ceremony extends Model
 		'imageterm',
 		'ceremony_for'
 	];
-    public function faculty()
+    public function facultyrela()
     {
-        return $this->belongsTo(Faculty::class, 'faculty2');
+        return $this->belongsTo(Faculty::class,'faculty');
     }
     public function setrobeExDateAttribute($value) {
         $this->attributes['RobSize_Ex_Date'] = \Carbon\Carbon::parse($value)->format('Y-m-d H:i:s');
@@ -294,6 +299,7 @@ class Ceremony extends Model
             return $this->attributes[$attribute_name] = $value;
         }
     }
+
     public function getLinkStoreImageAttribute()
     {
         if($this->attributes['hide_ad_events']){
@@ -301,7 +307,7 @@ class Ceremony extends Model
         }
         if(isset($this->attributes['link_store_image']))
         {
-            return  asset('uploads/folder_1/folder_2/' . $this->attributes['link_store_image']);
+            return   $this->attributes['link_store_image'];
         }
         return  '';
     }
@@ -312,11 +318,47 @@ class Ceremony extends Model
         }
         return  $this->attributes['link_store'];
     }
+    public function getPaymentTypeAttribute()
+    {
+        $user = Auth::guard('customers_api')->user();
+        if(!$user)
+        {
+            return '';
+        }
+        $user_id = $user->id;
+        $paymentLogAmt = PaymentLog::where(
+            'user_id',$user_id)->where(
+            'event_id',$this->attributes['id'])->where('result','CAPTURED')->first();
+        return @$paymentLogAmt->payment_type ;
+    }
+    public function getRemainingAttribute()
+    {
+        $user = Auth::guard('customers_api')->user();
+        if(!$user)
+        {
+            return '';
+        }
+        $user_id = $user->id;
+        $paymentLogAmt = PaymentLog::where(
+            'user_id',$user_id)->where(
+            'event_id',$this->attributes['id'])->where('result','CAPTURED')->sum('amt');
+
+        return ($this->attributes['ceremony_price']- $paymentLogAmt >= 0 )? ($this->attributes['ceremony_price']- $paymentLogAmt  ) : 0 ;
+    }
+    public function getRobeexdateandAttribute()
+    {
+        if(!isset($this->attributes['RobSize_Ex_Date']))
+        {
+            return Carbon::parse(@$this->attributes['date'])->format('Y-m-d H:i:s');
+        }
+        return Carbon::parse(@$this->attributes['RobSize_Ex_Date'])->format('Y-m-d H:i:s');
+
+    }
     public function getRobeexdateAttribute()
     {
-        if(!$this->attributes['RobSize_Ex_Date'])
+        if(!isset($this->attributes['RobSize_Ex_Date']))
         {
-            return $this->attributes['date'];
+            return Carbon::parse(@$this->attributes['date'])->format('Y-m-d H:i:s');
         }
         return $this->attributes['RobSize_Ex_Date'];
     }
@@ -331,11 +373,19 @@ class Ceremony extends Model
 
     public function getNameexdateAttribute()
     {
-        if(!$this->attributes['Name_Ex_Date'])
+        if(!isset($this->attributes['Name_Ex_Date']))
         {
-            return $this->attributes['date'];
+             return Carbon::parse(@$this->attributes['date'])->format('Y-m-d H:i:s');
         }
         return $this->attributes['Name_Ex_Date'];
+    }
+    public function getNameexdateandAttribute()
+    {
+        if(!isset($this->attributes['Name_Ex_Date']))
+        {
+            return Carbon::parse(@$this->attributes['date'])->format('Y-m-d H:i:s');
+        }
+        return Carbon::parse(@$this->attributes['Name_Ex_Date'])->format('Y-m-d H:i:s');
 
     }
     public function setImagedesAttribute($value)
@@ -430,6 +480,9 @@ class Ceremony extends Model
     public function booking(){
         return $this->hasMany(Booking::class,'event_id');
     }
+    public function userbooking(){
+        return $this->hasMany(Booking::class,'event_id');
+    }
     public function poll(){
         return $this->hasMany(Poll::class,'eventid');
     }
@@ -445,6 +498,68 @@ class Ceremony extends Model
             return '<span class="badge badge-success">'.trans('admin.active').'</span>';
         }
         return '<span class="badge badge-danger">'.trans('admin.not_active').'</span>';
+
+    }
+    public function getFullNameAttribute()
+    {
+        if(Auth::guard('customers_api')) {
+            $user = Auth::guard('customers_api')->user();
+            if(!$user){
+                return '';
+            }
+            $user_id = $user->id;
+            $bookingdetails = Booking::where('event_id', $this->attributes['id'])->where('user_id',$user_id)
+                ->first();
+            return  isset($bookingdetails->full_name)?$bookingdetails->full_name:'';
+        }
+        return '';
+    }
+    public function getFatherNameAttribute()
+    {
+
+        if(Auth::guard('customers_api')) {
+            $user = Auth::guard('customers_api')->user();
+            if(!$user){
+                return '';
+            }
+            $user_id = $user->id;
+            $bookingdetails = Booking::where('event_id', $this->attributes['id'])->where('user_id',$user_id)
+                ->first();
+            return  isset($bookingdetails->father_name)?$bookingdetails->father_name:'';
+        }
+        return '';
+
+    }
+    public function getGrandfatherNameAttribute()
+    {
+
+        if(Auth::guard('customers_api')) {
+            $user = Auth::guard('customers_api')->user();
+            if(!$user){
+                return '';
+            }
+            $user_id = $user->id;
+            $bookingdetails = Booking::where('event_id', $this->attributes['id'])->where('user_id',$user_id)
+                ->first();
+            return  isset($bookingdetails->grandfather_name)?$bookingdetails->grandfather_name:'';
+        }
+        return '';
+
+    }
+    public function getFamilyNameAttribute()
+    {
+
+        if(Auth::guard('customers_api')) {
+            $user = Auth::guard('customers_api')->user();
+            if(!$user){
+                return '';
+            }
+            $user_id = $user->id;
+            $bookingdetails = Booking::where('event_id', $this->attributes['id'])->where('user_id',$user_id)
+                ->first();
+            return  isset($bookingdetails->family_name)?$bookingdetails->family_name:'';
+        }
+        return '';
 
     }
 }

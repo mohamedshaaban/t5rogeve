@@ -41,7 +41,7 @@ class PollController extends Controller
 						}else{
 						$response=array(
 						    'status'=>1,
-						    'message'=> 'Success',
+						    'message'=> 'تم بنجاح',
 						    'data'=> $polllist);
 
 						}
@@ -73,7 +73,7 @@ class PollController extends Controller
 					$pollOptionlist  	=  PollOption::with("poll")->where('poll_id',$pollid)->get();
 						$response = array(
 							'status' 	=> 1,
-							'message'	=> "Success",
+							'message'	=> "تم بنجاح",
 							'data' => $pollOptionlist,
 						);
 
@@ -124,7 +124,7 @@ class PollController extends Controller
 			            	
 			            	$response=array(
 			            	    'status'=>1,
-			            		'message'	=> "Success",
+			            		'message'	=> "تم التصويت بنجاح",
 			            	    'data'=>$pollanswer);
 				            return Response::json($response);
 					}else{

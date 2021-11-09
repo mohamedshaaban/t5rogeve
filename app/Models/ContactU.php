@@ -59,7 +59,7 @@ class ContactU extends Model
     }
     public function getIsreplyAttribute()
     {
-        if ($this->attributes['reply']) {
+        if (isset($this->attributes['reply'])) {
             return true;
         }
         return false;

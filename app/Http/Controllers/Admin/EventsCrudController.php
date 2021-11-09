@@ -6,6 +6,7 @@ use App\Http\Requests\EventsRequest as StoreRequest;
 // VALIDATION: change the requests to match your own file names if you need form validation
 use App\Models\Ceremony;
 use App\Models\Customer;
+use App\Models\Booking;
 use App\Models\Faculty;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -35,7 +36,7 @@ class EventsCrudController extends CrudController
 
     protected function setupListOperation()
     {
-//        $this->crud->addClause('where', 'date',' >= ',Carbon::today()->format('Y-m-d'));
+        $this->crud->addClause('where', 'date','>',Carbon::today()->format('Y-m-d'));
 
         if(backpack_user()->faculty_id!=0)
         {
@@ -91,7 +92,12 @@ class EventsCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation(StoreRequest::class);
-
+        $event = null ;
+        $totalseats= 0 ;
+        if ((request()->route('id'))) {
+            $event = Ceremony::find(request()->route('id'));
+            $totalseats = Booking::where('event_id',request()->route('id'))->sum('seats');
+        }
         CRUD::addField([ // Text
             'name'  => 'name',
             'label' => trans('admin.Event Name'),
@@ -159,6 +165,7 @@ class EventsCrudController extends CrudController
             'tab'   => 'Texts',
         ]);
 
+
         CRUD::addField([ // Text
             'name'  => 'hideDate',
             'label' => trans('admin.hide Date'),
@@ -179,6 +186,8 @@ class EventsCrudController extends CrudController
             'label' => trans('admin.Event total seats'),
             'type'  => 'number',
             'tab'   => 'Texts',
+            'attributes' => [
+            'min'   => 8],
         ]);
 
         CRUD::addField([ // Text
@@ -229,6 +238,7 @@ class EventsCrudController extends CrudController
             'label' => trans('admin.Free Seats'),
             'type'  => 'number',
             'tab'   => 'Texts',
+
         ]);
 
 
@@ -243,16 +253,17 @@ class EventsCrudController extends CrudController
 
         CRUD::addField([  // Select2
             'label'     => trans('admin.Faculty'),
-            'type'      => 'select2',
+            'type'      => 'relationship',
             'name'      => 'faculty', // the db column for the foreign key
-            'entity'    => 'faculty', // the method that defines the relationship in your Model
-            'attribute' => 'full_name', // foreign key attribute that is shown to use
+            'entity'    => 'facultyrela', // the method that defines the relationship in your Model
+//            'attribute' => 'full_name', // foreign key attribute that is shown to use
             'tab' => 'Texts',
-            'default'=>backpack_user()->faculty_id
+//            'options' => ['1' => 'جامعة الكويت', '2' => 'ثانوية عامة','3'=>'التطبيقي','4'=>'فعاليات أخرى'],
+//            'default'=>backpack_user()->faculty_id
         ]);
 
         CRUD::addField([ // Text
-            'name'  => 'hideSeats',
+            'name'  => 'hide_UsersSeatsN',
             'label' => trans('admin. Hide Seats'),
             'type'  => 'radio',
             'tab'   => 'Texts',
@@ -415,6 +426,20 @@ class EventsCrudController extends CrudController
             'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
 
         ]);
+        CRUD::addField([ // Text
+            'name'  => 'status',
+            'label' => trans('admin.Active'),
+            'type'  => 'radio',
+            'tab'   => 'Texts',
+            'options'     => [
+                // the key will be stored in the db, the value will be shown as label;
+                0 => "No",
+                1 => "Yes"
+            ],
+            'default'=>'0',
+            'inline'      => true,
+
+        ]);
         $this->crud->setOperationSetting('contentClass', 'col-md-12');
     }
 
@@ -456,6 +481,13 @@ class EventsCrudController extends CrudController
             'eveDetRegUser'=>$event->booking()->count('id')
         ]);
     }
+    public static function fetchBookingEventDetails(\Illuminate\Http\Request  $request)
+    {
+        (session(['evtId'=>$request->id]));
+
+        $event = Ceremony::find($request->id);
+        return $event;
+    }
 
     public static function fetchuser(\Illuminate\Http\Request  $request)
     {
@@ -474,6 +506,20 @@ class EventsCrudController extends CrudController
         return $data;
 
     }
+    public static function fetchphoneuser(\Illuminate\Http\Request  $request)
+    {
+        $users = Customer::where('phone','like','%'.$request->q.'%')
+
+            ->get();
+        $data = [] ;
+        foreach ($users as $user)
+        {
+            $data[] = ['id'=>$user->id , 'phone'=>$user->phone];
+        }
+
+        return $data;
+
+    }
     public function eventOptions(Request $request) {
         $term = $request->input('term');
         $options =  Ceremony::where('name','like','%'.$term.'%')
@@ -485,5 +531,21 @@ class EventsCrudController extends CrudController
 
         }
         return $data;
+    }
+    public function chckeventseats(Request $request) {
+        $term = $request->input('term');
+        $event =  Ceremony::where('id',session('evtId'))
+            ->first();
+        $totalseats = Booking::where('event_id',$request->event)->sum('no_of_seats');
+            if($totalseats + $request->seats >= $event->total_seats)
+            {
+                return 'false' ;
+            }
+            else
+            {
+                $total_amount=$event->ceremony_price + ($request->seats)*$event->price;
+                return $total_amount ;
+            }
+
     }
 }

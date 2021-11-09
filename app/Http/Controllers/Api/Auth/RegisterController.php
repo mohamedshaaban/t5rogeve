@@ -18,6 +18,7 @@ class RegisterController extends Controller
     public static function updateToken(Request $request)
     {
         $customer = Auth::guard('customers_api')->user();
+        $user_id = $customer->id;
 
         $device_info =array(
             'user_id'    	 => $customer->id,
@@ -25,6 +26,8 @@ class RegisterController extends Controller
             'device_type'    => $request->device_type,
             'device_token'   => $request->device_token,
         );
+        DeviceInfo::where('user_id',$user_id)->delete();
+
         DeviceInfo::create($device_info);
         $response	=	array(
             'status' 	=> 1,
@@ -118,16 +121,18 @@ class RegisterController extends Controller
             $otp = $userInfo->otp;
             $text = "Your OTP is ".$otp;
 
-            $status = "";
-            $query = "username=".$username."&password=".$password."&sender=".$sender."&mobile=".$to."&lang=".$lang."&message=".$text;
-            $Curl_Session = curl_init($url_address);
-            curl_setopt ($Curl_Session, CURLOPT_POST, 1);
-            curl_setopt ($Curl_Session, CURLOPT_POSTFIELDS, $query);
-            curl_setopt ($Curl_Session, CURLOPT_FOLLOWLOCATION, 1);
-            curl_setopt($Curl_Session, CURLOPT_RETURNTRANSFER,1);
-            $result=curl_exec ($Curl_Session);
 
-             curl_close ($Curl_Session);
+            $sid = "AC864a8c46538e280eea45cc3f6671131f"; // Your Account SID from www.twilio.com/console
+            $token = "a9005a751dd72d1a6aeb518f20660a5a"; // Your Auth Token from www.twilio.com/console
+
+            $client = new \Twilio\Rest\Client($sid, $token);
+            $message = $client->messages->create(
+                $to, // Text this number
+                [
+                    "messagingServiceSid" => "MG15326fbb117dfdefc5abb1b7e7e4a14d",
+                    'body' => $text
+                ]
+            );
 
              $response	=	array(
                 'status' 	=> 1,
