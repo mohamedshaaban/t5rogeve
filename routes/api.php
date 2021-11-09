@@ -121,7 +121,7 @@ Route::group(['middleware' => 'auth:customers_api'], function() {
     Route::post('/knetpay', 'PaymentController@knetpay')->name('knetpay');
 
     Route::post('/payknetremining', 'PaymentController@payknetremining')->name('payknetremining');
-    Route::post('/payknetremining2', 'PaymentController@payknetremining')->name('payknetremining');
+    Route::post('/payknetremining2', 'PaymentController@payknetremining')->name('payknetremining2');
     Route::post('/payknetremining3', 'PaymentController@payknetreminingthree')->name('payknetreminingthree');
 
     Route::post('/whoweareList','OtherController@whoweareList');
