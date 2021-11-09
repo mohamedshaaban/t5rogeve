@@ -133,6 +133,7 @@ class BookingCrudController extends CrudController
             'type' => 'relationship',
             'attribute' => 'civil_id'
         ]);
+        $this->crud->addButtonFromModelFunction('line', 'share ', 'openGoogle', 'beginning');
 
         $this->crud->enableExportButtons();
         $this->crud->enableDetailsRow();

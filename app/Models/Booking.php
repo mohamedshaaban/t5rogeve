@@ -143,5 +143,8 @@ class Booking extends Model
         }
         return 0;
     }
-
+    public function openGoogle($crud = false)
+    {
+        return  '<a class="btn btn-sm btn-link" target="_blank" href="#"  >'.trans('admin.Re calculate').'</a>';
+    }
 }
