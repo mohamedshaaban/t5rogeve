@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Events\Event;
 use App\Http\Requests\CustomersRequest as StoreRequest;
+use App\Http\Requests\UpdateCustomersRequest as UpdateRequest;
 // VALIDATION: change the requests to match your own file names if you need form validation
 use App\Models\Booking;
 use App\Models\PaymentLog;
@@ -46,10 +47,10 @@ class CustomersCrudController extends CrudController
             function($value) { // if the filter is active
                 $this->crud->addClause('where', 'id', $value);
             });
-         $this->crud->addColumn([ // Text
-            'name'  => 'all_name',
-            'label' => trans('admin.Full Name'),
-         ]);
+        //  $this->crud->addColumn([ // Text
+        //     'name'  => 'all_name',
+        //     'label' => trans('admin.Full Name'),
+        //  ]);
         $this->crud->addColumn([ // Text
             'name'  => 'phone',
             'label' => trans('admin.Phone'),
@@ -73,7 +74,6 @@ class CustomersCrudController extends CrudController
         ]);
         $this->crud->enableExportButtons();
         $this->crud->enableResponsiveTable();
-        $this->crud->enablePersistentTable();
         $this->crud->enableDetailsRow();
     }
 
@@ -143,8 +143,13 @@ class CustomersCrudController extends CrudController
     }
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(StoreRequest::class);
+        $this->addUserFields();
+        $this->crud->setValidation(StoreRequest::class);
 
+    }
+    protected function addUserFields()
+    {
+        
 
 //        CRUD::addField([ // Text
 //            'name'  => 'email',
@@ -162,16 +167,16 @@ class CustomersCrudController extends CrudController
         ]);
 
 
-        $this->crud->addField([
-            'label' => trans('admin.Image'),
-            'name' => "image",
-            'type' => 'image',
-            'tab'   => 'Texts',
-            'crop' => true, // set to true to allow cropping, false to disable
-            'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
-            // 'disk'      => 's3_bucket', // in case you need to show images from a different disk
-            // 'prefix'    => 'uploads/images/profile_pictures/' // in case your db value is only the file name (no path), you can use this to prepend your path to the image src (in HTML), before it's shown to the user;
-        ]);
+        // $this->crud->addField([
+        //     'label' => trans('admin.Image'),
+        //     'name' => "image",
+        //     'type' => 'image',
+        //     'tab'   => 'Texts',
+        //     'crop' => true, // set to true to allow cropping, false to disable
+        //     'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
+        //     // 'disk'      => 's3_bucket', // in case you need to show images from a different disk
+        //     // 'prefix'    => 'uploads/images/profile_pictures/' // in case your db value is only the file name (no path), you can use this to prepend your path to the image src (in HTML), before it's shown to the user;
+        // ]);
         $this->crud->addField([
             'label' => trans('admin.civil_id'),
             'name' => "civil_id",
@@ -229,7 +234,8 @@ class CustomersCrudController extends CrudController
     }
         protected function setupUpdateOperation()
     {
-        $this->setupCreateOperation();
+        $this->addUserFields();
+        $this->crud->setValidation(UpdateRequest::class);
     }
     public function fetchStudentDetails(Request $request)
     {

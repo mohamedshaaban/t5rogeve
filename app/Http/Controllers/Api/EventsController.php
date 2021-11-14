@@ -361,7 +361,16 @@ class EventsController extends Controller
                     $obj->session_token		=  '';
                     $obj->no_of_seats		=  $total_booking_seats;
                     $obj->payment_type		=  $payment_type;
+                    if($event->ceremony_price == $amount)
+                    {
+                    $obj->amount			= $amount;
+                    $obj->total_amount			= $amount;
+                    }
+                    else 
+                    {
                     $obj->amount			=  $event->ceremony_price+$amount;
+                    $obj->total_amount			=  $event->ceremony_price+$amount;                        
+                    }
                     $obj->remaining_amount	=  $remaining_amount;
                     $obj->robe_size			=  $robe_size;
                     $obj->ceremony_price	=  $ceremony_price;
@@ -410,6 +419,36 @@ class EventsController extends Controller
                             'amount'=>$payment_details->amt,
                             'created_at'=>$payment_details->created_at
                         );
+                                $booking = Booking::where('id',$b_id)->first();
+                                $event =  Ceremony::where('id',$booking->event_id)
+                                    ->first();
+                                    if($event)
+                                    {
+                                $totalseats = Booking::where('event_id',$booking->event_id)->sum('no_of_seats');
+                             
+                                    $total_amount=$event->ceremony_price + ($booking->no_of_seats-$event->free_seats)*$event->price;
+                        
+                                if($booking->downpayment_amount1 != $event->minimum_downpayment_amount){
+                                    $booking->downpayment_amount1 = $event->minimum_downpayment_amount;
+                                }
+                                if($booking->downpayment_amount2 != $event->downpayment_amount2){
+                                    $booking->downpayment_amount2 = $event->downpayment_amount2;
+                                }
+                                if($booking->downpayment_amount3 != $event->downpayment_amount3){
+                                    $booking->downpayment_amount3 = $event->downpayment_amount3;
+                                }
+                                if($booking->ceremony_price != $event->ceremony_price){
+                                    $booking->ceremony_price = $event->ceremony_price;
+                                }
+                                
+                                $booking->total_amount = $total_amount ;
+                                $paymentLogAmt = PaymentLog::where(
+                                    'user_id',$booking->user_id)->where(
+                                    'event_id',$booking->event_id)->where('result','CAPTURED')->sum('amt');
+                                
+                                $booking->remaining_amount=   $event->ceremony_price-$paymentLogAmt;
+                                $booking->save();
+                                }
                     }
                 }
 
@@ -585,6 +624,8 @@ class EventsController extends Controller
                     $onebooking->ceremony_price	=  $ceremony_price;
                     $onebooking->save();
                     $b_id	=	$onebooking->id;
+                    
+                    
 
 
                     ///
@@ -624,7 +665,36 @@ class EventsController extends Controller
 
                         $pay_res = $pay_obj->save();
 
-
+                            $booking = Booking::where('id',$b_id)->first();
+                            $event =  Ceremony::where('id',$booking->event_id)
+                                ->first();
+                                if($event)
+                                {
+                            $totalseats = Booking::where('event_id',$booking->event_id)->sum('no_of_seats');
+                         
+                                $total_amount=$event->ceremony_price + ($booking->no_of_seats-$event->free_seats)*$event->price;
+                    
+                            if($booking->downpayment_amount1 != $event->minimum_downpayment_amount){
+                                $booking->downpayment_amount1 = $event->minimum_downpayment_amount;
+                            }
+                            if($booking->downpayment_amount2 != $event->downpayment_amount2){
+                                $booking->downpayment_amount2 = $event->downpayment_amount2;
+                            }
+                            if($booking->downpayment_amount3 != $event->downpayment_amount3){
+                                $booking->downpayment_amount3 = $event->downpayment_amount3;
+                            }
+                            if($booking->ceremony_price != $event->ceremony_price){
+                                $booking->ceremony_price = $event->ceremony_price;
+                            }
+                            
+                            $booking->total_amount = $total_amount ;
+                            $paymentLogAmt = PaymentLog::where(
+                                'user_id',$booking->user_id)->where(
+                                'event_id',$booking->event_id)->where('result','CAPTURED')->sum('amt');
+                            
+                            $booking->remaining_amount=   $event->ceremony_price-$paymentLogAmt;
+                            $booking->save();
+                            }
                         $payment_details = PaymentLog::find($request->trans_id);
                         $response	=	array(
                             'status' 	=> 1,
@@ -1004,8 +1074,37 @@ class EventsController extends Controller
                     {
                         $results=Booking::where('id',$booking_id)->update(['no_of_seats' => $total_seats,'amount'=>$total_price,'robe_size'=>$robe_size,'full_name'=>$request->full_name,'father_name'=>$request->father_name,'grandfather_name'=>$request->grandfather_name,'family_name'=>$request->family_name]);
                     }
-
-
+                
+                        $booking = Booking::where('id',$booking_id)->first();
+                        $event =  Ceremony::where('id',$booking->event_id)
+                            ->first();
+                            if($event)
+                            {
+                        $totalseats = Booking::where('event_id',$booking->event_id)->sum('no_of_seats');
+                     
+                            $total_amount=$event->ceremony_price + ($booking->no_of_seats-$event->free_seats)*$event->price;
+                
+                        if($booking->downpayment_amount1 != $event->minimum_downpayment_amount){
+                            $booking->downpayment_amount1 = $event->minimum_downpayment_amount;
+                        }
+                        if($booking->downpayment_amount2 != $event->downpayment_amount2){
+                            $booking->downpayment_amount2 = $event->downpayment_amount2;
+                        }
+                        if($booking->downpayment_amount3 != $event->downpayment_amount3){
+                            $booking->downpayment_amount3 = $event->downpayment_amount3;
+                        }
+                        if($booking->ceremony_price != $event->ceremony_price){
+                            $booking->ceremony_price = $event->ceremony_price;
+                        }
+                        
+                        $booking->total_amount = $total_amount ;
+                        $paymentLogAmt = PaymentLog::where(
+                            'user_id',$booking->user_id)->where(
+                            'event_id',$booking->event_id)->where('result','CAPTURED')->sum('amt');
+                        
+                        $booking->remaining_amount=   $event->ceremony_price-$paymentLogAmt;
+                        $booking->save();
+                        }
                     //update remaining seats
                     $booking_seat= DB::table('booking')
                         ->select(DB::raw('SUM(no_of_seats) as no_of_seats'))

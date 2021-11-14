@@ -85,6 +85,7 @@ class EventsCrudController extends CrudController
 
 
         $this->crud->disableResponsiveTable();
+        $this->crud->addButtonFromModelFunction('line', 'share ', 'openGoogle', 'beginning');
 //        $this->crud->disablePersistentTable();
 
     }

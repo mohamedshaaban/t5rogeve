@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use  Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Infobip\Configuration;
 use Auth;
 class RegisterController extends Controller
 {
@@ -38,6 +39,7 @@ class RegisterController extends Controller
     }
     public static function customerRegister(Request $request)
     {
+       
         $validator = Validator::make(
             $request->all(),
             array(
@@ -119,21 +121,53 @@ class RegisterController extends Controller
 
             $userInfo = Customer::where('phone',$request->phone)->first();
             $otp = $userInfo->otp;
-            $text = "Your OTP is ".$otp;
+            $text = 'Your Code :'.$otp;
 
 
-            $sid = "AC864a8c46538e280eea45cc3f6671131f"; // Your Account SID from www.twilio.com/console
-            $token = "a9005a751dd72d1a6aeb518f20660a5a"; // Your Auth Token from www.twilio.com/console
-
-            $client = new \Twilio\Rest\Client($sid, $token);
-            $message = $client->messages->create(
-                $to, // Text this number
-                [
-                    "messagingServiceSid" => "MG15326fbb117dfdefc5abb1b7e7e4a14d",
-                    'body' => $text
-                ]
-            );
-
+ 
+            $service_plan_id = "34dd23f6844a47e082eaf55ea3ac8fa4";
+            $bearer_token = "128b52a28c6e42d9b9852495c6a3008d";
+            
+            //Any phone number assigned to your API
+            $send_from = "447537454598";
+            //May be several, separate with a comma ,
+            $recipient_phone_numbers = $to; 
+            $message =$text;
+            
+            // Check recipient_phone_numbers for multiple numbers and make it an array.
+            if(stristr($recipient_phone_numbers, ',')){
+              $recipient_phone_numbers = explode(',', $recipient_phone_numbers);
+            }else{
+              $recipient_phone_numbers = [$recipient_phone_numbers];
+            }
+            
+            // Set necessary fields to be JSON encoded
+            $content = [
+              'to' => array_values($recipient_phone_numbers),
+              'from' => $send_from,
+              'body' => $message
+            ];
+            
+            $data = json_encode($content);
+            
+            $ch = curl_init("https://us.sms.api.sinch.com/xms/v1/{$service_plan_id}/batches");
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+            curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BEARER);
+            curl_setopt($ch, CURLOPT_XOAUTH2_BEARER, $bearer_token);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            
+            $result = curl_exec($ch);
+            
+            if(curl_errno($ch)) {
+                // echo 'Curl error: ' . curl_error($ch);
+            } else {
+                // echo $result;
+            }
+            curl_close($ch);
+                    
              $response	=	array(
                 'status' 	=> 1,
                 'message'	=> 'تم انشاء الحساب',

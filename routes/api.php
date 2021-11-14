@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
 |
-*/
+
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
@@ -27,6 +27,7 @@ Route::post('userRegister', 'Auth\RegisterController@customerRegister');
 Route::post('verifyOtp', 'Auth\RegisterController@customerVerifiy');
 Route::post('userLogin', 'Auth\RegisterController@customerLogin');
 Route::get('sliders', 'Sliders\SlidersController@index');
+Route::any('/facultyList','OtherController@facultyList');
 Route::get('settings', 'Sliders\SlidersController@settings');
 
 Route::post('forgetPasswordOtpVerify','Auth\AuthController@forgetPasswordOtpVerify');
@@ -36,7 +37,7 @@ Route::post('userResetPassword','Auth\AuthController@userResetPassword');
 
 Route::post('userUpdatePassword','Auth\AuthController@userUpdatePassword');
 Route::post('userUpdateProfile','Auth\AuthController@userUpdateProfile');
-Route::post('/facultyList','OtherController@facultyList');
+
 Route::post('/addcontactus','OtherController@Addcontactus');
 Route::post('/TermsCondition','OtherController@TermsCondition');
 
@@ -133,4 +134,4 @@ Route::group(['middleware' => 'auth:customers_api'], function() {
 
 
 
-});
+});*/

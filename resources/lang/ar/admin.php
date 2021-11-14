@@ -12,7 +12,7 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-
+'Paid Amount'=>'المبلغ المدفوع',
     'Faculty name'   => 'اسم الجهة',
     'Faculty'   => ' الجهة',
     'Price'=>'السعر',

@@ -38,8 +38,7 @@ class WhoweareCrudController extends CrudController
             'label' => trans('admin.Image')]);
         $this->crud->enableExportButtons();
         $this->crud->enableResponsiveTable();
-        $this->crud->enablePersistentTable();
-    }
+     }
 
     protected function setupCreateOperation()
     {

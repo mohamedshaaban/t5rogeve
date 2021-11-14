@@ -204,7 +204,6 @@ class HomeController extends Controller
 
 
         $user_id=Auth::guard('customers_api')->user()->id;
-        dd($user_id);
                 $booking = Booking::with('ceremony' , 'ceremonyWithDescription','payments')
                     ->where('user_id',$user_id)->orderBy('id','desc')->paginate(15);
                  //	return Response::json($booking);

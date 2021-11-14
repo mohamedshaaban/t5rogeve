@@ -48,8 +48,7 @@ class PollsCrudController extends CrudController
         }
         $this->crud->enableExportButtons();
         $this->crud->enableResponsiveTable();
-        $this->crud->enablePersistentTable();
-        $this->crud->enableDetailsRow();
+         $this->crud->enableDetailsRow();
     }
 
     protected function showDetailsRow($id)

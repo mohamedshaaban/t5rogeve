@@ -29,6 +29,7 @@ class BookingCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\BulkDeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\BulkCloneOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\InlineCreateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation { destroy as traitDestroy; }
     public function setup()
     {
         App::setLocale(session('locale'));
@@ -39,11 +40,12 @@ class BookingCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        if (backpack_user()->faculty_id != 0) {
+         if (backpack_user()->faculty_id != 0) {
             $eventIds = Ceremony::where('faculty', backpack_user()->faculty_id)->pluck('id')->toArray();
            $this->crud->addClause('whereIn', 'event_id', $eventIds);
         }
-//        $this->crud->addClause('orderBy', 'amount','DESC');
+        $this->crud->addClause('orderBy', 'id','DESC');
+$this->crud->addClause('whereHas', 'ceremony');
         $this->crud->addFilter([
             'name' => 'user_id',
             'type' => 'select2_ajax',
@@ -64,6 +66,11 @@ class BookingCrudController extends CrudController
             function ($value) { // if the filter is active
                 $this->crud->addClause('where', 'event_id', $value);
             });
+            $this->crud->addColumn([ // Text
+            'name' => 'id',
+            'orderable' => false,
+            'label' => trans('admin.Id'),
+        ]);
        $this->crud->addColumn([ // Text
             'name' => 'created_at',
             'orderable' => false,
@@ -77,8 +84,11 @@ class BookingCrudController extends CrudController
         ]);
       $this->crud->addColumn([ // Text
             'name' => 'all_name',
-            'orderable' => false,
-            'label' => trans('admin.Student name'),
+             'label' => trans('admin.Student name'),
+            'orderable' => true,
+            'orderLogic' => function ($query, $column, $columnDirection) {
+                return $query->orderBy('full_name', $columnDirection);
+            }
         ]);
         $this->crud->addColumn([ // Text
             'name' => 'no_of_seats',
@@ -91,27 +101,31 @@ class BookingCrudController extends CrudController
 
         $this->crud->addColumn([ // Text
             'name' => 'payment_type',
+             'label' => trans('admin.Payment Type'),
+            'orderable' => true,
+        ]);
+
+        $this->crud->addColumn([ // Text
+            'name' => 'total_amount',
+            'label' => trans('admin.Event Price'),
+            'orderable' => true,
+            'orderLogic' => function ($query, $column, $columnDirection) {
+                return $query->orderBy('booking.total_amount', $columnDirection);
+            }
+        ]);
+
+        $this->crud->addColumn([ // Text
+            'name' => 'amount',
+            'label' => trans('admin.Paid Amount'),
             'orderable' => false,
-            'label' => trans('admin.Payment Type'),
+            
         ]);
 
         $this->crud->addColumn([ // Text
-            'name' => 'adminamount',
-            'label' => trans('admin.Amount'),
-            'orderable' => true,
-            'orderLogic' => function ($query, $column, $columnDirection) {
-                return $query->orderBy('booking.amount', $columnDirection);
-            }
-        ]);
-
-
-        $this->crud->addColumn([ // Text
-            'name' => 'adminremainingamount',
+            'name' => 'remaining_amount',
             'label' => trans('admin.Remaining Amount'),
-            'orderable' => true,
-            'orderLogic' => function ($query, $column, $columnDirection) {
-                return $query->orderBy('booking.remaining_amount', $columnDirection);
-            }
+            'orderable' => false,
+            
         ]);
 
         $this->crud->addColumn([ // Text
@@ -134,14 +148,13 @@ class BookingCrudController extends CrudController
             'type' => 'relationship',
             'attribute' => 'civil_id'
         ]);
-        $this->crud->addButtonFromModelFunction('line', 'share ', 'openGoogle', 'beginning');
-
+        // $this->crud->addButtonFromModelFunction('line', 'share ', 'openGoogle', 'beginning');
+        $this->crud->setDefaultPageLength(400);
         $this->crud->enableExportButtons();
         $this->crud->enableDetailsRow();
         $this->crud->disableBulkActions();
         $this->crud->enableResponsiveTable();
-        $this->crud->enablePersistentTable();
-    }
+     }
 
     protected function showDetailsRow($id)
     {
@@ -202,13 +215,15 @@ class BookingCrudController extends CrudController
             $booking = Booking::find(request()->route('id'));
             $seats = $booking->no_of_seats;
             $freeseats = $booking->freeseats;
+            // dd($freeseats);
             $eventPrice = $booking->ceremony_price;
 
             $event = Ceremony::where('id', $booking->event_id)->first();
-
+            (session(['evtId'=>$event->id]));
             if ($event) {
                 if ($freeseats == 0) {
                     $freeseats = $event->free_seats;
+                    
                     $seats = $booking->no_of_seats - $freeseats;
                 }
 
@@ -292,7 +307,7 @@ class BookingCrudController extends CrudController
             'label' => trans('admin.Free Seats'),
             'type' => 'number',
             'tab' => 'Texts',
-            'default' => $freeseats,
+            'value' => $freeseats,
             'attributes' => [
                 'class' => 'form-control freeseats-class'],
         ]);
@@ -342,11 +357,11 @@ class BookingCrudController extends CrudController
                 ]]
         );
         $this->crud->addField([ // Text
-            'name' => 'amount',
+            'name' => 'downpayment_amount1',
             'label' => trans('admin. Minimum DownPayment Amount'),
             'type' => 'number',
             'tab' => 'Texts',
-            'value' => isset($booking) ? $booking->adminamount : 0,
+            'value' => isset($booking) ? $booking->downpayment_amount1 : 0,
             'attributes' => [
                 'class' => 'form-control downpayment-class'],
             "visibility" => [
@@ -409,6 +424,9 @@ class BookingCrudController extends CrudController
        $invoice = Booking::find($this->crud->entry->id);
         $total = 0;
         $event = Ceremony::find($invoice->event_id);
+        $invoice->no_of_seats= $invoice->no_of_seats + $event->free_seats;
+        $invoice->freeseats=0;
+        $invoice->save();
         //|||||||||| payment type == full ||||||||||
         //||||||||||||||||||||||||||||||||||||||||||
         $freeseats = $invoice->freeseats;
@@ -450,6 +468,8 @@ class BookingCrudController extends CrudController
         } else {
             $payValue = $price;
         }
+        $userid = $invoice->user_id;
+        $eventid = $invoice->event_id;
        $payment_arr = [
             'user_id' => $invoice->user_id,
             'ceremony_id' => $invoice->event_id,
@@ -470,17 +490,128 @@ class BookingCrudController extends CrudController
         $totalseat_hwe = $val->remaining_seats;
         $remainseat = $totalseat_hwe - $totalseat;
         Ceremony::where('id', $invoice->event_id)->update(['remaining_seats' => $remainseat]);
+        $invoice = Booking::find($this->crud->entry->id);
+        $BookingId = $invoice->id;
+         $payment_type = $invoice->payment_type;
+                //|||||||||| payment type == full ||||||||||
+        //||||||||||||||||||||||||||||||||||||||||||
+        if ($payment_type == 'full') // && $no_of_seats<$input_seats
+        {
+            // $remaining_seat = $input_seats - $no_of_seats;
+            $diff_seats = 0;
+            $new_total_seats = 0;
+            // check if there is avalibale seats
+            // if ($input_seats > $no_of_seats) {
+            //     if (!$this->checkSeatAvailabilityForEvent($eventid, $input_seats)) {
+            //         return $response;
+            //     }
+            // }
+            $price = $invoice->total_amount;
+            // Booking::where('id', $invoice->id)
+            //     ->update(
+            //         array(
+            //             // 'user_id'		=> $request->user_name'),
+            //             // 'event_id' => $invoice->event_name,
+            //             'no_of_seats' => $totalseat,
+            //             'amount' => $full_amount,
+            //             'robe_size' => $robesize,
+            //             'remaining_amount' => 0,
+            //             'payment_type' => 'full'
+            //         ));
+            //update ceremony field
+            $val = Ceremony::where('id', $eventid)
+                ->first();
+            $totalremainseat = $val->remaining_seats;
+            // $remainseat = $totalremainseat - $remaining_seat;
+            Ceremony::where('id', $eventid)->update(['remaining_seats' => $remainseat]);
+            (PaymentLog::create(['amt' => $invoice->total_amount,'result'=>'CAPTURED', 'event_id' => $invoice->event_id,'user_id' => $userid , 'event_id' => $eventid]));
+
+
+            
+        }
+        //|||||||||| payment type == down ||||||||||
+        //||||||||||||||||||||||||||||||||||||||||||
+        if ($payment_type == 'down') //  && $no_of_seats==$input_seats
+        {
+            $price += $invoice->downpayment_amount1;
+            // Booking::where('id', $BookingId)
+            //     ->update(
+            //         array(
+            //             // 'event_id' 		=> $request->event_name'),
+            //             // 'user_id'		=> $request->user_name'),
+            //             // 'event_id' => $invoice->event_name,
+            //             'no_of_seats' => $freeSeats,
+            //             'amount' => $price,
+            //             'robe_size' => $robesize,
+            //             'remaining_amount' => $remaining_amount,
+            //             'payment_type' => 'down'
+            //         ));
+            (PaymentLog::create(['amt' => $invoice->downpayment_amount1,'result'=>'CAPTURED', 'event_id' => $invoice->event_id,'user_id' => $userid , 'event_id' => $eventid]));
+            Payment::where('booking_id', $BookingId)->update(['price' => $price, 'payment_method' => 'down']);
+            
+        }
+        //|||||||||| payment type == down2 ||||||||||
+        //||||||||||||||||||||||||||||||||||||||||||
+        if ($payment_type == 'down2') //  && $no_of_seats==$input_seats
+        {
+            $price += $invoice->downpayment_amount2;
+            // Booking::where('id', $BookingId)
+            //     ->update(
+            //         array(
+            //             // 'event_id' => $invoice->event_id,
+            //             'no_of_seats' => $freeSeats,
+            //             'amount' => $invoice->amount + $invoice->downpayment_amount2,
+            //             'robe_size' => $robesize,
+            //             'remaining_amount' => $ceremony_price - $invoice->amount - $invoice->downpayment_amount2,
+            //             'payment_type' => 'down'
+            //         ));
+                    (PaymentLog::create(['amt' => $invoice->downpayment_amount2,'result'=>'CAPTURED', 'event_id' => $invoice->event_id,'user_id' => $userid , 'event_id' => $eventid]));
+            Payment::where('booking_id', $BookingId)->update(['price' => $invoice->amount + $invoice->downpayment_amount2, 'payment_method' => 'down2']);
+        }
+         if ($payment_type == 'down3') //  && $no_of_seats==$input_seats
+        {
+            $price += $invoice->downpayment_amount3;
+            // Booking::where('id', $BookingId)
+            //     ->update(
+            //         array(
+            //             // 'event_id' => $invoice->event_id,
+            //             'no_of_seats' => $freeSeats,
+            //             'amount' => $invoice->amount + $invoice->downpayment_amount3,
+            //             'robe_size' => $robesize,
+            //             'remaining_amount' => $ceremony_price - $invoice->amount - $invoice->downpayment_amount3,
+            //             'payment_type' => 'down'
+            //         ));
+                    (PaymentLog::create(['amt' => $invoice->downpayment_amount3,'result'=>'CAPTURED', 'event_id' => $invoice->event_id,'user_id' => $userid , 'event_id' => $eventid]));
+            Payment::where('booking_id', $BookingId)->update(['price' => $invoice->amount + $invoice->downpayment_amount2, 'payment_method' => 'down3']);
+        }
         return $response;
     }
     public function update()
     {
+        $id = (request()->route('id'));
+         $oldBook = Booking::find($id);
+        //  dd(($this->crud->getRequest()->event_id));
+         if(!$this->crud->getRequest()->event_id)
+         {
+             $this->crud->getRequest()->event_id = $oldBook->event_id;
+         }
+        
         $this->crud->setRequest($this->crud->validateRequest());
-        $this->crud->unsetValidation(); // validation has already been run
+        // $this->crud->unsetValidation(); // validation has already been run
        $response = $this->traitUpdate();
+    //   dd($response);
         $invoice = Booking::find($this->crud->entry->id);
+            if(!$invoice->event_id )
+        {
+            $invoice->event_id =$oldBook->event_id ;
+        }
         $event = Ceremony::find($invoice->event_id);
         $BookingId = $this->crud->entry->id;
         $input_seats = $invoice->seats;
+        $invoice->no_of_seats= $invoice->no_of_seats + $event->free_seats;
+ 
+        $invoice->freeseats=0;
+        $invoice->save();
         $price = $invoice->amount;
         $booking = Booking::with('ceremony')->find($BookingId);
         $eventid = $booking->event_id;
@@ -505,16 +636,17 @@ class BookingCrudController extends CrudController
             $diff_seats = 0;
             $new_total_seats = 0;
             // check if there is avalibale seats
-            if ($input_seats > $no_of_seats) {
-                if (!$this->checkSeatAvailabilityForEvent($eventid, $input_seats)) {
-                    return $response;
-                }
-            }
+            // if ($input_seats > $no_of_seats) {
+            //     if (!$this->checkSeatAvailabilityForEvent($eventid, $input_seats)) {
+            //         return $response;
+            //     }
+            // }
+            $price = $invoice->total_amount;
             Booking::where('id', $invoice->id)
                 ->update(
                     array(
                         // 'user_id'		=> $request->user_name'),
-                        'event_id' => $invoice->event_name,
+                        // 'event_id' => $invoice->event_name,
                         'no_of_seats' => $totalseat,
                         'amount' => $full_amount,
                         'robe_size' => $robesize,
@@ -527,44 +659,99 @@ class BookingCrudController extends CrudController
             $totalremainseat = $val->remaining_seats;
             $remainseat = $totalremainseat - $remaining_seat;
             Ceremony::where('id', $eventid)->update(['remaining_seats' => $remainseat]);
+            (PaymentLog::create(['amt' => $invoice->total_amount,'result'=>'CAPTURED', 'event_id' => $invoice->event_id,'user_id' => $userid , 'event_id' => $eventid]));
+
+            
         }
         //|||||||||| payment type == down ||||||||||
         //||||||||||||||||||||||||||||||||||||||||||
         if ($payment_type == 'down') //  && $no_of_seats==$input_seats
         {
+            $price += $invoice->downpayment_amount1;
             Booking::where('id', $BookingId)
                 ->update(
                     array(
                         // 'event_id' 		=> $request->event_name'),
                         // 'user_id'		=> $request->user_name'),
-                        'event_id' => $invoice->event_name,
+                        // 'event_id' => $invoice->event_name,
                         'no_of_seats' => $freeSeats,
                         'amount' => $price,
                         'robe_size' => $robesize,
                         'remaining_amount' => $remaining_amount,
                         'payment_type' => 'down'
                     ));
+            (PaymentLog::create(['amt' => $invoice->downpayment_amount1,'result'=>'CAPTURED', 'event_id' => $invoice->event_id,'user_id' => $userid , 'event_id' => $eventid]));
             Payment::where('booking_id', $BookingId)->update(['price' => $price, 'payment_method' => 'down']);
-            PaymentLog::where('user_id', '=', $userid)
-                ->where('event_id', '=', $eventid)
-                ->update(['amt' => $price, 'event_id' => $invoice->event_id]);
+            
         }
         //|||||||||| payment type == down2 ||||||||||
         //||||||||||||||||||||||||||||||||||||||||||
         if ($payment_type == 'down2') //  && $no_of_seats==$input_seats
         {
+            $price += $invoice->downpayment_amount2;
             Booking::where('id', $BookingId)
                 ->update(
                     array(
-                        'event_id' => $invoice->event_id,
+                        // 'event_id' => $invoice->event_id,
                         'no_of_seats' => $freeSeats,
                         'amount' => $invoice->amount + $invoice->downpayment_amount2,
                         'robe_size' => $robesize,
                         'remaining_amount' => $ceremony_price - $invoice->amount - $invoice->downpayment_amount2,
                         'payment_type' => 'down'
                     ));
+                    (PaymentLog::create(['amt' => $invoice->downpayment_amount2,'result'=>'CAPTURED', 'event_id' => $invoice->event_id,'user_id' => $userid , 'event_id' => $eventid]));
             Payment::where('booking_id', $BookingId)->update(['price' => $invoice->amount + $invoice->downpayment_amount2, 'payment_method' => 'down2']);
         }
+         if ($payment_type == 'down3') //  && $no_of_seats==$input_seats
+        {
+            $price += $invoice->downpayment_amount3;
+            Booking::where('id', $BookingId)
+                ->update(
+                    array(
+                        // 'event_id' => $invoice->event_id,
+                        'no_of_seats' => $freeSeats,
+                        'amount' => $invoice->amount + $invoice->downpayment_amount3,
+                        'robe_size' => $robesize,
+                        'remaining_amount' => $ceremony_price - $invoice->amount - $invoice->downpayment_amount3,
+                        'payment_type' => 'down'
+                    ));
+                    (PaymentLog::create(['amt' => $invoice->downpayment_amount3,'result'=>'CAPTURED', 'event_id' => $invoice->event_id,'user_id' => $userid , 'event_id' => $eventid]));
+            Payment::where('booking_id', $BookingId)->update(['price' => $invoice->amount + $invoice->downpayment_amount2, 'payment_method' => 'down3']);
+        }
+        
+        
+        
+         $booking = Booking::where('id',$invoice->id)->first();
+        $event =  Ceremony::where('id',$booking->event_id)
+            ->first();
+            if($event)
+            {
+        $totalseats = Booking::where('event_id',$booking->event_id)->sum('no_of_seats');
+     
+            $total_amount=$event->ceremony_price + ($booking->no_of_seats-$event->free_seats)*$event->price;
+
+        if($booking->downpayment_amount1 != $event->minimum_downpayment_amount){
+            $booking->downpayment_amount1 = $event->minimum_downpayment_amount;
+        }
+        if($booking->downpayment_amount2 != $event->downpayment_amount2){
+            $booking->downpayment_amount2 = $event->downpayment_amount2;
+        }
+        if($booking->downpayment_amount3 != $event->downpayment_amount3){
+            $booking->downpayment_amount3 = $event->downpayment_amount3;
+        }
+        if($booking->ceremony_price != $event->ceremony_price){
+            $booking->ceremony_price = $event->ceremony_price;
+        }
+        
+        $booking->total_amount = $total_amount ;
+        $paymentLogAmt = PaymentLog::where(
+            'user_id',$booking->user_id)->where(
+            'event_id',$booking->event_id)->where('result','CAPTURED')->sum('amt');
+        
+        $booking->remaining_amount=   $event->ceremony_price-$paymentLogAmt;
+        $booking->save();
+        }
+        
         return $response;
     }
     public function checkSeatAvailabilityForEvent($eventid, $seats)
@@ -589,21 +776,20 @@ class BookingCrudController extends CrudController
     }
     public function recalcBooking(Request $request)
     {
+        // $bookings = Booking::all();
+        // foreach($bookings as $innerbook)
+        // {
         $booking = Booking::where('id',$request->id)->first();
         $event =  Ceremony::where('id',$booking->event_id)
             ->first();
+            if($event)
+            {
         $totalseats = Booking::where('event_id',$booking->event_id)->sum('no_of_seats');
-        if($totalseats + $booking->seats >= $event->total_seats)
-        {
-            return 'false' ;
-        }
-        else
-        {
-            $total_amount=$event->ceremony_price + ($booking->seats)*$event->price;
-            return $total_amount ;
-        }
-        if($booking->amount != $event->minimum_downpayment_amount){
-            $booking->amount = $event->minimum_downpayment_amount;
+     
+            $total_amount=$event->ceremony_price + ($booking->no_of_seats-$event->free_seats)*$event->price;
+
+        if($booking->downpayment_amount1 != $event->minimum_downpayment_amount){
+            $booking->downpayment_amount1 = $event->minimum_downpayment_amount;
         }
         if($booking->downpayment_amount2 != $event->downpayment_amount2){
             $booking->downpayment_amount2 = $event->downpayment_amount2;
@@ -615,6 +801,26 @@ class BookingCrudController extends CrudController
             $booking->ceremony_price = $event->ceremony_price;
         }
         $booking->total_amount = $total_amount ;
+        
+        $paymentLogAmt = PaymentLog::where(
+            'user_id',$booking->user_id)->where(
+            'event_id',$booking->event_id)->where('result','CAPTURED')->sum('amt');
+        
+        $booking->remaining_amount=   $event->ceremony_price-$paymentLogAmt;
         $booking->save();
+        // }
+        }
+        // return  $booking->total_amount  ;
+        
+    }
+    public function destroy($id)
+    {
+        $this->crud->hasAccessOrFail('delete');
+        $booking = Booking::where('id',$id)->first();
+         PaymentLog::where(
+            'user_id',$booking->user_id)->where(
+            'event_id',$booking->event_id)->delete();
+    
+        return $this->crud->delete($id);
     }
 }

@@ -64,6 +64,7 @@ class Booking extends Model
         'freeseats',
         'amount',
         'ceremony_price',
+        'downpayment_amount1',
         'downpayment_amount2',
         'downpayment_amount3',
         'robe_size',
@@ -112,9 +113,9 @@ class Booking extends Model
     }
     public function getAdminAmountAttribute()
     {
-        if(isset($this->attributes['amount']))
+        if(isset($this->attributes['total_amount']))
         {
-            return $this->attributes['amount'];
+            return $this->attributes['total_amount'];
         }
         return 0 ;
     }

@@ -106,7 +106,6 @@ class ContactCrudController extends CrudController
 
         $this->crud->disableResponsiveTable();
 
-        $this->crud->enablePersistentTable();
     }
 
     protected function setupCreateOperation()

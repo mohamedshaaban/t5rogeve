@@ -562,4 +562,8 @@ class Ceremony extends Model
         return '';
 
     }
+        public function openGoogle($crud = false)
+    {
+        return  '<a class="btn btn-sm btn-link"  href="http://booking.acakw.com/admin/booking?event_id='.$this->id.'&event_id_text='.$this->name.'"  >'.trans('admin.Bookings').'</a>';
+    }
 }

@@ -237,7 +237,7 @@ class PaymentController extends Controller
 				$param=$this->encryptAES($param,$termResourceKey)."&tranportalId=".$TranportalId."&errorURL=".$ErrorUrl;
 				
 			    $ch = curl_init();                    // Initiate cURL
-			    $url = "https://kpaytest.com.kw/kpg/PaymentHTTP.htm?param=paymentInit"; // Where you want to post data
+			    $url = "https://kpay.com.kw/kpg/PaymentHTTP.htm?param=paymentInit"; // Where you want to post data
 			    curl_setopt($ch, CURLOPT_URL,$url);
 			    curl_setopt($ch, CURLOPT_POST, true);  // Tell cURL you want to post something
 			    curl_setopt($ch, CURLOPT_POSTFIELDS, "trandata=".$param); // Define what you want to post
@@ -452,7 +452,7 @@ else if($request->payment_type == 'down3'||$request->payment_type == 'Down3'){
 
              $termResourceKey=config('app.KENT_RESOURCE_KEY');
              $param=$this->encryptAES($param,$termResourceKey)."&tranportalId=".$TranportalId."&responseURL=".$ResponseUrl."&errorURL=".$ErrorUrl;
-             $param = "https://kpaytest.com.kw/kpg/PaymentHTTP.htm?param=paymentInit"."&trandata=".$param;
+             $param = "https://kpay.com.kw/kpg/PaymentHTTP.htm?param=paymentInit"."&trandata=".$param;
 
  $response =array(
 				'status'=> 1,
@@ -639,7 +639,7 @@ $payment->actionUrl(); // redirect user to pay with url generated
                 $param=$ReqTranportalId."&".$ReqTranportalPassword."&".$ReqAction."&".$ReqLangid."&".$ReqCurrency."&".$ReqAmount."&".$ReqResponseUrl."&".$ReqErrorUrl."&".$ReqTrackId."&".$ReqUdf1."&".$ReqUdf2."&".$ReqUdf3."&".$ReqUdf4."&".$ReqUdf5;
                 $termResourceKey=config('app.KENT_RESOURCE_KEY');
                 $param=$this->encryptAES($param,$termResourceKey)."&tranportalId=".$TranportalId."&responseURL=".$ResponseUrl."&errorURL=".$ErrorUrl;
-                $param = "https://kpaytest.com.kw/kpg/PaymentHTTP.htm?param=paymentInit"."&trandata=".$param;
+                $param = "https://kpay.com.kw/kpg/PaymentHTTP.htm?param=paymentInit"."&trandata=".$param;
 
                 $response =array(
                     'status'=> 1,
@@ -679,7 +679,7 @@ $payment->actionUrl(); // redirect user to pay with url generated
                 $param=$ReqTranportalId."&".$ReqTranportalPassword."&".$ReqAction."&".$ReqLangid."&".$ReqCurrency."&".$ReqAmount."&".$ReqResponseUrl."&".$ReqErrorUrl."&".$ReqTrackId."&".$ReqUdf1."&".$ReqUdf2."&".$ReqUdf3."&".$ReqUdf4."&".$ReqUdf5;
                 $termResourceKey=config('app.KENT_RESOURCE_KEY');
                 $param=$this->encryptAES($param,$termResourceKey)."&tranportalId=".$TranportalId."&responseURL=".$ResponseUrl."&errorURL=".$ErrorUrl;
-                $param = "https://kpaytest.com.kw/kpg/PaymentHTTP.htm?param=paymentInit"."&trandata=".$param;
+                $param = "https://kpay.com.kw/kpg/PaymentHTTP.htm?param=paymentInit"."&trandata=".$param;
 
                 $response =array(
                     'status'=> 1,

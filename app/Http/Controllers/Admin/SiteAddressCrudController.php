@@ -34,7 +34,6 @@ class SiteAddressCrudController extends CrudController
         $this->crud->addColumn(['name'=>'content','label'=>trans('admin.content')]);
         $this->crud->enableExportButtons();
         $this->crud->enableResponsiveTable();
-        $this->crud->enablePersistentTable();
 
     }
 

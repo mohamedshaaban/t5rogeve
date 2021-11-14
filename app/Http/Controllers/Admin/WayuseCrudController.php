@@ -38,8 +38,7 @@ class WayuseCrudController extends CrudController
 
         $this->crud->enableExportButtons();
         $this->crud->enableResponsiveTable();
-        $this->crud->enablePersistentTable();
-    }
+     }
 
     protected function setupCreateOperation()
     {

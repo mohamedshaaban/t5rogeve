@@ -12,7 +12,7 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-
+'Paid Amount'=>' Paid Amount',
     'Faculty name'   => 'Faculty name',
     'Faculty'   => 'Faculty',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',

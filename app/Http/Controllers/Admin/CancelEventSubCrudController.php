@@ -46,7 +46,6 @@ class CancelEventSubCrudController extends CrudController
             'label' => trans('admin.Canceled')]);
         $this->crud->enableExportButtons();
         $this->crud->enableResponsiveTable();
-        $this->crud->enablePersistentTable();
     }
 
     protected function setupCreateOperation()
