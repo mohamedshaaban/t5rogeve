@@ -1,0 +1,1 @@
+</<?php echo e($widget['wrapper']['element'] ?? 'div'); ?>><?php /**PATH /home/acakw/public_html/booking/vendor/backpack/crud/src/resources/views/base/widgets/inc/wrapper_end.blade.php ENDPATH**/ ?>

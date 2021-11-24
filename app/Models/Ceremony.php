@@ -59,6 +59,7 @@ class Ceremony extends Model
 		'total_seats' => 'int',
 		'hide_seats' => 'int',
 		'hide_additional_seats' => 'int',
+		'hide_ad_events' => 'int',
 		'hide_UsersSeatsN' => 'int',
 		'number_of_students' => 'int',
 		'remaining_seats' => 'int',
@@ -77,7 +78,7 @@ class Ceremony extends Model
 	protected $appends = ['nameexdate','robeexdate','nameexdateand','robeexdateand','statustext','numstudents','payment_type','remaining',
     'full_name',
 'father_name',
-'grandfather_name',
+'grandfather_name','admindate',
 'family_name'];
 
 
@@ -101,6 +102,7 @@ class Ceremony extends Model
 		'image',
 		'imagemain',
 		'imagedes',
+		'imageterm2',
 		'status',
 		'faculty',
 		'hashtag',
@@ -263,26 +265,15 @@ class Ceremony extends Model
         $attribute_name = "imageterm2";
         // or use your own disk, defined in config/filesystems.php
         $disk = config('backpack.base.root_disk_name');
-        // destination path relative to the disk above
         $destination_path = "/public/uploads/folder_1/folder_2";
-
-        // if the image was erased
         if ($value == null) {
-            // delete the image from disk
             \Storage::disk($disk)->delete($this->{$attribute_name});
-
-            // set null in the database column
             $this->attributes[$attribute_name] = null;
         }
-
-        // if a base64 was sent, store it in the db
         if (Str::startsWith($value, 'data:image')) {
             // 0. Make the image
-            $image = \Image::make($value)->encode('jpg', 90);
-
-            // 1. Generate a filename.
-            $filename = md5($value . time()) . '.jpg';
-
+            $image = \Image::make($value)->encode('jpeg', 90);
+            $filename = md5($value . time()) . '.jpeg';
             // 2. Store the image on disk.
             \Storage::disk($disk)->put($destination_path . '/' . $filename, $image->stream());
 
@@ -364,11 +355,20 @@ class Ceremony extends Model
     }
     public function getDateAttribute()
     {
-        if(!$this->attributes['hideDate'])
+        if(!isset($this->hideDate))
         {
             return $this->attributes['date'];
         }
         return '';
+    }
+    public function getAdminDateAttribute()
+    {
+        // dd($this->attributes['date']);
+                if(isset($this->attributes['date']))
+                {
+                    return $this->attributes['date'];
+                }
+            return '';
     }
 
     public function getNameexdateAttribute()
@@ -545,6 +545,19 @@ class Ceremony extends Model
         }
         return '';
 
+    }
+        
+    public function getHideAdEventsAttribute()
+    {
+        
+                return (int)$this->attributes['hide_ad_events'] ;
+    }
+
+    public function getRemainingSeatsAttribute()
+    {
+        $bookingseats = Booking::where('event_id', $this->attributes['id'])
+                ->sum('no_of_seats');
+                return $this->attributes['total_seats'] - $bookingseats;
     }
     public function getFamilyNameAttribute()
     {

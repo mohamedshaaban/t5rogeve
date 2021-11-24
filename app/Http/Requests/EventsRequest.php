@@ -32,6 +32,7 @@ class EventsRequest extends \Backpack\CRUD\app\Http\Requests\CrudRequest
             'latitude'        => 'required',
             'longitude'        => 'required',
             'ceremony_for'        => 'required',
+            'date'        => 'required',
 //            'faculty'        => 'required',
 
 

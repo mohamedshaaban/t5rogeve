@@ -68,7 +68,7 @@ class EventsCrudController extends CrudController
             });
 
         $this->crud->addColumn(['name'=>'name','label'=>trans('admin.Name')]);
-        $this->crud->addColumn(['name'=>'date','label'=>trans('admin.date')]);
+        $this->crud->addColumn(['name'=>'admindate','label'=>trans('admin.date')]);
         $this->crud->addColumn(['name'=>'total_seats','label'=>trans('admin.total_seats')]);
         $this->crud->addColumn(['name'=>'ceremony_price','label'=>trans('admin.ceremony_price')]);
 
@@ -94,10 +94,12 @@ class EventsCrudController extends CrudController
     {
         CRUD::setValidation(StoreRequest::class);
         $event = null ;
+        $eventdate = null ;
         $totalseats= 0 ;
         if ((request()->route('id'))) {
             $event = Ceremony::find(request()->route('id'));
             $totalseats = Booking::where('event_id',request()->route('id'))->sum('seats');
+            $eventdate = $event->admindate;
         }
         CRUD::addField([ // Text
             'name'  => 'name',
@@ -162,8 +164,9 @@ class EventsCrudController extends CrudController
             'name'  => 'date',
             'label' => trans('admin.Event date'),
             'type'  => 'date',
-            'format'   => 'Y-m-d',
+            // 'format'   => 'Y-m-d',
             'tab'   => 'Texts',
+            'value'=>$eventdate
         ]);
 
 

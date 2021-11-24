@@ -491,10 +491,10 @@ class CeremonyBookingController extends Controller
             $booking = Booking::select('*')->where('id',$bookingid)->first();
 
 
-            if(!empty($booking->remaining_amount)){
+            // if(!empty($booking->remaining_amount)){
 
-                $payment_details=DB::table('payment_log')->select('*')->where('tranid',$trans_id)->first();
-
+                $payment_details=DB::table('payment_log')->select('*')->where('id',$trans_id)->first();
+// dd($payment_details);
                 if(!$payment_details || $payment_details->result!='CAPTURED')
                 {
                     $response	=	array(
@@ -511,7 +511,7 @@ class CeremonyBookingController extends Controller
                     $amount=$booking->amount;
                     $remaining_amount=$booking->remaining_amount;
                     $total_amount=$amount+$remaining_amount;
-                    Booking::where('id',$bookingid)->update(['amount' => $total_amount,'remaining_amount' =>'0','payment_type'=>'Full']);
+                    Booking::where('id',$bookingid)->update(['amount' => $total_amount,'remaining_amount' =>'0']);
 
                     DB::table('payments')
                         ->where('booking_id',$bookingid)
@@ -555,21 +555,26 @@ class CeremonyBookingController extends Controller
             'event_id',$booking->event_id)->where('result','CAPTURED')->sum('amt');
         
         $booking->remaining_amount=   $event->ceremony_price-$paymentLogAmt;
+        if($booking->remaining_amount == 0 || !$booking->remaining_amount)
+        {
+           
+        }
+         $booking->payment_type = $request->payment_type;
         $booking->save();
         }
                 }
 
-            }
-            else
-            {
-                $response	=	array(
-                    'status' 	=>  0,
-                    'message'	=> 'لا يمكن أن يكون المبلغ المتبقي أكبر من 0.',
+            // }
+            // else
+            // {
+            //     $response	=	array(
+            //         'status' 	=>  0,
+            //         'message'	=> 'لا يمكن أن يكون المبلغ المتبقي أكبر من 0.',
 
-                );
-                return  ($response);
+            //     );
+            //     return  ($response);
 
-            }
+            // }
         }
         return  ($response);
     }

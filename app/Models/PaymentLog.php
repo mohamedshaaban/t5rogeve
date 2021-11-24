@@ -8,7 +8,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * Class PaymentLog
  * 
@@ -37,6 +37,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class PaymentLog extends Model
 {
+    use SoftDeletes;
 	protected $table = 'payment_log';
 
 

@@ -1,17 +1,3 @@
-function recalc(id)
-{
-    $.ajax({
-        type: "GET",
-        url: "/admin/fetch/recalcbooking/"+id,
-        success: function(response) {
-
-                alert('تم تعديل السعر ');
-
-        }
-
-
-    });
-}
 function chngStudentActive(id)
 {
     $.ajax({

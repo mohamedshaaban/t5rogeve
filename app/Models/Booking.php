@@ -10,7 +10,7 @@ use App\User;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * Class Booking
  *
@@ -33,6 +33,7 @@ use Illuminate\Database\Eloquent\Model;
 class Booking extends Model
 {
     use CrudTrait;
+        use SoftDeletes;
     protected $table = 'booking';
 
     protected $casts = [

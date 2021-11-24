@@ -232,7 +232,7 @@ class PaymentController extends Controller
 				$ReqErrorUrl="errorURL=".$ErrorUrl;
 				$param=$ReqTranportalId."&".$ReqTranportalPassword."&".$ReqAction."&".$ReqLangid."&".$ReqCurrency."&".$ReqAmount."&".$ReqResponseUrl."&".$ReqErrorUrl."&".$ReqTrackId."&".$user_id."&".$session_token."&".$udf1."&".$udf2."&".$udf3;
 
-				$termResourceKey="7Y1B91E78XMK5MT9";
+				$termResourceKey=config('app.KENT_RESOURCE_KEY');
 
 				$param=$this->encryptAES($param,$termResourceKey)."&tranportalId=".$TranportalId."&errorURL=".$ErrorUrl;
 				
@@ -404,25 +404,31 @@ class PaymentController extends Controller
 
 	          $event_id  = $request->event_id ;
 	          $event = Ceremony::find($event_id);
- if($request->payment_type == 'full'||$request->payment_type == 'Full'||$request->payment_type == 'remaining'||$request->payment_type == 'Remaining'){
+	          if($request->payment_type == 'full'||$request->payment_type == 'Full' || $request->payment_type= '' )
+	          {
+	              $amount = $amount; 
+	          }
+ if($request->payment_type == 'remaining'||$request->payment_type == 'Remaining'){
      $paymentLogAmt = PaymentLog::where(
          'user_id',$user_id)->where(
          'event_id',$event_id)->where('result','CAPTURED')->sum('amt');
 
-    $amount +=($event->ceremony_price-$paymentLogAmt);
+    $amount =($event->ceremony_price-$paymentLogAmt);
 }
 else if($request->payment_type == 'down'||$request->payment_type == 'Down'){
-    $amount +=$event->minimum_downpayment_amount;
+     $amount =$event->minimum_downpayment_amount;
 
 }
 else if($request->payment_type == 'down2'||$request->payment_type == 'Down2'){
-    $amount +=$event->downpayment_amount2;
+    $amount =$event->downpayment_amount2;
 
 }
 else if($request->payment_type == 'down3'||$request->payment_type == 'Down3'){
-    $amount +=$event->downpayment_amount3;
+     $amount =$event->downpayment_amount3;
 
 }
+
+
 
              //Knet Documentation
              $TranAmount = number_format((float)$amount, 2, '.', '');
